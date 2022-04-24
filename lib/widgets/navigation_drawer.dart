@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import 'drawer_item.dart';
@@ -29,44 +27,35 @@ class NavigationDrawer extends StatelessWidget {
                 height: 40,
               ),
               DrawerItem(
-                name: 'Fundamentos',
-                icon: Icons.stacked_line_chart_rounded,
-                onPressed: () => onItemPressed(context, index: 0),
-              ),
+                  name: 'Cuenta',
+                  icon: Icons.account_box_rounded,
+                  onPressed: () => onItemPressed(context, index: 0)),
               const SizedBox(
                 height: 30,
               ),
               DrawerItem(
-                name: 'Alg. de Ordenamiento',
-                icon: Icons.align_horizontal_left_sharp,
+                name: 'Ranking',
+                icon: Icons.stacked_line_chart_rounded,
                 onPressed: () => onItemPressed(context, index: 1),
               ),
               const SizedBox(
                 height: 30,
               ),
               DrawerItem(
-                name: 'Alg. de Busqueda',
-                icon: Icons.search,
-                onPressed: () => onItemPressed(context, index: 2),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              DrawerItem(
-                  name: 'Mi cuenta',
-                  icon: Icons.account_box_rounded,
-                  onPressed: () => onItemPressed(context, index: 3)),
-              const SizedBox(
-                height: 30,
-              ),
-              DrawerItem(
                   name: 'Retos',
                   icon: Icons.stars,
-                  onPressed: () => onItemPressed(context, index: 4)),
+                  onPressed: () => onItemPressed(context, index: 2)),
               const SizedBox(
                 height: 30,
               ),
-              // TODO: Add ranking & remove settings
+              DrawerItem(
+                name: 'Ayuda',
+                icon: Icons.help_center,
+                onPressed: () => onItemPressed(context, index: 3),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
               const Divider(
                 thickness: 1,
                 height: 10,
@@ -76,16 +65,9 @@ class NavigationDrawer extends StatelessWidget {
                 height: 30,
               ),
               DrawerItem(
-                  name: 'Ajustes',
-                  icon: Icons.settings,
-                  onPressed: () => onItemPressed(context, index: 5)),
-              const SizedBox(
-                height: 30,
-              ),
-              DrawerItem(
                   name: 'Cerrar Sesión',
                   icon: Icons.logout,
-                  onPressed: () => onItemPressed(context, index: 6)),
+                  onPressed: () => onItemPressed(context, index: 4)),
             ],
           ),
         ),
@@ -98,9 +80,12 @@ class NavigationDrawer extends StatelessWidget {
 
     switch (index) {
       case 0:
-        Navigator.of(context).pushNamed('/fundamentals');
+        Navigator.of(context).pushNamed('/account');
         break;
-      case 6:
+      case 1:
+        Navigator.of(context).pushNamed('/ranking');
+        break;
+      case 4:
         Navigator.of(context).pushNamed('/');
         break;
     }

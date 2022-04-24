@@ -15,12 +15,12 @@ class HomeBody extends StatelessWidget {
       const MenuData(
         coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535490.png",
         title: "ALG. ORDENAMIENTO",
-        route: "/fundamentals",
+        route: "/algorithm",
       ),
       const MenuData(
         coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535502.png",
         title: "ALG. BUSQUEDA",
-        route: "/fundamentals",
+        route: "/algorithm",
       ),
     ];
     return Container(

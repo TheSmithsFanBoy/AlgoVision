@@ -12,27 +12,11 @@ class FundamentalsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<MenuData> menu = [
-      MenuData(Icons.move_to_inbox_outlined, 'Condicional "If"',
-          (() => {Navigator.pushNamed(context, '/fundamentals/if')})),
-      MenuData(Icons.find_in_page_outlined, 'Condicional "If Else"',
-          (() => {Navigator.pushNamed(context, '/fundamentals/if')})),
-      MenuData(Icons.find_in_page_outlined, 'Menu 3',
-          (() => {Navigator.pushNamed(context, '/fundamentals/if')})),
-      MenuData(Icons.upgrade_outlined, 'Menu 4',
-          (() => {Navigator.pushNamed(context, '/fundamentals/if')})),
-      MenuData(Icons.upgrade_outlined, 'Menu 5',
-          (() => {Navigator.pushNamed(context, '/fundamentals/if')})),
-      MenuData(Icons.play_for_work_outlined, 'Menu 6',
-          (() => {Navigator.pushNamed(context, '/fundamentals/if')})),
-      MenuData(Icons.play_for_work_outlined, 'Menu 7',
-          (() => {Navigator.pushNamed(context, '/fundamentals/if')})),
-      MenuData(Icons.assignment_turned_in_outlined, 'Menu 8',
-          (() => {Navigator.pushNamed(context, '/fundamentals/if')})),
-      MenuData(Icons.assignment_turned_in_outlined, 'Menu 9',
-          (() => {Navigator.pushNamed(context, '/fundamentals/if')})),
-      MenuData(Icons.fact_check_outlined, 'Menu 10',
-          (() => {Navigator.pushNamed(context, '/fundamentals/if')}))
+    const List<MenuData> menu = [
+      MenuData(
+          Icons.move_to_inbox_outlined, 'Condicional "If"', "/topic-details"),
+      MenuData(
+          Icons.move_to_inbox_outlined, 'Condicional "If"', "/topic-details"),
     ];
     return Scaffold(
         appBar: AppBar(
@@ -68,6 +52,9 @@ class FundamentalsScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0)),
                 child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, menu[index].route);
+                  },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,11 +83,11 @@ class FundamentalsScreen extends StatelessWidget {
 }
 
 class MenuData {
-  const MenuData(this.icon, this.title, this.callback);
+  const MenuData(this.icon, this.title, this.route);
 
   final String title;
 
   final IconData icon;
 
-  final VoidCallback callback;
+  final String route;
 }
