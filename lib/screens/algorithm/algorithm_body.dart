@@ -12,42 +12,42 @@ class AlgorithmBody extends StatelessWidget {
         title: "BUBBLE SORT",
         description:
             "El ordenamiento de burbuja es un sencillo algoritmo de ordenamiento. Funciona revisando cada elemento...",
-        route: "/fundamentals",
+        route: "/algorithm-details",
       ),
       const MenuData(
         coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535476.png",
         title: "BUBBLE SORT",
         description:
             "El ordenamiento de burbuja es un sencillo algoritmo de ordenamiento. Funciona revisando cada elemento...",
-        route: "/fundamentals",
+        route: "/algorithm-details",
       ),
       const MenuData(
         coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535476.png",
         title: "BUBBLE SORT",
         description:
             "El ordenamiento de burbuja es un sencillo algoritmo de ordenamiento. Funciona revisando cada elemento...",
-        route: "/fundamentals",
+        route: "/algorithm-details",
       ),
       const MenuData(
         coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535476.png",
         title: "BUBBLE SORT",
         description:
             "El ordenamiento de burbuja es un sencillo algoritmo de ordenamiento. Funciona revisando cada elemento...",
-        route: "/fundamentals",
+        route: "/algorithm-details",
       ),
       const MenuData(
         coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535476.png",
         title: "BUBBLE SORT",
         description:
             "El ordenamiento de burbuja es un sencillo algoritmo de ordenamiento. Funciona revisando cada elemento...",
-        route: "/fundamentals",
+        route: "/algorithm-details",
       ),
       const MenuData(
         coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535476.png",
         title: "BUBBLE SORT",
         description:
             "El ordenamiento de burbuja es un sencillo algoritmo de ordenamiento. Funciona revisando cada elemento...",
-        route: "/fundamentals",
+        route: "/algorithm-details",
       ),
     ];
     return ListView.builder(

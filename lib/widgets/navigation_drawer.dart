@@ -85,6 +85,9 @@ class NavigationDrawer extends StatelessWidget {
       case 1:
         Navigator.of(context).pushNamed('/ranking');
         break;
+      case 2:
+        Navigator.of(context).pushNamed('/challenges');
+        break;
       case 4:
         Navigator.of(context).pushNamed('/');
         break;
