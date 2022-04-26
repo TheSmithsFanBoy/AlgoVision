@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +27,33 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   MyApp({Key? key}) : super(key: key);
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
-  // This widget is the root of your application.
+class _MyAppState extends State<MyApp> {
+  late StreamSubscription<User?> _sub;
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _sub = FirebaseAuth.instance.authStateChanges().listen((event) {
+      _navigatorKey.currentState?.pushReplacementNamed(
+        event != null ? '/home' : '/login',
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _sub.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -51,7 +75,9 @@ class MyApp extends StatelessWidget {
                 ),
             primarySwatch: Colors.blue,
           ),
-          initialRoute: '/',
+          initialRoute:
+              FirebaseAuth.instance.currentUser == null ? '/login' : '/home',
+          navigatorKey: _navigatorKey,
           routes: {
             '/': (context) => const WelcomeScreen(),
             '/register': (context) => const RegisterScreen(),

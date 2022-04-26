@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tdpapp/services/auth_service.dart';
 
 import 'drawer_item.dart';
 
@@ -89,7 +91,7 @@ class NavigationDrawer extends StatelessWidget {
         Navigator.of(context).pushNamed('/challenges');
         break;
       case 4:
-        Navigator.of(context).pushNamed('/');
+        context.read<AuthService>().signOut();
         break;
     }
   }

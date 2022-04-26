@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:tdpapp/services/auth_service.dart';
 
 import '../../constants/theme_constants.dart';
@@ -118,38 +119,6 @@ class LoginScreen extends StatelessWidget {
             style: kLabelStyle,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildLoginBtn(context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          elevation: 8.0,
-          padding: const EdgeInsets.all(15.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          primary: Colors.white,
-        ),
-        // ignore: avoid_print
-        onPressed: () => context.read<AuthService>().login(
-              email: emailController.text,
-              password: passwordController.text,
-            ),
-        child: const Text(
-          'ACCEDER',
-          style: TextStyle(
-            color: Colors.purple,
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
       ),
     );
   }
@@ -299,7 +268,41 @@ class LoginScreen extends StatelessWidget {
                       _buildPasswordTF(),
                       _buildForgotPasswordBtn(context),
                       _buildRememberMeCheckbox(),
-                      _buildLoginBtn(context),
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 25.0),
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 8.0,
+                            padding: const EdgeInsets.all(15.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            primary: Colors.white,
+                          ),
+                          // ignore: avoid_print
+                          onPressed: () => {
+                            context
+                                .read<AuthService>()
+                                .signIn(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                )
+                                .then(
+                                    (value) => showAlertDialog(context, value!))
+                          },
+                          child: const Text(
+                            'ACCEDER',
+                            style: TextStyle(
+                              color: Colors.purple,
+                              letterSpacing: 1.5,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'OpenSans',
+                            ),
+                          ),
+                        ),
+                      ),
                       _buildSignInWithText(),
                       _buildSocialBtnRow(),
                       _buildSignupBtn(context),
@@ -313,4 +316,31 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+showAlertDialog(BuildContext context, String message) {
+  // Create button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("Auth"),
+    content: Text(message),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
