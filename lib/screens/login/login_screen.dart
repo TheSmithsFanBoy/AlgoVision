@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tdpapp/services/auth_service.dart';
 
 import '../../constants/theme_constants.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   Widget _buildEmailTF() {
     return Column(
@@ -19,13 +23,14 @@ class LoginScreen extends StatelessWidget {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: const TextField(
+          child: TextField(
+            controller: emailController,
             keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
             ),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
@@ -54,13 +59,14 @@ class LoginScreen extends StatelessWidget {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: const TextField(
+          child: TextField(
+            controller: passwordController,
             obscureText: true,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
             ),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
@@ -130,7 +136,10 @@ class LoginScreen extends StatelessWidget {
           primary: Colors.white,
         ),
         // ignore: avoid_print
-        onPressed: () => Navigator.of(context).pushNamed('/home'),
+        onPressed: () => context.read<AuthService>().login(
+              email: emailController.text,
+              password: passwordController.text,
+            ),
         child: const Text(
           'ACCEDER',
           style: TextStyle(

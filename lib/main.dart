@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tdpapp/firebase_options.dart';
 import 'package:tdpapp/screens/account/account_screen.dart';
 import 'package:tdpapp/screens/algorithm-details/algorithm_details_screen.dart';
 import 'package:tdpapp/screens/algorithm/algorithm_screen.dart';
@@ -11,44 +15,58 @@ import 'package:tdpapp/screens/register/register_screen.dart';
 import 'package:tdpapp/screens/sign-in/sign_in_screen.dart';
 import 'package:tdpapp/screens/topic-details/topic_details_screen.dart';
 import 'package:tdpapp/screens/welcome/welcome_screen.dart';
+import 'package:tdpapp/services/auth_service.dart';
 
 import 'screens/challenges/challenges_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  // ignore: prefer_const_constructors_in_immutables
+  MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        textTheme: Theme.of(context).textTheme.apply(
-              fontFamily: 'Open Sans',
-            ),
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const WelcomeScreen(),
-        '/register': (context) => const RegisterScreen(),
-        '/sign-in': (context) => const SignInScreen(),
-        '/login': (context) => const LoginScreen(),
-        '/forgot-password': (context) => const ForgotPasswordScreen(),
-        '/home': (context) => const HomeScreen(),
-        '/fundamentals': (context) => const FundamentalsScreen(),
-        '/algorithm': (context) => const AlgorithmScreen(),
-        '/challenges': (context) => const ChallengesScreen(),
-        '/account': (context) => const AccountScreen(),
-        '/topic-details': (context) => const TopicDetailsScreen(),
-        '/algorithm-details': (context) => const AlgorithmDetailsScreen(),
-        '/ranking': (context) => const RankingScreen(),
-      },
-    );
+    return MultiProvider(
+        providers: [
+          Provider<AuthService>(
+            create: (_) => AuthService(FirebaseAuth.instance),
+          ),
+          StreamProvider(
+            create: (context) => context.read<AuthService>().authStateChanges,
+            initialData: null,
+          )
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            textTheme: Theme.of(context).textTheme.apply(
+                  fontFamily: 'Open Sans',
+                ),
+            primarySwatch: Colors.blue,
+          ),
+          initialRoute: '/',
+          routes: {
+            '/': (context) => const WelcomeScreen(),
+            '/register': (context) => const RegisterScreen(),
+            '/sign-in': (context) => const SignInScreen(),
+            '/login': (context) => LoginScreen(),
+            '/forgot-password': (context) => const ForgotPasswordScreen(),
+            '/home': (context) => const HomeScreen(),
+            '/fundamentals': (context) => const FundamentalsScreen(),
+            '/algorithm': (context) => const AlgorithmScreen(),
+            '/challenges': (context) => const ChallengesScreen(),
+            '/account': (context) => const AccountScreen(),
+            '/topic-details': (context) => const TopicDetailsScreen(),
+            '/algorithm-details': (context) => const AlgorithmDetailsScreen(),
+            '/ranking': (context) => const RankingScreen(),
+          },
+        ));
   }
 }
