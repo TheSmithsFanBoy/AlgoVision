@@ -8,6 +8,7 @@ import 'package:tdpapp/firebase_options.dart';
 import 'package:tdpapp/screens/account/account_screen.dart';
 import 'package:tdpapp/screens/algorithm-details/algorithm_details_screen.dart';
 import 'package:tdpapp/screens/algorithm/algorithm_screen.dart';
+import 'package:tdpapp/screens/challenges/challenges_screen.dart';
 import 'package:tdpapp/screens/forgot-password/forgot_password_screen.dart';
 import 'package:tdpapp/screens/fundamentals/fundamentals_screen.dart';
 import 'package:tdpapp/screens/home/home_screen.dart';
@@ -19,11 +20,11 @@ import 'package:tdpapp/screens/topic-details/topic_details_screen.dart';
 import 'package:tdpapp/screens/welcome/welcome_screen.dart';
 import 'package:tdpapp/services/auth_service.dart';
 
-import 'screens/challenges/challenges_screen.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -80,10 +81,10 @@ class _MyAppState extends State<MyApp> {
           navigatorKey: _navigatorKey,
           routes: {
             '/': (context) => const WelcomeScreen(),
-            '/register': (context) => const RegisterScreen(),
+            '/register': (context) => RegisterScreen(),
             '/sign-in': (context) => const SignInScreen(),
             '/login': (context) => LoginScreen(),
-            '/forgot-password': (context) => const ForgotPasswordScreen(),
+            '/forgot-password': (context) => ForgotPasswordScreen(),
             '/home': (context) => const HomeScreen(),
             '/fundamentals': (context) => const FundamentalsScreen(),
             '/algorithm': (context) => const AlgorithmScreen(),

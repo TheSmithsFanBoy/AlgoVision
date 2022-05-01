@@ -1,17 +1,99 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-List<String> images = [
-  "https://static.javatpoint.com/tutorial/flutter/images/flutter-logo.png",
-  "https://static.javatpoint.com/tutorial/flutter/images/flutter-logo.png",
-  "https://static.javatpoint.com/tutorial/flutter/images/flutter-logo.png",
-  "https://static.javatpoint.com/tutorial/flutter/images/flutter-logo.png"
-];
+import 'package:tdpapp/models/screen_arguments.dart';
 
 class FundamentalsScreen extends StatelessWidget {
   const FundamentalsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(args.title),
+        centerTitle: true,
+        backgroundColor: Colors.blueGrey,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: <Color>[
+                  Color.fromARGB(255, 218, 78, 162),
+                  Colors.blue,
+                ]),
+          ),
+        ),
+      ),
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('modules/' + args.id + '/lessons')
+              .snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            final List<DocumentSnapshot> docs = snapshot.data!.docs;
+            return ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: docs.length,
+              itemBuilder: (context, index) {
+                final DocumentSnapshot doc = docs[index];
+                return InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/topic-details",
+                          arguments: ScreenArguments(
+                              id: doc.id,
+                              title: doc['name'],
+                              description: doc['description'],
+                              parentId: args.id));
+                    },
+                    child: Card(
+                      elevation: 4,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            Image.network(
+                              doc['coverImage'],
+                              width: 90,
+                              height: 90,
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    doc['name'],
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    doc['description'],
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ));
+              },
+            );
+          }),
+    );
+    /*
     const List<MenuData> menu = [
       MenuData(
           Icons.move_to_inbox_outlined, 'Condicional "If"', "/topic-details"),
@@ -20,7 +102,7 @@ class FundamentalsScreen extends StatelessWidget {
     ];
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Fundamentos de Programación'),
+          title: Text(args.title),
           centerTitle: true,
           backgroundColor: Colors.blueGrey,
           flexibleSpace: Container(
@@ -79,6 +161,7 @@ class FundamentalsScreen extends StatelessWidget {
             },
           ),
         ));
+    */
   }
 }
 

@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:tdpapp/services/auth_service.dart';
 
 import '../../constants/theme_constants.dart';
 
 class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  RegisterScreen({Key? key}) : super(key: key);
+
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   Widget _buildFullNameTF() {
     return Column(
@@ -19,13 +26,24 @@ class RegisterScreen extends StatelessWidget {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: const TextField(
+          child: TextFormField(
+            controller: fullNameController,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Por favor ingrese su nombre';
+              } else if (value.length < 3) {
+                return 'Ingrese un nombre válido';
+              } else if (value.length > 30) {
+                return 'Máximo 30 caracteres';
+              }
+              return null;
+            },
             keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
             ),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
@@ -54,13 +72,26 @@ class RegisterScreen extends StatelessWidget {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: const TextField(
+          child: TextFormField(
+            controller: emailController,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Por favor ingrese su correo electrónico';
+              } else if (!RegExp(
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  .hasMatch(value)) {
+                return 'Ingrese un correo electrónico válido';
+              } else if (value.length > 30) {
+                return 'Máximo 30 caracteres';
+              }
+              return null;
+            },
             keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
             ),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
@@ -89,13 +120,24 @@ class RegisterScreen extends StatelessWidget {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: const TextField(
+          child: TextFormField(
+            controller: passwordController,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Por favor ingrese su contraseña';
+              } else if (value.length < 8) {
+                return 'Ingrese una contraseña válida';
+              } else if (value.length > 16) {
+                return 'Máximo 16 caracteres';
+              }
+              return null;
+            },
             obscureText: true,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
             ),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
@@ -124,13 +166,21 @@ class RegisterScreen extends StatelessWidget {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: const TextField(
+          child: TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Por favor ingrese su contraseña';
+              } else if (value != passwordController.text) {
+                return 'Las contraseñas no coinciden';
+              }
+              return null;
+            },
             obscureText: true,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
             ),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
@@ -146,7 +196,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLoginBtn(context) {
+  Widget _buildLoginBtn(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
@@ -160,7 +210,29 @@ class RegisterScreen extends StatelessWidget {
           primary: Colors.white,
         ),
         // ignore: avoid_print
-        onPressed: () => Navigator.of(context).pushNamed('/home'),
+        onPressed: () {
+          if (_formKey.currentState != null &&
+              _formKey.currentState!.validate()) {
+            context
+                .read<AuthService>()
+                .signUp(
+                  email: emailController.text,
+                  password: passwordController.text,
+                  fullName: fullNameController.text,
+                )
+                .then((value) => ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text(
+                            value!,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          backgroundColor: Colors.grey),
+                    ));
+          }
+        },
         child: const Text(
           'CREAR CUENTA',
           style: TextStyle(
@@ -229,42 +301,45 @@ class RegisterScreen extends StatelessWidget {
               SizedBox(
                 height: double.infinity,
                 child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 120.0,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const Text(
-                        'Registrarse',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40.0,
+                      vertical: 120.0,
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          const Text(
+                            'Registrarse',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'OpenSans',
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 30.0),
+                          _buildFullNameTF(),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          _buildEmailTF(),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          _buildPasswordTF(),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          _buildConfirmPasswordTF(),
+                          _buildLoginBtn(context),
+                          _buildSignupBtn(context),
+                        ],
                       ),
-                      const SizedBox(height: 30.0),
-                      _buildFullNameTF(),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      _buildEmailTF(),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      _buildPasswordTF(),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      _buildConfirmPasswordTF(),
-                      _buildLoginBtn(context),
-                      _buildSignupBtn(context),
-                    ],
-                  ),
-                ),
+                    )),
               )
             ],
           ),

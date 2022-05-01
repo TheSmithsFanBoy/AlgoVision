@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:tdpapp/services/auth_service.dart';
 import '../../constants/theme_constants.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+  ForgotPasswordScreen({Key? key}) : super(key: key);
+
+  final TextEditingController emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   Widget _buildEmailTF() {
     return Column(
@@ -18,13 +23,24 @@ class ForgotPasswordScreen extends StatelessWidget {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: const TextField(
+          child: TextFormField(
+            controller: emailController,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Por favor ingrese su correo electrónico';
+              } else if (!RegExp(
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  .hasMatch(value)) {
+                return 'Por favor ingrese un correo electrónico válido';
+              }
+              return null;
+            },
             keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
             ),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
@@ -52,7 +68,7 @@ class ForgotPasswordScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLoginBtn(context) {
+  Widget _buildLoginBtn(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
@@ -66,7 +82,38 @@ class ForgotPasswordScreen extends StatelessWidget {
           primary: Colors.white,
         ),
         // ignore: avoid_print
-        onPressed: () => Navigator.of(context).pushNamed('/login'),
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            context
+                .read<AuthService>()
+                .resetPassword(
+                  email: emailController.text,
+                )
+                .then((value) => ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text(
+                            value!,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          backgroundColor: Colors.grey),
+                    ));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text(
+                    'Por favor ingresa todos los datos',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  backgroundColor: Colors.grey),
+            );
+          }
+        },
         child: const Text(
           'RECUPERAR',
           style: TextStyle(
@@ -107,33 +154,36 @@ class ForgotPasswordScreen extends StatelessWidget {
               SizedBox(
                 height: double.infinity,
                 child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 120.0,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const Text(
-                        'Recuperar Contraseña',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40.0,
+                      vertical: 120.0,
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          const Text(
+                            'Recuperar Contraseña',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'OpenSans',
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 30.0),
+                          _buildPasswordTF(),
+                          const SizedBox(
+                            height: 30.0,
+                          ),
+                          _buildEmailTF(),
+                          _buildLoginBtn(context),
+                        ],
                       ),
-                      const SizedBox(height: 30.0),
-                      _buildPasswordTF(),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      _buildEmailTF(),
-                      _buildLoginBtn(context),
-                    ],
-                  ),
-                ),
+                    )),
               )
             ],
           ),

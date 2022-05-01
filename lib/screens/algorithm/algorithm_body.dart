@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AlgorithmBody extends StatelessWidget {
@@ -5,6 +6,7 @@ class AlgorithmBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final List<MenuData> menu = [
       // https://www.flaticon.es/icono-gratis/sistema-de-gestion-de-contenidos_2535488?related_id=2535488
       const MenuData(
@@ -50,7 +52,7 @@ class AlgorithmBody extends StatelessWidget {
         route: "/algorithm-details",
       ),
     ];
-    return ListView.builder(
+    /*return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: menu.length,
       itemBuilder: (context, index) {
@@ -99,7 +101,67 @@ class AlgorithmBody extends StatelessWidget {
               ),
             ));
       },
-    );
+    );*/
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('modules').snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          final List<DocumentSnapshot> docs = snapshot.data!.docs;
+          return ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: docs.length,
+            itemBuilder: (context, index) {
+              final DocumentSnapshot doc = docs[index];
+              return InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, doc['route']);
+                  },
+                  child: Card(
+                    elevation: 4,
+                    margin: const EdgeInsets.only(bottom: 16),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Image.network(
+                            doc['coverImage'],
+                            width: 90,
+                            height: 90,
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  doc['name'],
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  doc['name'],
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ));
+            },
+          );
+        });
   }
 }
 

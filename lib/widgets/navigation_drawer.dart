@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tdpapp/services/auth_service.dart';
@@ -97,33 +98,45 @@ class NavigationDrawer extends StatelessWidget {
   }
 
   Widget headerWidget() {
-    const url =
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80";
-    return Row(
-      children: [
-        const CircleAvatar(
-          radius: 40,
-          backgroundImage: NetworkImage(url),
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      var email = user.email;
+      var displayName = user.displayName;
+      var photoUrl = user.photoURL.toString();
+      return Row(
+        children: [
+          CircleAvatar(
+            radius: 25,
+            backgroundImage: NetworkImage(photoUrl),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(displayName!,
+                  style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w700)),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(email!,
+                  style: const TextStyle(fontSize: 12, color: Colors.black45))
+            ],
+          )
+        ],
+      );
+    } else {
+      return const Text(
+        'Iniciar Sesión',
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
         ),
-        const SizedBox(
-          width: 20,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text('Jhon Demo',
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w700)),
-            SizedBox(
-              height: 10,
-            ),
-            Text('jhondemo@gmail.com',
-                style: TextStyle(fontSize: 12, color: Colors.black45))
-          ],
-        )
-      ],
-    );
+      );
+    }
   }
 }

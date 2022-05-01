@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:crypto/crypto.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth;
@@ -24,7 +27,7 @@ class AuthService {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      return "Signed in";
+      return "¡Bienvenido de vuelta!";
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
@@ -35,11 +38,50 @@ class AuthService {
   /// use your own custom class that would take the exception and return better
   /// error messages. That way you can throw, return or whatever you prefer with that instead.
   Future<String?> signUp(
-      {required String email, required String password}) async {
+      {required String email,
+      required String password,
+      required String fullName}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      return "Signed up";
+      UserCredential userCredential = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
+      var emailHash = generateHash(email: email);
+      userCredential.user!.updateDisplayName(fullName);
+      userCredential.user!
+          .updatePhotoURL("https://www.gravatar.com/avatar/" + emailHash);
+      return "¡Bienvenido a TDAPP!";
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<String?> resetPassword({required String email}) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      return "Reset password email sent";
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
+  }
+
+  String generateHash({required String email}) {
+    return md5.convert(utf8.encode(email)).toString();
+  }
+
+  Future<String?> changePassword(
+      {required String oldPassword, required String newPassword}) async {
+    try {
+      await _firebaseAuth.currentUser!.updatePassword(newPassword);
+      return "Password changed";
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<String?> changeEmail(
+      {required String oldEmail, required String newEmail}) async {
+    try {
+      await _firebaseAuth.currentUser!.updateEmail(newEmail);
+      return "Email changed";
     } on FirebaseAuthException catch (e) {
       return e.message;
     }

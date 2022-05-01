@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -5,8 +6,11 @@ class AccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const url =
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80";
+    User? user = FirebaseAuth.instance.currentUser;
+    var email = user != null ? user.email : '';
+    var displayName = user != null ? user.displayName : '';
+    var url = user != null ? user.photoURL : '';
+    url = (url! + "?s=200");
     final List<Medal> medals = [
       const Medal(
           title: "FUNDAMENTOS",
@@ -55,23 +59,23 @@ class AccountScreen extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            const CircleAvatar(
+            CircleAvatar(
               radius: 60,
               backgroundImage: NetworkImage(url),
             ),
             const SizedBox(
               height: 10,
             ),
-            const Text('Jhon Demo | @jhon_demo',
-                style: TextStyle(
+            Text(displayName!,
+                style: const TextStyle(
                     fontSize: 18,
                     color: Colors.black87,
                     fontWeight: FontWeight.w700)),
             const SizedBox(
               height: 4,
             ),
-            const Text('jhondemo@gmail.com',
-                style: TextStyle(fontSize: 14, color: Colors.black45)),
+            Text(email!,
+                style: const TextStyle(fontSize: 14, color: Colors.black45)),
             const SizedBox(
               height: 40,
             ),

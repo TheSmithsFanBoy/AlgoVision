@@ -7,10 +7,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // get current user
     return Scaffold(
       drawer: const NavigationDrawer(),
       appBar: AppBar(
-        title: const Text('Inicio'),
+        title: const Text("Inicio"),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: const BoxDecoration(

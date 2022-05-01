@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +12,7 @@ class LoginScreen extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   Widget _buildEmailTF() {
     return Column(
@@ -24,7 +27,13 @@ class LoginScreen extends StatelessWidget {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: TextField(
+          child: TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Por favor ingrese su correo electrónico';
+              }
+              return null;
+            },
             controller: emailController,
             keyboardType: TextInputType.emailAddress,
             style: const TextStyle(
@@ -33,7 +42,7 @@ class LoginScreen extends StatelessWidget {
             ),
             decoration: const InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
+              contentPadding: EdgeInsets.only(top: 14.0, left: 14.0),
               prefixIcon: Icon(
                 Icons.email,
                 color: Colors.white,
@@ -60,7 +69,13 @@ class LoginScreen extends StatelessWidget {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: TextField(
+          child: TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Por favor ingresa tu contraseña';
+              }
+              return null;
+            },
             controller: passwordController,
             obscureText: true,
             style: const TextStyle(
@@ -97,6 +112,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  // ignore: unused_element
   Widget _buildRememberMeCheckbox() {
     return SizedBox(
       height: 20.0,
@@ -173,12 +189,14 @@ class LoginScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           _buildSocialBtn(
+            // ignore: avoid_print
             () => print('Login with Facebook'),
             const AssetImage(
               "assets/icons/facebook.jpeg",
             ),
           ),
           _buildSocialBtn(
+            // ignore: avoid_print
             () => print('Login with Google'),
             const AssetImage(
               "assets/icons/google.jpeg",
@@ -217,6 +235,68 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildLoginBtn(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 25.0),
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 8.0,
+          padding: const EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          primary: Colors.white,
+        ),
+        // ignore: avoid_print
+        onPressed: () {
+          if (_formKey.currentState != null &&
+              _formKey.currentState!.validate()) {
+            context
+                .read<AuthService>()
+                .signIn(
+                  email: emailController.text,
+                  password: passwordController.text,
+                )
+                .then((value) => ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text(
+                            value!,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          backgroundColor: Colors.grey),
+                    ));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text(
+                    'Por favor ingresa todos los datos',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  backgroundColor: Colors.grey),
+            );
+          }
+        },
+        child: const Text(
+          'ACCEDER',
+          style: TextStyle(
+            color: Colors.purple,
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -248,66 +328,35 @@ class LoginScreen extends StatelessWidget {
                     horizontal: 40.0,
                     vertical: 120.0,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const Text(
-                        'Iniciar Sesión',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 30.0),
-                      _buildEmailTF(),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      _buildPasswordTF(),
-                      _buildForgotPasswordBtn(context),
-                      _buildRememberMeCheckbox(),
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 25.0),
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 8.0,
-                            padding: const EdgeInsets.all(15.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                            primary: Colors.white,
-                          ),
-                          // ignore: avoid_print
-                          onPressed: () => {
-                            context
-                                .read<AuthService>()
-                                .signIn(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                )
-                                .then(
-                                    (value) => showAlertDialog(context, value!))
-                          },
-                          child: const Text(
-                            'ACCEDER',
+                  child: Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          const Text(
+                            'Iniciar Sesión',
                             style: TextStyle(
-                              color: Colors.purple,
-                              letterSpacing: 1.5,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                               fontFamily: 'OpenSans',
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                      ),
-                      _buildSignInWithText(),
-                      _buildSocialBtnRow(),
-                      _buildSignupBtn(context),
-                    ],
-                  ),
+                          const SizedBox(height: 30.0),
+                          _buildEmailTF(),
+                          const SizedBox(
+                            height: 30.0,
+                          ),
+                          _buildPasswordTF(),
+                          _buildForgotPasswordBtn(context),
+                          //_buildRememberMeCheckbox(),
+                          _buildLoginBtn(context),
+                          _buildSignInWithText(),
+                          _buildSocialBtnRow(),
+                          _buildSignupBtn(context),
+                        ],
+                      )),
                 ),
               )
             ],
@@ -321,7 +370,7 @@ class LoginScreen extends StatelessWidget {
 showAlertDialog(BuildContext context, String message) {
   // Create button
   Widget okButton = FlatButton(
-    child: Text("OK"),
+    child: const Text("OK"),
     onPressed: () {
       Navigator.of(context).pop();
     },
