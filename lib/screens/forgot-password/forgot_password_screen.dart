@@ -89,17 +89,30 @@ class ForgotPasswordScreen extends StatelessWidget {
                 .resetPassword(
                   email: emailController.text,
                 )
-                .then((value) => ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text(
-                            value!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                          backgroundColor: Colors.grey),
-                    ));
+                .then((value) {
+              Widget okButton = TextButton(
+                child: const Text("Entendido"),
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, "/login", (route) => false);
+                },
+              );
+
+              // Create AlertDialog
+              AlertDialog alert = AlertDialog(
+                content:
+                    const Text("Se ha reenviado tu contraseña a tu correo"),
+                actions: [okButton],
+              );
+
+              // show the dialog
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return alert;
+                },
+              );
+            });
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
