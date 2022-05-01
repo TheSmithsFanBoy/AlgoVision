@@ -43,9 +43,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _sub = FirebaseAuth.instance.authStateChanges().listen((event) {
-      _navigatorKey.currentState?.pushReplacementNamed(
-        event != null ? '/home' : '/login',
-      );
+      _navigatorKey.currentState?.pushNamedAndRemoveUntil(
+          event != null ? '/home' : '/login', (route) => false);
     });
   }
 

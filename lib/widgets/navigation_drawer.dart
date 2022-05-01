@@ -79,8 +79,11 @@ class NavigationDrawer extends StatelessWidget {
   }
 
   void onItemPressed(BuildContext context, {required int index}) {
+    if (index == 4) {
+      showAlertDialog(context, "¿Desea cerrar sesión?");
+      return;
+    }
     Navigator.pop(context);
-
     switch (index) {
       case 0:
         Navigator.of(context).pushNamed('/account');
@@ -91,10 +94,37 @@ class NavigationDrawer extends StatelessWidget {
       case 2:
         Navigator.of(context).pushNamed('/challenges');
         break;
-      case 4:
-        context.read<AuthService>().signOut();
-        break;
     }
+  }
+
+  showAlertDialog(BuildContext context, String message) {
+    // Create button
+    Widget okButton = TextButton(
+      child: const Text("Cancelar"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget signOutButton = TextButton(
+      child: const Text("Cerrar Sesión"),
+      onPressed: () {
+        context.read<AuthService>().signOut();
+      },
+    );
+
+    // Create AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: Text(message),
+      actions: [okButton, signOutButton],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   Widget headerWidget() {
