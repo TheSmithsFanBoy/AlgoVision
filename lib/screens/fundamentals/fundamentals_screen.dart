@@ -8,6 +8,9 @@ class FundamentalsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+    // module reference
+    var moduleReference =
+        FirebaseFirestore.instance.collection('modules').doc(args.id);
     return Scaffold(
       appBar: AppBar(
         title: Text(args.title),
@@ -27,7 +30,8 @@ class FundamentalsScreen extends StatelessWidget {
       ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection('modules/' + args.id + '/lessons')
+              .collection('lessons')
+              .where('module', isEqualTo: moduleReference)
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {

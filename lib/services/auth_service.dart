@@ -77,11 +77,12 @@ class AuthService {
     }
   }
 
-  Future<String?> changeEmail(
-      {required String oldEmail, required String newEmail}) async {
+  Future<String?> updateAccount(
+      {required String displayName, required String email}) async {
     try {
-      await _firebaseAuth.currentUser!.updateEmail(newEmail);
-      return "Email changed";
+      await _firebaseAuth.currentUser!.updateEmail(email);
+      await _firebaseAuth.currentUser!.updateDisplayName(displayName);
+      return "Datos actualizados correctamente";
     } on FirebaseAuthException catch (e) {
       return e.message;
     }

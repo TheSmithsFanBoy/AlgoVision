@@ -9,6 +9,7 @@ import 'package:tdpapp/screens/account/account_screen.dart';
 import 'package:tdpapp/screens/algorithm-details/algorithm_details_screen.dart';
 import 'package:tdpapp/screens/algorithm/algorithm_screen.dart';
 import 'package:tdpapp/screens/challenges/challenges_screen.dart';
+import 'package:tdpapp/screens/edit-account/edit_account_screen.dart';
 import 'package:tdpapp/screens/forgot-password/forgot_password_screen.dart';
 import 'package:tdpapp/screens/fundamentals/fundamentals_screen.dart';
 import 'package:tdpapp/screens/home/home_screen.dart';
@@ -16,6 +17,7 @@ import 'package:tdpapp/screens/login/login_screen.dart';
 import 'package:tdpapp/screens/ranking/ranking_screen.dart';
 import 'package:tdpapp/screens/register/register_screen.dart';
 import 'package:tdpapp/screens/sign-in/sign_in_screen.dart';
+import 'package:tdpapp/screens/surveys/surveys_screen.dart';
 import 'package:tdpapp/screens/topic-details/topic_details_screen.dart';
 import 'package:tdpapp/screens/welcome/welcome_screen.dart';
 import 'package:tdpapp/services/auth_service.dart';
@@ -89,9 +91,11 @@ class _MyAppState extends State<MyApp> {
             '/algorithm': (context) => const AlgorithmScreen(),
             '/challenges': (context) => const ChallengesScreen(),
             '/account': (context) => const AccountScreen(),
+            '/edit-account': (context) => EditAccountScreen(),
             '/topic-details': (context) => const TopicDetailsScreen(),
             '/algorithm-details': (context) => const AlgorithmDetailsScreen(),
             '/ranking': (context) => const RankingScreen(),
+            '/surveys': (context) => const SurveysScreen(),
           },
         ));
   }

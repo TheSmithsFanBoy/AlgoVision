@@ -47,7 +47,7 @@ class AccountScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushNamed(context, '/edit-account');
             },
           ),
         ],

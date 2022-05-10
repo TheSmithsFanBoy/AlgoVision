@@ -9,6 +9,15 @@ class TopicDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+    var lessonReference =
+        FirebaseFirestore.instance.collection('lessons').doc(args.id);
+    var surveyReference = FirebaseFirestore.instance
+        .collection('surveys')
+        .where('lesson', isEqualTo: lessonReference);
+    var surveyId = surveyReference.get().then((snapshot) {
+      return snapshot.docs[0].id.toString();
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(args.title),
@@ -28,11 +37,7 @@ class TopicDetailsScreen extends StatelessWidget {
       ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection('modules/' +
-                  args.parentId +
-                  '/lessons/' +
-                  args.id +
-                  '/blocks')
+              .collection('/lessons/' + args.id + '/blocks')
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
@@ -43,6 +48,40 @@ class TopicDetailsScreen extends StatelessWidget {
             final List<DocumentSnapshot> docs = snapshot.data!.docs;
             return _buildList(context, docs);
           }),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.blue,
+        child: SizedBox(
+          height: 50,
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                FutureBuilder<String>(
+                  future: surveyId,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData &&
+                        snapshot.connectionState == ConnectionState.done) {
+                      // ignore: avoid_print
+                      print(snapshot.data!);
+                      return IconButton(
+                        icon: const Icon(Icons.description),
+                        color: Colors.white,
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/surveys',
+                              arguments: ScreenArguments(
+                                id: snapshot.data!,
+                                title: '',
+                                description: '',
+                                parentId: '',
+                              ));
+                        },
+                      );
+                    }
+                    return const CircularProgressIndicator();
+                  },
+                ),
+              ]),
+        ),
+      ),
     );
 
     /*
