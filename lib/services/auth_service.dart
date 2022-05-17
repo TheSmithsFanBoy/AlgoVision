@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:crypto/crypto.dart';
 
@@ -48,6 +49,16 @@ class AuthService {
       userCredential.user!.updateDisplayName(fullName);
       userCredential.user!
           .updatePhotoURL("https://www.gravatar.com/avatar/" + emailHash);
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set({
+        'email': email,
+        'fullName': fullName,
+        'photoUrl': "https://www.gravatar.com/avatar/" + emailHash,
+        'uid': userCredential.user!.uid,
+        'points': 0,
+      });
       return "¡Bienvenido a TDAPP!";
     } on FirebaseAuthException catch (e) {
       return e.message;

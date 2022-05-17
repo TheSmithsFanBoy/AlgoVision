@@ -61,8 +61,10 @@ class SurveysScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             SurveyQuestion(
-                                validOption: doc['correctAnswer'],
-                                options: doc['options']),
+                              validOption: doc['correctAnswer'],
+                              options: doc['options'],
+                              callback: () {},
+                            ),
                           ],
                         )),
                   ));

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tdpapp/models/screen_arguments.dart';
 
@@ -9,8 +10,6 @@ class FundamentalsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     // module reference
-    var moduleReference =
-        FirebaseFirestore.instance.collection('modules').doc(args.id);
     return Scaffold(
       appBar: AppBar(
         title: Text(args.title),
@@ -31,7 +30,11 @@ class FundamentalsScreen extends StatelessWidget {
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('lessons')
-              .where('module', isEqualTo: moduleReference)
+              .where('module',
+                  isEqualTo: FirebaseFirestore.instance
+                      .collection('modules')
+                      .doc(args.id))
+              .orderBy('order')
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
@@ -40,59 +43,29 @@ class FundamentalsScreen extends StatelessWidget {
               );
             }
             final List<DocumentSnapshot> docs = snapshot.data!.docs;
+            var prevLessonCompleted = true;
             return ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: docs.length,
               itemBuilder: (context, index) {
                 final DocumentSnapshot doc = docs[index];
-                return InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, "/topic-details",
-                          arguments: ScreenArguments(
-                              id: doc.id,
-                              title: doc['name'],
-                              description: doc['description'],
-                              parentId: args.id));
-                    },
-                    child: Card(
-                      elevation: 4,
-                      margin: const EdgeInsets.only(bottom: 16),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            Image.network(
-                              doc['coverImage'],
-                              width: 90,
-                              height: 90,
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    doc['name'],
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    doc['description'],
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ));
+                var userReference = FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(FirebaseAuth.instance.currentUser?.uid ?? 'null');
+                var isCompleted = false;
+                for (var i = 0; i < doc['completedBy'].length; i++) {
+                  if (doc['completedBy'][i] == userReference) {
+                    isCompleted = true;
+                  }
+                }
+
+                if (prevLessonCompleted == false && isCompleted == false) {
+                  prevLessonCompleted = isCompleted;
+                  return _buildLessonCard(context, doc, isCompleted, true);
+                } else {
+                  prevLessonCompleted = isCompleted;
+                  return _buildLessonCard(context, doc, isCompleted, false);
+                }
               },
             );
           }),
@@ -166,6 +139,98 @@ class FundamentalsScreen extends StatelessWidget {
           ),
         ));
     */
+  }
+
+  Widget _buildLessonCard(
+      BuildContext context, doc, bool isCompleted, bool isBlocked) {
+    return InkWell(
+        onTap: () {
+          isBlocked
+              ? Scaffold.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Completa las lecciones anteriores'),
+                    backgroundColor: Colors.red,
+                  ),
+                )
+              : Navigator.pushNamed(context, "/topic-details",
+                  arguments: ScreenArguments(
+                      id: doc.id,
+                      title: doc['name'],
+                      description: doc['description'],
+                      parentId: ''));
+        },
+        child: Card(
+          elevation: 4,
+          margin: const EdgeInsets.only(bottom: 16),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Image.network(
+                  doc['coverImage'],
+                  width: 90,
+                  height: 90,
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        doc['name'],
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        doc['description'],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Text(
+                            "Nivel " + doc['order'].toString() + " - ",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          isBlocked
+                              ? const Text(
+                                  "Bloqueado",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                  ),
+                                )
+                              : isCompleted
+                                  ? const Text(
+                                      "Completado",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.green,
+                                      ),
+                                    )
+                                  : const Text(
+                                      "Por completar",
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.orange),
+                                    ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 }
 

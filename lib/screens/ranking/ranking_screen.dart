@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RankingScreen extends StatelessWidget {
@@ -5,8 +7,9 @@ class RankingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const url =
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80";
+    User? user = FirebaseAuth.instance.currentUser;
+    var url = user != null ? user.photoURL : '';
+    url = (url! + "?s=200");
     // ignore: unused_local_variable
     final List<Medal> medals = [
       const Medal(
@@ -34,6 +37,7 @@ class RankingScreen extends StatelessWidget {
           title: "ALGORÍTMOS",
           coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535490.png"),
     ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Ranking"),
@@ -48,7 +52,29 @@ class RankingScreen extends StatelessWidget {
         ),
         elevation: 0,
       ),
-      body: Column(
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .orderBy('points', descending: true)
+              .snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            final List<DocumentSnapshot> docs = snapshot.data!.docs;
+            return ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: docs.length,
+              itemBuilder: (context, index) {
+                final DocumentSnapshot doc = docs[index];
+                return _buildUserCard(context, doc, index);
+              },
+            );
+          }),
+
+      /*Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Card(
@@ -56,7 +82,7 @@ class RankingScreen extends StatelessWidget {
               child: Row(
                 children: [
                   SizedBox(
-                    height: 200,
+                    width: 130,
                     child: Image.network(
                       url,
                       fit: BoxFit.cover,
@@ -65,19 +91,39 @@ class RankingScreen extends StatelessWidget {
                   const SizedBox(
                     width: 15,
                   ),
-                  Column(
-                    children: const [
-                      Text("PUESTO #1 (Tú)",
-                          style: TextStyle(
-                              fontSize: 21, fontWeight: FontWeight.bold)),
-                      Text("Jhon Demo (@jhon_demo)",
-                          style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w500)),
-                      Text("599 puntos",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w400)),
-                    ],
-                  )
+                  FutureBuilder(
+                      future: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .get(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+                              snapshot) {
+                        if (!snapshot.hasData) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        final Map<String, dynamic>? data =
+                            snapshot.data?.data();
+                        if (data == null) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return Column(
+                          children: [
+                            Text(data['fullName'],
+                                style: const TextStyle(
+                                    fontSize: 17, fontWeight: FontWeight.w500)),
+                            Text(data['points'].toString() + " puntos",
+                                style: const TextStyle(
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.red)),
+                          ],
+                        );
+                      }),
                 ],
               )),
           const SizedBox(
@@ -102,6 +148,45 @@ class RankingScreen extends StatelessWidget {
                 height: 10,
                 color: Colors.grey,
               )),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+        ],
+      )*/
+    );
+  }
+
+  Widget _buildUserCard(BuildContext context, doc, index) {
+    return Card(
+      elevation: 5,
+      child: Row(
+        children: [
+          SizedBox(
+            width: 100,
+            child: Image.network(
+              doc['photoUrl'] + "?s=200",
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(
+            width: 15,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("PUESTO #" + (index + 1).toString(),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w700)),
+              Text(doc['fullName'],
+                  style: const TextStyle(
+                      fontSize: 17, fontWeight: FontWeight.w400)),
+              Text(doc['points'].toString() + " puntos",
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.red)),
             ],
           ),
         ],

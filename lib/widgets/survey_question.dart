@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 class SurveyQuestion extends StatefulWidget {
   final String validOption;
   final List<dynamic> options;
+  final Function callback;
   const SurveyQuestion(
-      {Key? key, required this.validOption, required this.options})
+      {Key? key,
+      required this.validOption,
+      required this.options,
+      required this.callback})
       : super(key: key);
 
   @override
@@ -22,16 +26,6 @@ class _SurveyQuestionState extends State<SurveyQuestion> {
         _buildOptions(),
         _buildSubmitButton(),
       ],
-    );
-  }
-
-  Widget _buildAnswerTitle() {
-    return const Text(
-      '¿Qué es lo que más te gusta de la comunidad?',
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-      ),
     );
   }
 
@@ -54,25 +48,28 @@ class _SurveyQuestionState extends State<SurveyQuestion> {
   }
 
   Widget _buildSubmitButton() {
-    return TextButton(
-      child: const Text('Enviar'),
-      onPressed: () {
-        if (val == widget.validOption) {
-          Scaffold.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('¡Correcto! Muy bien'),
-              backgroundColor: Colors.green,
-            ),
-          );
-        } else {
-          Scaffold.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Incorrecto'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      },
+    return Center(
+      child: TextButton(
+        child: const Text('ENVIAR'),
+        onPressed: () {
+          if (val == widget.validOption) {
+            Scaffold.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('¡Correcto! Muy bien'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            widget.callback();
+          } else {
+            Scaffold.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Incorrecto'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }

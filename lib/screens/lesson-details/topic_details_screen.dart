@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tdpapp/models/screen_arguments.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -9,14 +10,6 @@ class TopicDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
-    var lessonReference =
-        FirebaseFirestore.instance.collection('lessons').doc(args.id);
-    var surveyReference = FirebaseFirestore.instance
-        .collection('surveys')
-        .where('lesson', isEqualTo: lessonReference);
-    var surveyId = surveyReference.get().then((snapshot) {
-      return snapshot.docs[0].id.toString();
-    });
 
     return Scaffold(
       appBar: AppBar(
@@ -55,30 +48,51 @@ class TopicDetailsScreen extends StatelessWidget {
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                FutureBuilder<String>(
-                  future: surveyId,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData &&
-                        snapshot.connectionState == ConnectionState.done) {
-                      // ignore: avoid_print
-                      print(snapshot.data!);
+                FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection('lessons')
+                        .doc(args.id)
+                        .get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+                            snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      final Map<String, dynamic>? data = snapshot.data?.data();
+                      if (data == null) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      var userReference = FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(
+                              FirebaseAuth.instance.currentUser?.uid ?? 'null');
+                      for (var i = 0; i < data['completedBy'].length; i++) {
+                        if (data['completedBy'][i] == userReference) {
+                          return const Text(
+                            '¡En hora buena! Ya has completado esta lección',
+                            style: TextStyle(color: Colors.white),
+                          );
+                        }
+                      }
                       return IconButton(
                         icon: const Icon(Icons.description),
                         color: Colors.white,
                         onPressed: () {
-                          Navigator.pushNamed(context, '/surveys',
+                          Navigator.pushNamed(context, '/lesson-quiz',
                               arguments: ScreenArguments(
-                                id: snapshot.data!,
-                                title: '',
+                                id: args.id,
+                                title: args.title + ' - Quiz',
                                 description: '',
                                 parentId: '',
                               ));
                         },
                       );
-                    }
-                    return const CircularProgressIndicator();
-                  },
-                ),
+                    }),
               ]),
         ),
       ),
