@@ -8,6 +8,7 @@ class EditAccountScreen extends StatelessWidget {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _displayNameController = TextEditingController();
+  final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -24,47 +25,7 @@ class EditAccountScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Editar cuenta'),
           centerTitle: true,
-          backgroundColor: Colors.blue,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.save),
-              onPressed: () {
-                if (_formKey.currentState != null &&
-                    _formKey.currentState!.validate()) {
-                  context
-                      .read<AuthService>()
-                      .updateAccount(
-                        displayName: _displayNameController.text,
-                        email: _emailController.text,
-                      )
-                      .then(
-                          (value) => ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text(
-                                      value!,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16.0,
-                                      ),
-                                    ),
-                                    backgroundColor: Colors.grey),
-                              ));
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text(
-                          'Por favor ingresa todos los datos',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        backgroundColor: Colors.grey),
-                  );
-                }
-              },
-            ),
-          ],
+          backgroundColor: Colors.pink,
           elevation: 0,
         ),
         body: SingleChildScrollView(
@@ -74,9 +35,6 @@ class EditAccountScreen extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(children: [
-                    const SizedBox(
-                      height: 30,
-                    ),
                     CircleAvatar(
                       radius: 60,
                       backgroundImage: NetworkImage(url),
@@ -118,6 +76,57 @@ class EditAccountScreen extends StatelessWidget {
                     const SizedBox(
                       height: 15,
                     ),
+                    TextButton(
+                      onPressed: () {
+                        if (_formKey.currentState != null &&
+                            _formKey.currentState!.validate()) {
+                          context
+                              .read<AuthService>()
+                              .updateAccount(
+                                displayName: _displayNameController.text,
+                                email: _emailController.text,
+                              )
+                              .then((value) =>
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                          value!,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                        backgroundColor: Colors.grey),
+                                  ));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                  'Por favor ingresa todos los datos',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                backgroundColor: Colors.grey),
+                          );
+                        }
+                      },
+                      style: TextButton.styleFrom(backgroundColor: Colors.pink),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.save,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            'ACTUALIZAR DATOS',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
                     const Divider(
                       color: Colors.black,
                     ),
@@ -125,7 +134,7 @@ class EditAccountScreen extends StatelessWidget {
                       height: 15,
                     ),
                     TextFormField(
-                      controller: _passwordController,
+                      controller: _oldPasswordController,
                       obscureText: true,
                       decoration: const InputDecoration(
                         labelText: 'Contraseña Actual',
@@ -145,6 +154,57 @@ class EditAccountScreen extends StatelessWidget {
                     ),
                     const SizedBox(
                       height: 30,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        if (_formKey.currentState != null &&
+                            _formKey.currentState!.validate()) {
+                          context
+                              .read<AuthService>()
+                              .changePassword(
+                                  oldPassword: _oldPasswordController.text,
+                                  newPassword: _passwordController.text,
+                                  email: email)
+                              .then((value) =>
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                          value!,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                        backgroundColor: Colors.grey),
+                                  ));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                  'Por favor ingresa todos los datos',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                backgroundColor: Colors.grey),
+                          );
+                        }
+                      },
+                      style: TextButton.styleFrom(backgroundColor: Colors.pink),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.key,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            'ACTUALIZAR CONTRASEÑA',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                   ])),
             ),

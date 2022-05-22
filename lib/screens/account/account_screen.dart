@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tdpapp/services/auth_service.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -11,32 +14,6 @@ class AccountScreen extends StatelessWidget {
     var displayName = user != null ? user.displayName : '';
     var url = user != null ? user.photoURL : '';
     url = (url! + "?s=200");
-    final List<Medal> medals = [
-      const Medal(
-          title: "FUNDAMENTOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535488.png"),
-      const Medal(
-          title: "ALGORÍTMOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535490.png"),
-      const Medal(
-          title: "FUNDAMENTOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535488.png"),
-      const Medal(
-          title: "ALGORÍTMOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535490.png"),
-      const Medal(
-          title: "FUNDAMENTOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535488.png"),
-      const Medal(
-          title: "ALGORÍTMOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535490.png"),
-      const Medal(
-          title: "FUNDAMENTOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535488.png"),
-      const Medal(
-          title: "ALGORÍTMOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535490.png"),
-    ];
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black54),
@@ -102,6 +79,58 @@ class AccountScreen extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
+            FutureBuilder(
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    var p = snapshot.data! as DocumentSnapshot;
+                    var idList = [];
+                    for (var medal in p['medals']) {
+                      idList.add(medal.id);
+                    }
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return FutureBuilder(
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                                if (snapshot.hasData) {
+                                  var m = snapshot.data! as DocumentSnapshot;
+                                  return ListTile(
+                                    leading: Image.network(
+                                      m['image'],
+                                      width: 60,
+                                      height: 60,
+                                    ),
+                                    title: Text(m['name']),
+                                    subtitle: Text(p['medals'][index].id),
+                                  );
+                                }
+                                return Container();
+                              },
+                              future: FirebaseFirestore.instance
+                                  .collection('medals')
+                                  .doc(idList[index])
+                                  .get());
+                        },
+                        itemCount: idList.length);
+                  }
+                  return Container();
+                },
+                future: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .get()),
+            /*
             GridView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
@@ -143,16 +172,10 @@ class AccountScreen extends StatelessWidget {
                 );
               },
             )
+            */
           ],
         ),
       ),
     );
   }
-}
-
-class Medal {
-  const Medal({required this.coverImg, required this.title});
-
-  final String coverImg;
-  final String title;
 }

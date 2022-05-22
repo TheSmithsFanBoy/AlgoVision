@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class SurveyQuestion extends StatefulWidget {
   final String validOption;
   final List<dynamic> options;
-  final Function callback;
+  final Function? callback;
   const SurveyQuestion(
       {Key? key,
       required this.validOption,
       required this.options,
-      required this.callback})
+      this.callback})
       : super(key: key);
 
   @override
@@ -34,6 +34,7 @@ class _SurveyQuestionState extends State<SurveyQuestion> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: widget.options.map((option) {
         return RadioListTile(
+          activeColor: Colors.yellow.shade600,
           title: Text(option.toString()),
           value: option.toString(),
           groupValue: val,
@@ -50,22 +51,78 @@ class _SurveyQuestionState extends State<SurveyQuestion> {
   Widget _buildSubmitButton() {
     return Center(
       child: TextButton(
-        child: const Text('ENVIAR'),
+        child: const Text('VALIDAR RESPUESTA',
+            style: TextStyle(color: Colors.indigo)),
         onPressed: () {
           if (val == widget.validOption) {
-            Scaffold.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('¡Correcto! Muy bien'),
-                backgroundColor: Colors.green,
-              ),
+            // Correct Answer
+            Widget okButton = TextButton(
+              style: TextButton.styleFrom(
+                  primary: Colors.blueGrey,
+                  backgroundColor: Colors.yellow,
+                  padding: const EdgeInsets.only(left: 30, right: 30),
+                  textStyle: const TextStyle(fontWeight: FontWeight.bold)),
+              child: const Text("CONTINUAR"),
+              onPressed: () {
+                if (widget.callback != null) {
+                  widget.callback!();
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
             );
-            widget.callback();
-          } else {
-            Scaffold.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Incorrecto'),
-                backgroundColor: Colors.red,
+            // Create AlertDialog
+            AlertDialog alert = AlertDialog(
+              title: const Text('Respuesta correcta'),
+              elevation: 10.0,
+              actionsAlignment: MainAxisAlignment.center,
+              alignment: Alignment.center,
+              content: Image.asset(
+                'assets/icons/good.png',
+                height: 95,
+                width: 95,
               ),
+              actions: [okButton],
+            );
+            // show the dialog
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return alert;
+              },
+            );
+          } else {
+            // Wrong Answer
+            Widget okButton = TextButton(
+              style: TextButton.styleFrom(
+                  primary: Colors.blueGrey,
+                  backgroundColor: Colors.yellow,
+                  padding: const EdgeInsets.only(left: 30, right: 30),
+                  textStyle: const TextStyle(fontWeight: FontWeight.bold)),
+              child: const Text("PROSEGUIR"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            );
+            // Create AlertDialog
+            AlertDialog alert = AlertDialog(
+              title: const Text('Respuesta incorrecta'),
+              elevation: 10.0,
+              actionsAlignment: MainAxisAlignment.center,
+              alignment: Alignment.center,
+              content: Image.asset(
+                'assets/icons/bad.png',
+                height: 95,
+                width: 95,
+              ),
+              actions: [okButton],
+            );
+            // show the dialog
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return alert;
+              },
             );
           }
         },

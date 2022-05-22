@@ -28,10 +28,27 @@ class AuthService {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+      // This is the same as await _firebaseAuth.currentUser();
       return "¡Bienvenido de vuelta!";
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
+  }
+
+  Future<Stream> getMedals() {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .get()
+        .then((value) {
+      var medals = value.data()!['medals'].id;
+      Stream<dynamic>? stream = FirebaseFirestore.instance
+          .collection('medals')
+          .where('id', whereIn: medals)
+          .snapshots()
+          .map((value) => value.docs.map((doc) => doc.data()));
+      return stream;
+    });
   }
 
   /// There are a lot of different ways on how you can do exception handling.
@@ -58,6 +75,9 @@ class AuthService {
         'photoUrl': "https://www.gravatar.com/avatar/" + emailHash,
         'uid': userCredential.user!.uid,
         'points': 0,
+        'challenges': [],
+        'topics': [],
+        'medals': [],
       });
       return "¡Bienvenido a TDAPP!";
     } on FirebaseAuthException catch (e) {
@@ -79,8 +99,12 @@ class AuthService {
   }
 
   Future<String?> changePassword(
-      {required String oldPassword, required String newPassword}) async {
+      {required String oldPassword,
+      required String newPassword,
+      required String email}) async {
     try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: oldPassword);
       await _firebaseAuth.currentUser!.updatePassword(newPassword);
       return "Password changed";
     } on FirebaseAuthException catch (e) {

@@ -20,7 +20,9 @@ import 'package:tdpapp/screens/ranking/ranking_screen.dart';
 import 'package:tdpapp/screens/register/register_screen.dart';
 import 'package:tdpapp/screens/sign-in/sign_in_screen.dart';
 import 'package:tdpapp/screens/surveys/surveys_screen.dart';
-import 'package:tdpapp/screens/lesson-details/topic_details_screen.dart';
+import 'package:tdpapp/screens/topic-content/topic_content_screen.dart';
+import 'package:tdpapp/screens/topic-quiz/topiz_quiz_screen.dart';
+import 'package:tdpapp/screens/topics/topics_screen.dart';
 import 'package:tdpapp/screens/welcome/welcome_screen.dart';
 import 'package:tdpapp/services/auth_service.dart';
 
@@ -96,7 +98,9 @@ class _MyAppState extends State<MyApp> {
             '/account': (context) => const AccountScreen(),
             '/edit-account': (context) => EditAccountScreen(),
             '/lesson-quiz': (context) => const LessonQuizScreen(),
-            '/topic-details': (context) => const TopicDetailsScreen(),
+            '/topic-details': (context) => const TopicsScreen(),
+            '/topic-quiz': (context) => const TopicQuizScreen(),
+            '/topic-content': (context) => const TopicContentScreen(),
             '/algorithm-details': (context) => const AlgorithmDetailsScreen(),
             '/ranking': (context) => const RankingScreen(),
             '/surveys': (context) => const SurveysScreen(),

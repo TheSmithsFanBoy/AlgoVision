@@ -12,15 +12,8 @@ class HomeScreen extends StatelessWidget {
       drawer: const NavigationDrawer(),
       appBar: AppBar(
         title: const Text("Inicio"),
+        backgroundColor: Colors.indigo,
         centerTitle: true,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: <Color>[Colors.purple, Colors.blue]),
-          ),
-        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle_rounded),
