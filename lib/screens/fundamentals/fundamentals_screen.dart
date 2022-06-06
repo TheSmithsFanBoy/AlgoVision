@@ -5,9 +5,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tdpapp/models/screen_arguments.dart';
 
-class FundamentalsScreen extends StatelessWidget {
+class FundamentalsScreen extends StatefulWidget {
   const FundamentalsScreen({Key? key}) : super(key: key);
 
+  @override
+  State<FundamentalsScreen> createState() => _FundamentalsScreenState();
+}
+
+class _FundamentalsScreenState extends State<FundamentalsScreen> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;

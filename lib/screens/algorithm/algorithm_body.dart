@@ -1,15 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/screen_arguments.dart';
 
-class AlgorithmBody extends StatelessWidget {
+class AlgorithmBody extends StatefulWidget {
   const AlgorithmBody({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<AlgorithmBody> createState() => _AlgorithmBodyState();
+}
 
+class _AlgorithmBodyState extends State<AlgorithmBody> {
+  @override
+  Widget build(BuildContext context) {
+    var streamModules = Provider.of(context);
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     // ignore: unused_local_variable
     final List<MenuData> menu = [

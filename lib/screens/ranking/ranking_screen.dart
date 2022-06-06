@@ -1,10 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tdpapp/provider/rankingProvider.dart';
 
-class RankingScreen extends StatelessWidget {
+class RankingScreen extends StatefulWidget {
   const RankingScreen({Key? key}) : super(key: key);
 
+  @override
+  State<RankingScreen> createState() => _RankingScreenState();
+}
+
+class _RankingScreenState extends State<RankingScreen> {
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
@@ -52,27 +59,30 @@ class RankingScreen extends StatelessWidget {
         ),
         elevation: 0,
       ),
-      body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('users')
-              .orderBy('points', descending: true)
-              .snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
+      body: ChangeNotifierProvider(
+        create: (_) => RankingProvider(),
+        child: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .orderBy('points', descending: true)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              final List<DocumentSnapshot> docs = snapshot.data!.docs;
+              return ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: docs.length,
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot doc = docs[index];
+                  return _buildUserCard(context, doc, index);
+                },
               );
-            }
-            final List<DocumentSnapshot> docs = snapshot.data!.docs;
-            return ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: docs.length,
-              itemBuilder: (context, index) {
-                final DocumentSnapshot doc = docs[index];
-                return _buildUserCard(context, doc, index);
-              },
-            );
-          }),
+            }),
+      ),
 
       /*Column(
         mainAxisAlignment: MainAxisAlignment.center,

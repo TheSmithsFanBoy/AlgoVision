@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:tdpapp/screens/home/home_body.dart';
 import 'package:tdpapp/widgets/navigation_drawer.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // get current user
