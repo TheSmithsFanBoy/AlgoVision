@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tdpapp/services/auth_service.dart';
@@ -12,8 +13,15 @@ class AccountScreen extends StatelessWidget {
     User? user = FirebaseAuth.instance.currentUser;
     var email = user != null ? user.email : '';
     var displayName = user != null ? user.displayName : '';
+    //var url;
+    var userReference = FirebaseFirestore.instance
+        .collection('users')
+        .doc(
+        FirebaseAuth.instance.currentUser?.uid ?? 'null').get();
+    //userReference.then((value) => value.data()?['photoUrl'] == url);
     var url = user != null ? user.photoURL : '';
-    url = (url! + "?s=200");
+    url=(url! + " ");
+    //url =(url! + "?s=200") ;
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black54),
@@ -38,7 +46,10 @@ class AccountScreen extends StatelessWidget {
             ),
             CircleAvatar(
               radius: 60,
-              backgroundImage: NetworkImage(url),
+              child: ClipOval(
+                child: Image.network(url,
+                  ),
+              ),
             ),
             const SizedBox(
               height: 10,

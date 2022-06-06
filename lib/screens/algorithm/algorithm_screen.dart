@@ -6,24 +6,8 @@ class AlgorithmScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Algoritmos'),
-        centerTitle: true,
-        backgroundColor: Colors.blueGrey,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: <Color>[
-                  Color.fromARGB(255, 218, 78, 162),
-                  Colors.blue,
-                ]),
-          ),
-        ),
-      ),
-      body: const AlgorithmBody(),
+    return const Scaffold(
+      body: AlgorithmBody(),
     );
   }
 }

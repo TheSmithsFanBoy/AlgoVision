@@ -249,8 +249,8 @@ class FundamentalsScreen extends StatelessWidget {
             color: Colors.grey.shade300,
             borderRadius: BorderRadius.circular(17),
           ),
-          child: Icon(Icons.bookmarks_rounded,
-              color: Colors.grey.shade600, size: 15),
+          child: Image.network(data['image'],
+              color: Colors.grey.shade600, width: 15, height: 15,),
         ),
         const SizedBox(width: 10),
         FutureBuilder(

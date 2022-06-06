@@ -342,8 +342,8 @@ class AlgorithmBody extends StatelessWidget {
             color: Colors.grey.shade300,
             borderRadius: BorderRadius.circular(17),
           ),
-          child: Icon(Icons.bookmarks_rounded,
-              color: Colors.grey.shade600, size: 15),
+          child: Image.network(data['image'],
+            color: Colors.grey.shade600, width: 15, height: 15,),
         ),
         const SizedBox(width: 10),
         FutureBuilder(
@@ -357,13 +357,32 @@ class AlgorithmBody extends StatelessWidget {
                   if (topic == topicRef) {
                     return TextButton(
                         onPressed: () {
+                          if(data['type'] == 'video'){
+                            Navigator.of(context).pushNamed('/lesson-video',
+                                arguments: ScreenArguments(
+                                  id: data.id,
+                                  title: data['title'],
+                                  parentId: data['order'].toString(),
+                                  description: data['lesson'].id,
+                                ));
+                          }
+                          /*else (data['type'] == 'practice'){
+                            Navigator.pushNamed(context, '/lesson-practice',
+                                arguments: ScreenArguments(
+                                  id: data.id,
+                                  title: data['title'],
+                                  parentId: data['order'].toString(),
+                                  description: data['lesson'].id,
+                                ));
+                          }*/
+                          else{
                           Navigator.pushNamed(context, '/topic-content',
                               arguments: ScreenArguments(
                                 id: data.id,
                                 title: data['title'],
                                 parentId: data['order'].toString(),
                                 description: data['lesson'].id,
-                              ));
+                              ));}
                         },
                         child: Row(children: [
                           Text(data['order'].toString() +
@@ -380,13 +399,32 @@ class AlgorithmBody extends StatelessWidget {
                 }
                 return TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/topic-content',
-                          arguments: ScreenArguments(
-                            id: data.id,
-                            title: data['title'],
-                            description: data['lesson'].id,
-                            parentId: data['order'].toString(),
-                          ));
+                      if(data['type'] == 'video'){
+                        Navigator.of(context).pushNamed('/lesson-video',
+                            arguments: ScreenArguments(
+                              id: data.id,
+                              title: data['title'],
+                              parentId: data['order'].toString(),
+                              description: data['lesson'].id,
+                            ));
+                      }
+                      /*else (data['type'] == 'practice'){
+                            Navigator.pushNamed(context, '/lesson-practice',
+                                arguments: ScreenArguments(
+                                  id: data.id,
+                                  title: data['title'],
+                                  parentId: data['order'].toString(),
+                                  description: data['lesson'].id,
+                                ));
+                          }*/
+                      else{
+                        Navigator.pushNamed(context, '/topic-content',
+                            arguments: ScreenArguments(
+                              id: data.id,
+                              title: data['title'],
+                              parentId: data['order'].toString(),
+                              description: data['lesson'].id,
+                            ));}
                     },
                     child: Row(children: [
                       Text(data['order'].toString() +

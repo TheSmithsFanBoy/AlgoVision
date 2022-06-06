@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:tdpapp/services/auth_service.dart';
 
@@ -17,7 +22,7 @@ class EditAccountScreen extends StatelessWidget {
     User? user = FirebaseAuth.instance.currentUser;
     var email = user != null ? user.email : '';
     var url = user != null ? user.photoURL : '';
-    url = (url! + "?s=200");
+    url = (url! + " ");
     var displayName = user != null ? user.displayName : '';
     _emailController.text = email!;
     _displayNameController.text = displayName!;
@@ -38,6 +43,13 @@ class EditAccountScreen extends StatelessWidget {
                     CircleAvatar(
                       radius: 60,
                       backgroundImage: NetworkImage(url),
+                      child: IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {
+                          uploadImage();
+                          print('Se selecciona el ícono');
+                        },
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -211,4 +223,41 @@ class EditAccountScreen extends StatelessWidget {
           ),
         ));
   }
+
+  Future<void> uploadImage() async {
+    File image;
+    var imageCapture;
+    final imagePicker = ImagePicker();
+
+    imageCapture = await imagePicker.pickImage(source: ImageSource.gallery);
+
+    //setState(() async {
+      if(imageCapture != null){
+        image = File(imageCapture.path);
+        print("Se ha seleccionado ninguna imagen");
+        var temp = FirebaseAuth.instance.currentUser?.displayName;
+        print(temp);
+        var firebaseStorageRef =   FirebaseStorage.instance.ref().child("Perfil/${FirebaseAuth.instance.currentUser?.displayName}");
+        var uploadTask = firebaseStorageRef.putFile(image);
+        var taskSnapshot = uploadTask.snapshot;
+
+        String storagePath = await taskSnapshot.ref.getDownloadURL();
+
+        print(storagePath);
+
+        var usuario = FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser?.uid);
+          
+        usuario.update({'photoUrl':storagePath});
+
+        FirebaseAuth.instance.currentUser?.updatePhotoURL(storagePath);
+      }
+      else{
+        print("No se ha seleccionado ninguna imagen");
+        const SnackBar(content: Text('No se ha seleccionado nada'),backgroundColor: Colors.red,);
+      }
+      }
+    //);
+
 }

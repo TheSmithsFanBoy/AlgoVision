@@ -80,7 +80,8 @@ class TopicDetailsScreen extends StatelessWidget {
                         }
                       }
                       return IconButton(
-                        icon: const Icon(Icons.description),
+                        icon: Image.network(data['image'],
+                          color: Colors.grey.shade600, width: 15, height: 15,),
                         color: Colors.white,
                         onPressed: () {
                           Navigator.pushNamed(context, '/lesson-quiz',

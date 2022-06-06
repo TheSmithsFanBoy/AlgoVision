@@ -37,8 +37,10 @@ dependencies:
   crypto: ^3.0.2
   cloud_firestore: ^3.1.13
   flutter_html: ^2.2.1
-  flutter_unity_widget: ^2022.1.0+6
+  #flutter_unity_widget: ^2022.1.0+6
   firebase_storage: ^10.2.17
+  video_player: ^2.4.2
+  image_picker: ^0.8.5+3
 
 
 dev_dependencies:
