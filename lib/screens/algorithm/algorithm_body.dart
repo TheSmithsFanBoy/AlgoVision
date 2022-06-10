@@ -15,7 +15,7 @@ class AlgorithmBody extends StatefulWidget {
 class _AlgorithmBodyState extends State<AlgorithmBody> {
   @override
   Widget build(BuildContext context) {
-    var streamModules = Provider.of(context);
+    //var streamModules = Provider.of(context);
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     // ignore: unused_local_variable
     final List<MenuData> menu = [

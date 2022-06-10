@@ -14,7 +14,9 @@ import 'package:tdpapp/screens/edit-account/edit_account_screen.dart';
 import 'package:tdpapp/screens/forgot-password/forgot_password_screen.dart';
 import 'package:tdpapp/screens/fundamentals/fundamentals_screen.dart';
 import 'package:tdpapp/screens/home/home_screen.dart';
+import 'package:tdpapp/screens/lesson-practice/lesson_practice_screen.dart';
 import 'package:tdpapp/screens/lesson-quiz/lesson_quiz_screen.dart';
+import 'package:tdpapp/screens/lesson-video/lesson_video_screen.dart';
 import 'package:tdpapp/screens/login/login_screen.dart';
 import 'package:tdpapp/screens/ranking/ranking_screen.dart';
 import 'package:tdpapp/screens/register/register_screen.dart';
@@ -98,6 +100,8 @@ class _MyAppState extends State<MyApp> {
             '/account': (context) => const AccountScreen(),
             '/edit-account': (context) => EditAccountScreen(),
             '/lesson-quiz': (context) => const LessonQuizScreen(),
+            '/lesson-video': (context) => const LessonVideoScreen(),
+            '/lesson-practice': (context) => const LessonPracticeScreen(),
             '/topic-details': (context) => const TopicsScreen(),
             '/topic-quiz': (context) => const TopicQuizScreen(),
             '/topic-content': (context) => const TopicContentScreen(),
