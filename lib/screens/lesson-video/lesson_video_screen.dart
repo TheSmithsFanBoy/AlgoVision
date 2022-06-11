@@ -40,6 +40,7 @@ class _LessonVideoScreenState extends State<LessonVideoScreen> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+
     String videoLesson = '';
     var topicRef =FirebaseFirestore.instance.collection('topics').doc(args.id).get();
     topicRef.then((value) => value.data()?['video'] = videoLesson);
