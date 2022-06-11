@@ -8,7 +8,7 @@ import '../../models/screen_arguments.dart';
 
 class LessonVideoScreen extends StatefulWidget{
   const LessonVideoScreen({Key? key}) : super(key: key);
-
+ 
   @override
   State<LessonVideoScreen> createState() => _LessonVideoScreenState();
 }
