@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:tdpapp/provider/authProvider.dart';
 import 'package:tdpapp/services/auth_service.dart';
 
 class EditAccountScreen extends StatelessWidget {
@@ -24,6 +25,16 @@ class EditAccountScreen extends StatelessWidget {
     var url = user != null ? user.photoURL : '';
     url = (url! + " ");
     var displayName = user != null ? user.displayName : '';
+    var baseDatosUser = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user?.uid).get();
+
+    baseDatosUser.then((value){
+      email = value.data()!.isNotEmpty ? value.data()!['email'] : user?.email;
+      displayName = value.data()!.isNotEmpty ? value.data()!['fullName'] : '';
+      url = value.data()!.isNotEmpty ? value.data()!['photoUrl'] : user?.photoURL;
+    });
+
     _emailController.text = email!;
     _displayNameController.text = displayName!;
     return Scaffold(
@@ -42,7 +53,7 @@ class EditAccountScreen extends StatelessWidget {
                   child: Column(children: [
                     CircleAvatar(
                       radius: 60,
-                      backgroundImage: NetworkImage(url),
+                      backgroundImage: NetworkImage(url!),
                       child: IconButton(
                         icon: const Icon(Icons.edit),
                         onPressed: () {
@@ -54,7 +65,7 @@ class EditAccountScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    Text(displayName,
+                    Text(displayName!,
                         style: const TextStyle(
                             fontSize: 18,
                             color: Colors.black87,
@@ -62,7 +73,7 @@ class EditAccountScreen extends StatelessWidget {
                     const SizedBox(
                       height: 4,
                     ),
-                    Text(email,
+                    Text(email!,
                         style: const TextStyle(
                             fontSize: 14, color: Colors.black45)),
                     const SizedBox(
@@ -98,18 +109,25 @@ class EditAccountScreen extends StatelessWidget {
                                 displayName: _displayNameController.text,
                                 email: _emailController.text,
                               )
-                              .then((value) =>
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                          value!,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16.0,
-                                          ),
-                                        ),
-                                        backgroundColor: Colors.grey),
-                                  ));
+                              .then((value) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                    value!,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                  backgroundColor: Colors.grey),
+                            );
+                              _displayNameController.clear();
+                              _emailController.clear();
+                              //user = context.read<AuthService>().user;
+                              context.read<AuthService>().renewUser(user);
+                          }
+
+                          );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -176,7 +194,7 @@ class EditAccountScreen extends StatelessWidget {
                               .changePassword(
                                   oldPassword: _oldPasswordController.text,
                                   newPassword: _passwordController.text,
-                                  email: email)
+                                  email: email!)
                               .then((value) =>
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

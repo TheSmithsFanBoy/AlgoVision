@@ -46,10 +46,7 @@ class AccountScreen extends StatelessWidget {
             ),
             CircleAvatar(
               radius: 60,
-              child: ClipOval(
-                child: Image.network(url,
-                  ),
-              ),
+              backgroundImage: NetworkImage(url),
             ),
             const SizedBox(
               height: 10,

@@ -55,17 +55,23 @@ class TopicQuizScreen extends StatelessWidget {
           elevation: 0,
           child: Padding(
             padding: const EdgeInsets.all(13.0),
-            child: TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.yellow.shade600,
-                  fixedSize: const Size(30, 30),
-                ),
-                child: const Text('VALIDAR RESPUESTA',
-                    style: TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.indigo)),
-                onPressed: () {}),
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.yellow.shade600,
+                      fixedSize: const Size(30, 30),
+                    ),
+                    child: const Text('VALIDAR RESPUESTA',
+                        style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.indigo)),
+                    onPressed: () {}),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ));
   }

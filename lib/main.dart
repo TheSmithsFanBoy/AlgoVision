@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +22,16 @@ import 'package:tdpapp/screens/login/login_screen.dart';
 import 'package:tdpapp/screens/ranking/ranking_screen.dart';
 import 'package:tdpapp/screens/register/register_screen.dart';
 import 'package:tdpapp/screens/sign-in/sign_in_screen.dart';
+import 'package:tdpapp/screens/splash-home/splash_home_screen.dart';
+import 'package:tdpapp/screens/splash-login/splash_login_screen.dart';
 import 'package:tdpapp/screens/surveys/surveys_screen.dart';
 import 'package:tdpapp/screens/topic-content/topic_content_screen.dart';
 import 'package:tdpapp/screens/topic-quiz/topiz_quiz_screen.dart';
 import 'package:tdpapp/screens/topics/topics_screen.dart';
+import 'package:tdpapp/screens/unity-game/unity_game_screen.dart';
 import 'package:tdpapp/screens/welcome/welcome_screen.dart';
 import 'package:tdpapp/services/auth_service.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,7 +57,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _sub = FirebaseAuth.instance.authStateChanges().listen((event) {
       _navigatorKey.currentState?.pushNamedAndRemoveUntil(
-          event != null ? '/home' : '/login', (route) => false);
+          event != null ? '/home' : '/splash-login', (route) => false);
     });
   }
 
@@ -83,8 +88,16 @@ class _MyAppState extends State<MyApp> {
                 ),
             primarySwatch: Colors.blue,
           ),
+          /*home: AnimatedSplashScreen(
+            duration: 2500,
+            backgroundColor: Colors.indigo,
+            splashTransition: SplashTransition.fadeTransition,
+            splash: const AssetImage(
+                 "assets/images/algoritmos.png",),
+            nextScreen: LoginScreen(),
+          ),*/
           initialRoute:
-              FirebaseAuth.instance.currentUser == null ? '/login' : '/home',
+              FirebaseAuth.instance.currentUser == null ? '/splash-login' : '/home',
           navigatorKey: _navigatorKey,
           routes: {
             '/': (context) => const WelcomeScreen(),
@@ -108,6 +121,9 @@ class _MyAppState extends State<MyApp> {
             '/algorithm-details': (context) => const AlgorithmDetailsScreen(),
             '/ranking': (context) => const RankingScreen(),
             '/surveys': (context) => const SurveysScreen(),
+            '/unity-game': (context) => const UnityGameScreen(),
+            '/splash-login': (context) => const SplashLoginScreen(),
+            '/splash-home': (context) => const SplashHomeScreen(),
           },
         ));
   }

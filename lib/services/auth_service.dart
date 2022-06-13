@@ -3,14 +3,21 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
 
-class AuthService {
+class AuthService{
   final FirebaseAuth _firebaseAuth;
 
   AuthService(this._firebaseAuth);
 
   /// Changed to idTokenChanges as it updates depending on more cases.
   Stream<User?> get authStateChanges => _firebaseAuth.idTokenChanges();
+
+  User? get user => _firebaseAuth.currentUser;
+
+  Future<void>renewUser(User? user) async {
+    user = _firebaseAuth.currentUser;
+  }
 
   /// This won't pop routes so you could do something like
   /// Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
@@ -31,7 +38,8 @@ class AuthService {
       // This is the same as await _firebaseAuth.currentUser();
       return "¡Bienvenido de vuelta!";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      //return e.message;
+      return "Se ha producido un error al Iniciar Sesión";
     }
   }
 
@@ -60,6 +68,7 @@ class AuthService {
       required String password,
       required String fullName}) async {
     try {
+      //await _firebaseAuth.setLanguageCode('es');
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       var emailHash = generateHash(email: email);
@@ -81,16 +90,19 @@ class AuthService {
       });
       return "¡Bienvenido a TDAPP!";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      //return e.message;
+      return "Se ha producido un error al Registrarse";
     }
   }
 
   Future<String?> resetPassword({required String email}) async {
     try {
+      //await _firebaseAuth.setLanguageCode('es');
       await _firebaseAuth.sendPasswordResetEmail(email: email);
-      return "Reset password email sent";
+      return "Envío de Contraseña logrado";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      //return e.message;
+      return "Se ha producido un error al enviar el email para la contraseña";
     }
   }
 
@@ -103,23 +115,30 @@ class AuthService {
       required String newPassword,
       required String email}) async {
     try {
+      print(_firebaseAuth.languageCode);
+      //await _firebaseAuth.setLanguageCode('es-ES');
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: oldPassword);
       await _firebaseAuth.currentUser!.updatePassword(newPassword);
-      return "Password changed";
+      return "Contraseña cambiada";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      //return e.message;
+      return "Se ha producido un error al cambiar la contraseña";
     }
   }
 
   Future<String?> updateAccount(
       {required String displayName, required String email}) async {
     try {
-      await _firebaseAuth.currentUser!.updateEmail(email);
-      await _firebaseAuth.currentUser!.updateDisplayName(displayName);
+      await _firebaseAuth.setLanguageCode('es');
+      await _firebaseAuth.currentUser?.updateEmail(email);
+      await _firebaseAuth.currentUser?.updateDisplayName(displayName);
+      var UserChanged = _firebaseAuth.currentUser?.uid;
+      FirebaseFirestore.instance.collection('users').doc(UserChanged).update({'fullName':displayName, 'email': email});
       return "Datos actualizados correctamente";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      //return e.message;
+      return "Se ha producido un error al actualizar los datos";
     }
   }
 }

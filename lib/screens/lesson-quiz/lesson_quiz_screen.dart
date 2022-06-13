@@ -52,7 +52,7 @@ class LessonQuizScreen extends StatelessWidget {
                   );
                 }
                 final List<DocumentSnapshot> docs = snapshot.data!.docs;
-                return _buildList(context, docs, args.id);
+                return Scrollbar(child: _buildList(context, docs, args.id));
               }),
     );
   }

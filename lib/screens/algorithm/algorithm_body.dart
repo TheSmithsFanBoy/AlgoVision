@@ -348,8 +348,11 @@ class _AlgorithmBodyState extends State<AlgorithmBody> {
             color: Colors.grey.shade300,
             borderRadius: BorderRadius.circular(17),
           ),
-          child: Image.network(data['image'],
-            color: Colors.grey.shade600, width: 15, height: 15,),
+          child: /*Image.network(data['image'],
+            color: Colors.grey.shade600, width: 15, height: 15,),*/
+          ImageIcon(AssetImage(
+              data['asset']),
+            size: 20,),
         ),
         const SizedBox(width: 10),
         FutureBuilder(
@@ -372,7 +375,7 @@ class _AlgorithmBodyState extends State<AlgorithmBody> {
                                   description: data['lesson'].id,
                                 ));
                           }
-                          /*else (data['type'] == 'practice'){
+                          else if(data['type'] == 'practice'){
                             Navigator.pushNamed(context, '/lesson-practice',
                                 arguments: ScreenArguments(
                                   id: data.id,
@@ -380,7 +383,7 @@ class _AlgorithmBodyState extends State<AlgorithmBody> {
                                   parentId: data['order'].toString(),
                                   description: data['lesson'].id,
                                 ));
-                          }*/
+                          }
                           else{
                           Navigator.pushNamed(context, '/topic-content',
                               arguments: ScreenArguments(
@@ -414,7 +417,7 @@ class _AlgorithmBodyState extends State<AlgorithmBody> {
                               description: data['lesson'].id,
                             ));
                       }
-                      /*else (data['type'] == 'practice'){
+                      else if(data['type'] == 'practice'){
                             Navigator.pushNamed(context, '/lesson-practice',
                                 arguments: ScreenArguments(
                                   id: data.id,
@@ -422,7 +425,7 @@ class _AlgorithmBodyState extends State<AlgorithmBody> {
                                   parentId: data['order'].toString(),
                                   description: data['lesson'].id,
                                 ));
-                          }*/
+                          }
                       else{
                         Navigator.pushNamed(context, '/topic-content',
                             arguments: ScreenArguments(

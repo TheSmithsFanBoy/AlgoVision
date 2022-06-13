@@ -175,9 +175,9 @@ class _RankingScreenState extends State<RankingScreen> {
         children: [
           SizedBox(
             width: 100,
+            height: 100,
             child: Image.network(
-
-              doc['photoUrl'] + "?s=200",
+              doc['photoUrl'] + ' ' ,
               fit: BoxFit.cover,
             ),
           ),
