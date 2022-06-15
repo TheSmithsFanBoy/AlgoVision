@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _sub = FirebaseAuth.instance.authStateChanges().listen((event) {
       _navigatorKey.currentState?.pushNamedAndRemoveUntil(
-          event != null ? '/home' : '/splash-login', (route) => false);
+          event != null ? '/home' : '/login', (route) => false);
     });
   }
 
@@ -97,7 +97,7 @@ class _MyAppState extends State<MyApp> {
             nextScreen: LoginScreen(),
           ),*/
           initialRoute:
-              FirebaseAuth.instance.currentUser == null ? '/splash-login' : '/home',
+              FirebaseAuth.instance.currentUser == null ? '/login' : '/home',
           navigatorKey: _navigatorKey,
           routes: {
             '/': (context) => const WelcomeScreen(),

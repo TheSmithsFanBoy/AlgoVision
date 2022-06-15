@@ -32,11 +32,11 @@ class _UnityGameScreenState extends State<UnityGameScreen> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: Stack(
-            children: <Widget>[
+           /* children: <Widget>[
               UnityWidget(
                 onUnityCreated: onUnityCreated,
               ),
-            ],
+            ],*/
           ),
         ),
       ),

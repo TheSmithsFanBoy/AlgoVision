@@ -71,10 +71,13 @@ class _LessonVideoScreenState extends State<LessonVideoScreen> {
         AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
           if(snapshot.hasData && snapshot.data != null){
             var data = snapshot.data!;
+            print('String Cadena: ');
+            print(snapshot.data);
             if (data == null) {
               return const Text('data is null');
             }
-            return ListView.builder(
+            return VideoPlayerWidget(controller: videoController);
+            /*return ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: data['videolist'].length,
               itemBuilder: (BuildContext context, int index) {
@@ -108,7 +111,7 @@ class _LessonVideoScreenState extends State<LessonVideoScreen> {
                   ]
                 );
               },
-            );
+            );*/
           }else {
             return const CircularProgressIndicator();
           }
