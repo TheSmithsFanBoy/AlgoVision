@@ -31,7 +31,33 @@ class AuthService {
       // This is the same as await _firebaseAuth.currentUser();
       return "¡Bienvenido de vuelta!";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      switch (e.message) {
+        case "The email address is badly formatted.":
+          {
+            return "El correo electronico tiene un formato invalido.";
+          }
+
+        case "The email address is already in use by another account.":
+          {
+            return "La dirección de correo electrónico ya está en uso por otra cuenta.";
+          }
+
+        case "There is no user record corresponding to this identifier. The user have been deleted.":
+          {
+            return "No existe registro de usuario correspondiente a este identificador. El usuario ha sido eliminado.";
+          }
+
+        case "There is no user record corresponding to this identifier. The user may have been deleted.":
+          {
+            return "No existe registro de usuario correspondiente a este email. Puede que el usuario haya sido eliminado.";
+          }
+
+        default:
+          {
+            return e.message;
+          }
+          break;
+      }
     }
   }
 
@@ -55,24 +81,22 @@ class AuthService {
   /// This is to make it as easy as possible but a better way would be to
   /// use your own custom class that would take the exception and return better
   /// error messages. That way you can throw, return or whatever you prefer with that instead.
-  Future<String?> signUp(
-      {required String email,
-      required String password,
-      required String fullName}) async {
+  Future<String?> signUp({required String email,
+    required String password,
+    required String fullName, required String profileImg}) async {
     try {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
-      var emailHash = generateHash(email: email);
       userCredential.user!.updateDisplayName(fullName);
       userCredential.user!
-          .updatePhotoURL("https://www.gravatar.com/avatar/" + emailHash);
+          .updatePhotoURL(profileImg);
       FirebaseFirestore.instance
           .collection('users')
           .doc(userCredential.user!.uid)
           .set({
         'email': email,
         'fullName': fullName,
-        'photoUrl': "https://www.gravatar.com/avatar/" + emailHash,
+        'photoUrl': profileImg,
         'uid': userCredential.user!.uid,
         'points': 0,
         'challenges': [],
@@ -81,7 +105,22 @@ class AuthService {
       });
       return "¡Bienvenido a TDAPP!";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      switch (e.message) {
+        case "The email address is badly formatted.":
+          {
+            return "El correo electronico tiene un formato invalido.";
+          }
+
+        case "The email address is already in use by another account.":
+          {
+            return "La dirección de correo electrónico ya está en uso por otra cuenta.";
+          }
+
+        default:
+          {
+            return e.message;
+          }
+      }
     }
   }
 
@@ -98,17 +137,26 @@ class AuthService {
     return md5.convert(utf8.encode(email)).toString();
   }
 
-  Future<String?> changePassword(
-      {required String oldPassword,
-      required String newPassword,
-      required String email}) async {
+  Future<String?> changePassword({required String oldPassword,
+    required String newPassword,
+    required String email}) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: oldPassword);
       await _firebaseAuth.currentUser!.updatePassword(newPassword);
       return "Password changed";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      switch (e.message) {
+        case "The password is invalid or the user does not have a password.":
+          {
+            return "La contraseña no es válida o el usuario no tiene contraseña";
+          }
+
+        default:
+          {
+            return e.message;
+          }
+      }
     }
   }
 
@@ -119,7 +167,22 @@ class AuthService {
       await _firebaseAuth.currentUser!.updateDisplayName(displayName);
       return "Datos actualizados correctamente";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      switch (e.message) {
+        case "The email address is badly formatted.":
+          {
+            return "El correo electronico tiene un formato invalido.";
+          }
+
+        case "The email address is already in use by another account.":
+          {
+            return "La dirección de correo electrónico ya está en uso por otra cuenta.";
+          }
+
+        default:
+          {
+            return e.message;
+          }
+      }
     }
   }
 }

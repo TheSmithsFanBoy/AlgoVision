@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tdpapp/services/auth_service.dart';
 
+import '../provider/user_provider.dart';
 import 'drawer_item.dart';
 
 class NavigationDrawer extends StatelessWidget {
@@ -17,7 +18,7 @@ class NavigationDrawer extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(24.0, 80, 24, 0),
           child: Column(
             children: [
-              headerWidget(),
+              headerWidget(context),
               const SizedBox(
                 height: 40,
               ),
@@ -127,17 +128,18 @@ class NavigationDrawer extends StatelessWidget {
     );
   }
 
-  Widget headerWidget() {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      var email = user.email;
-      var displayName = user.displayName;
-      var photoUrl = user.photoURL.toString();
+  Widget headerWidget(context) {
+    final _user = Provider.of<UserProvider>(context);
+    _user.updateUser(FirebaseAuth.instance.currentUser);
+    if (_user.user != null) {
+      var email = _user.user?.email;
+      var displayName = _user.user?.displayName;
+      var photoUrl = _user.user?.photoURL.toString();
       return Row(
         children: [
           CircleAvatar(
             radius: 25,
-            backgroundImage: NetworkImage(photoUrl),
+            backgroundImage: NetworkImage(photoUrl!),
           ),
           const SizedBox(
             width: 10,

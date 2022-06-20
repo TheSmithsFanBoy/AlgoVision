@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tdpapp/firebase_options.dart';
+import 'package:tdpapp/provider/user_provider.dart';
 import 'package:tdpapp/screens/account/account_screen.dart';
 import 'package:tdpapp/screens/algorithm-details/algorithm_details_screen.dart';
 import 'package:tdpapp/screens/algorithm/algorithm_screen.dart';
@@ -64,6 +65,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider(
+            lazy: false,
+            create: (_) => UserProvider(),
+          ),
           Provider<AuthService>(
             create: (_) => AuthService(FirebaseAuth.instance),
           ),

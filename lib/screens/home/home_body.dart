@@ -42,12 +42,33 @@ class HomeBody extends StatelessWidget {
               final DocumentSnapshot doc = docs[index];
               return InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, "/fundamentals",
-                        arguments: ScreenArguments(
-                            id: doc.id,
-                            title: doc['name'],
-                            description: '',
-                            parentId: ''));
+                    switch (doc['name']) {
+                      case "Algoritmos Ordenamiento":
+                        {
+
+                          Navigator.pushNamed(context, "/algorithm",
+                              arguments: ScreenArguments(
+                                  id: doc.id,
+                                  title: doc['name'],
+                                  description: '',
+                                  parentId: ''));
+                        }
+                        break;
+                      case "Fundamentos de Progra":
+                        {
+
+                          Navigator.pushNamed(context, "/fundamentals",
+                              arguments: ScreenArguments(
+                                  id: doc.id,
+                                  title: doc['name'],
+                                  description: '',
+                                  parentId: ''));
+                        }
+                        break;
+                      default:
+                        {
+                        }
+                    }
                   },
                   child: Card(
                     elevation: 4,

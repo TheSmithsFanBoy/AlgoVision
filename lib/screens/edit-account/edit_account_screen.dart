@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tdpapp/services/auth_service.dart';
 
+import '../../provider/user_provider.dart';
+
 class EditAccountScreen extends StatelessWidget {
   EditAccountScreen({Key? key}) : super(key: key);
 
@@ -14,11 +16,12 @@ class EditAccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
-    var email = user != null ? user.email : '';
-    var url = user != null ? user.photoURL : '';
+    final _user = Provider.of<UserProvider>(context);
+    _user.updateUser(FirebaseAuth.instance.currentUser);
+    var email = _user.user != null ? _user.user?.email : '';
+    var url = _user.user != null ? _user.user?.photoURL : '';
     url = (url! + "?s=200");
-    var displayName = user != null ? user.displayName : '';
+    var displayName = _user.user != null ? _user.user?.displayName : '';
     _emailController.text = email!;
     _displayNameController.text = displayName!;
     return Scaffold(
@@ -86,18 +89,21 @@ class EditAccountScreen extends StatelessWidget {
                                 displayName: _displayNameController.text,
                                 email: _emailController.text,
                               )
-                              .then((value) =>
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                          value!,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16.0,
-                                          ),
-                                        ),
-                                        backgroundColor: Colors.grey),
-                                  ));
+                              .then((value) {
+                            _user.updateUser(FirebaseAuth.instance.currentUser);
+                            _user.notifyListeners();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                    value!,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                  backgroundColor: Colors.grey),
+                            );
+                          });
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

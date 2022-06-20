@@ -1,17 +1,154 @@
+
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:tdpapp/services/auth_service.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart';
 
 import '../../constants/theme_constants.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   RegisterScreen({Key? key}) : super(key: key);
+
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+
+class _RegisterScreenState extends State<RegisterScreen> {
+
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
 
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  File? _photo;
+  String imgUrl = "";
+  final ImagePicker _picker = ImagePicker();
+
+  Future imgFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future imgFromCamera() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future uploadFile() async {
+    if (_photo == null) return;
+    final fileName = basename(_photo!.path);
+    final destination = 'Perfil';
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child(fileName);
+      await ref.putFile(_photo!);
+      imgUrl = await ref.getDownloadURL();
+      print("imagen");
+      print(imgUrl);
+    } catch (e) {
+      print('error occured');
+    }
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Gallery'),
+                      onTap: () {
+                        imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Widget _buildImagePikerTF(context) {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: 32,
+        ),
+        Center(
+          child: GestureDetector(
+            onTap: () {
+              _showPicker(context);
+            },
+            child: CircleAvatar(
+              radius: 55,
+              backgroundColor: Color(0xffFDCF09),
+              child: _photo != null
+                  ? ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: Image.file(
+                  _photo!,
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.fitHeight,
+                ),
+              )
+                  : Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(50)),
+                width: 100,
+                height: 100,
+                child: Icon(
+                  Icons.camera_alt,
+                  color: Colors.grey[800],
+                ),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
 
   Widget _buildFullNameTF() {
     return Column(
@@ -219,6 +356,7 @@ class RegisterScreen extends StatelessWidget {
                   email: emailController.text,
                   password: passwordController.text,
                   fullName: fullNameController.text,
+                  profileImg: imgUrl
                 )
                 .then((value) => ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -322,6 +460,10 @@ class RegisterScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 30.0),
+                          _buildImagePikerTF(context),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
                           _buildFullNameTF(),
                           const SizedBox(
                             height: 20.0,

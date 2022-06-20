@@ -152,21 +152,21 @@ class FundamentalsScreen extends StatelessWidget {
         getCount(FirebaseFirestore.instance.collection('lessons').doc(doc.id));
 
     return InkWell(
-        onTap: () {
-          isBlocked
-              ? Scaffold.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Completa las lecciones anteriores'),
-                    backgroundColor: Colors.red,
-                  ),
-                )
-              : Navigator.pushNamed(context, "/topic-details",
-                  arguments: ScreenArguments(
-                      id: doc.id,
-                      title: doc['name'],
-                      description: doc['description'],
-                      parentId: ''));
-        },
+        // onTap: () {
+        //   isBlocked
+        //       ? Scaffold.of(context).showSnackBar(
+        //           const SnackBar(
+        //             content: Text('Completa las lecciones anteriores'),
+        //             backgroundColor: Colors.red,
+        //           ),
+        //         )
+        //       : Navigator.pushNamed(context, "/topic-details",
+        //           arguments: ScreenArguments(
+        //               id: doc.id,
+        //               title: doc['name'],
+        //               description: doc['description'],
+        //               parentId: ''));
+        // },
         child: Card(
           elevation: 4,
           margin: const EdgeInsets.only(bottom: 16),

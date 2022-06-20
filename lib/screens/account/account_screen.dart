@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tdpapp/provider/user_provider.dart';
 import 'package:tdpapp/services/auth_service.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -9,10 +10,11 @@ class AccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
-    var email = user != null ? user.email : '';
-    var displayName = user != null ? user.displayName : '';
-    var url = user != null ? user.photoURL : '';
+    final _user = Provider.of<UserProvider>(context);
+    _user.updateUser(FirebaseAuth.instance.currentUser);
+    var email = _user.user != null ? _user.user?.email : '';
+    var displayName = _user.user != null ? _user.user?.displayName : '';
+    var url = _user.user != null ? _user.user?.photoURL : '';
     url = (url! + "?s=200");
     return Scaffold(
       appBar: AppBar(

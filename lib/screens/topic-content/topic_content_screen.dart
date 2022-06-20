@@ -40,21 +40,23 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
               if (data == null) {
                 return const Text('data is null');
               }
-              return Column(
-                children: [
-                  const SizedBox(height: 15),
-                  Center(
-                      child: Text(data['title'],
-                          style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.indigo))),
-                  const SizedBox(height: 30),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: _buildContent(context, data),
-                  ),
-                ],
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 15),
+                    Center(
+                        child: Text(data['title'],
+                            style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.indigo))),
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: _buildContent(context, data),
+                    ),
+                  ],
+                ),
               );
             }
             return const CircularProgressIndicator();
