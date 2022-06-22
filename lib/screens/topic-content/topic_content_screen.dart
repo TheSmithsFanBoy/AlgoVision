@@ -1,8 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:tdpapp/models/screen_arguments.dart';
 import 'package:tdpapp/widgets/survey_question.dart';
+import 'package:video_player/video_player.dart';
+
+import '../../provider/topic_video_provider.dart';
 
 class TopicContentScreen extends StatefulWidget {
   const TopicContentScreen({Key? key}) : super(key: key);
@@ -12,6 +17,7 @@ class TopicContentScreen extends StatefulWidget {
 }
 
 class _TopicContentScreenState extends State<TopicContentScreen> {
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
@@ -198,6 +204,61 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
               style: TextStyle(fontSize: 15)),
           SurveyQuestion(
               validOption: data['validOption'], options: data['options'])
+        ]);
+      case 'video':
+        int pos = 0;
+        VideoPlayerController  _controller = VideoPlayerController.network(
+            data['video']);
+        final _paso = Provider.of<TopicVideoProvider>(context);
+        _paso.updateUser(data['pasos'][pos]);
+        Future<void> _initializeVideoPlayerFuture = _controller.initialize();
+        _controller.setLooping(true);
+        _controller.setVolume(1.0);
+        _controller.setLooping(false);
+        _controller.play();
+        _controller.addListener(() {
+          if(_controller.value.position.inSeconds == 5){
+              pos = pos + 1;
+              //_paso.updateUser(data['pasos'][pos]);
+          }
+          // print("VIDEO POSITION IS ${_controller.value.position.inMilliseconds}");
+          // print("VIDEO DURATION (s) ${_controller.value.duration.inSeconds}");
+          // print("VIDEO DURATION (milsec) ${_controller.value.duration.inMilliseconds}");
+          // print("VIDEO DUR (mcrosec) ${_controller.value.duration.inMicroseconds}");
+        });
+        return Column(children: [
+          LinearPercentIndicator(
+            width: 330,
+            lineHeight: 15,
+            percent: 0.166666,
+            linearStrokeCap: LinearStrokeCap.roundAll,
+            progressColor: Colors.blue,
+            backgroundColor: Colors.grey,
+            animation: true,
+            animationDuration: 5000,
+          ),
+          const SizedBox(height: 40),
+          Text(data['content'], style: const TextStyle(fontSize: 17)),
+          const SizedBox(height: 40),
+          FutureBuilder(
+            future: _initializeVideoPlayerFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Center(
+                  child: AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: VideoPlayer(_controller),
+                  ),
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+          const SizedBox(height: 40),
+          Text(data['pasos'][pos], style: TextStyle(fontSize: 15)),
         ]);
       default:
         return const Text('data');

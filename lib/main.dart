@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tdpapp/firebase_options.dart';
+import 'package:tdpapp/provider/topic_video_provider.dart';
 import 'package:tdpapp/provider/user_provider.dart';
 import 'package:tdpapp/screens/account/account_screen.dart';
 import 'package:tdpapp/screens/algorithm-details/algorithm_details_screen.dart';
@@ -68,6 +69,10 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider(
             lazy: false,
             create: (_) => UserProvider(),
+          ),
+          ChangeNotifierProvider(
+            lazy: false,
+            create: (_) => TopicVideoProvider(),
           ),
           Provider<AuthService>(
             create: (_) => AuthService(FirebaseAuth.instance),
