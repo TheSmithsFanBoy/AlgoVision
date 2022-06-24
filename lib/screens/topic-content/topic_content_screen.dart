@@ -206,20 +206,21 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
               validOption: data['validOption'], options: data['options'])
         ]);
       case 'video':
-        int pos = 0;
-        VideoPlayerController  _controller = VideoPlayerController.network(
-            data['video']);
         final _paso = Provider.of<TopicVideoProvider>(context);
-        _paso.updateUser(data['pasos'][pos]);
+        int pos = 0;
+        VideoPlayerController _controller =
+            VideoPlayerController.network(data['video']);
+        var stepWidget = Step(textStep: data['pasos'][pos]);
         Future<void> _initializeVideoPlayerFuture = _controller.initialize();
         _controller.setLooping(true);
         _controller.setVolume(1.0);
         _controller.setLooping(false);
         _controller.play();
         _controller.addListener(() {
-          if(_controller.value.position.inSeconds == 5){
-              pos = pos + 1;
-              //_paso.updateUser(data['pasos'][pos]);
+          if (_controller.value.position.inSeconds == 5) {
+            pos = pos + 1;
+            _controller.pause();
+            //_paso.updateUser(data['pasos'][pos]);
           }
           // print("VIDEO POSITION IS ${_controller.value.position.inMilliseconds}");
           // print("VIDEO DURATION (s) ${_controller.value.duration.inSeconds}");
@@ -258,10 +259,46 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             },
           ),
           const SizedBox(height: 40),
-          Text(data['pasos'][pos], style: TextStyle(fontSize: 15)),
+          stepWidget,
+          TextButton(
+              style: TextButton.styleFrom(
+                //backgroundColor: Colors.yellow.shade600,
+                fixedSize: const Size(30, 30),
+              ),
+              child: const Text('Siguiente Paso',
+                  style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.indigo)),
+              onPressed: () {
+                _paso.updateUser(data['pasos'][pos]);
+              })
         ]);
       default:
         return const Text('data');
     }
+  }
+}
+
+// class Step extends StatefulWidget {
+//   String textStep;
+//   Step({Key? key,  required this.textStep}) : super(key: key);
+//   void update(String text) {
+//     textStep = text;
+//
+//   }
+//   @override
+//   State<Step> createState() => _StepState();
+// }
+
+class Step extends StatelessWidget {
+  String textStep;
+  Step({Key? key,  required this.textStep}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _paso = Provider.of<TopicVideoProvider>(context);
+    _paso.updateUser(textStep);
+    return Text(_paso.paso , style: TextStyle(fontSize: 15));
   }
 }

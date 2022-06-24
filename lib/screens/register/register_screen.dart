@@ -120,16 +120,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
               _showPicker(context);
             },
             child: CircleAvatar(
-              radius: 55,
+              radius: 50,
               backgroundColor: Color(0xffFDCF09),
               child: _photo != null
                   ? ClipRRect(
-                borderRadius: BorderRadius.circular(50),
+                borderRadius: BorderRadius.circular(55),
                 child: Image.file(
                   _photo!,
                   width: 100,
                   height: 100,
-                  fit: BoxFit.fitHeight,
+                  fit: BoxFit.fill,
                 ),
               )
                   : Container(
