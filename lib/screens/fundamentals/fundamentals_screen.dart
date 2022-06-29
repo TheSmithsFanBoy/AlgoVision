@@ -5,8 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tdpapp/models/screen_arguments.dart';
 
-class FundamentalsScreen extends StatelessWidget {
+class FundamentalsScreen extends StatefulWidget {
   const FundamentalsScreen({Key? key}) : super(key: key);
+
+  @override
+  _FundamentalsScreenState createState() => _FundamentalsScreenState();
+}
+class _FundamentalsScreenState extends State<FundamentalsScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -249,8 +254,17 @@ class FundamentalsScreen extends StatelessWidget {
             color: Colors.grey.shade300,
             borderRadius: BorderRadius.circular(17),
           ),
-          child: Icon(Icons.bookmarks_rounded,
-              color: Colors.grey.shade600, size: 15),
+          child: data['type'] == 'quiz'
+              ? Icon(Icons.quiz,
+              color: Colors.grey.shade600, size: 15)
+              : data['type'] == 'text'
+              ? Icon(Icons.document_scanner,
+              color: Colors.grey.shade600, size: 15)
+              : data['type'] == 'practice'
+              ? Icon(Icons.auto_awesome_mosaic_rounded,
+              color: Colors.grey.shade600, size: 15)
+              : Icon(Icons.play_circle_outline,
+              color: Colors.grey.shade600, size: 15)
         ),
         const SizedBox(width: 10),
         FutureBuilder(
@@ -270,7 +284,7 @@ class FundamentalsScreen extends StatelessWidget {
                                 title: data['title'],
                                 parentId: data['order'].toString(),
                                 description: data['lesson'].id,
-                              ));
+                              )).then((_) => setState(() {}));
                         },
                         child: Row(children: [
                           Text(data['order'].toString() +
@@ -293,7 +307,7 @@ class FundamentalsScreen extends StatelessWidget {
                             title: data['title'],
                             description: data['lesson'].id,
                             parentId: data['order'].toString(),
-                          ));
+                          )).then((_) => setState(() {}));
                     },
                     child: Row(children: [
                       Text(data['order'].toString() +

@@ -5,8 +5,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tdpapp/models/screen_arguments.dart';
 
-class AlgorithmScreen extends StatelessWidget {
+class AlgorithmScreen extends StatefulWidget {
   const AlgorithmScreen({Key? key}) : super(key: key);
+
+  @override
+  _AlgorithmScreenState createState() => _AlgorithmScreenState();
+}
+
+class _AlgorithmScreenState extends State<AlgorithmScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +28,9 @@ class AlgorithmScreen extends StatelessWidget {
           stream: FirebaseFirestore.instance
               .collection('lessons')
               .where('module',
-              isEqualTo: FirebaseFirestore.instance
-                  .collection('modules')
-                  .doc(args.id))
+                  isEqualTo: FirebaseFirestore.instance
+                      .collection('modules')
+                      .doc(args.id))
               .orderBy('order')
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -82,79 +88,79 @@ class AlgorithmScreen extends StatelessWidget {
   Widget _buildLessonCard(
       BuildContext context, doc, bool isCompleted, bool isBlocked) {
     var nTopics =
-    getCount(FirebaseFirestore.instance.collection('lessons').doc(doc.id));
+        getCount(FirebaseFirestore.instance.collection('lessons').doc(doc.id));
 
     return InkWell(
         child: Card(
-          elevation: 4,
-          margin: const EdgeInsets.only(bottom: 16),
-          child: ExpansionTile(
-            textColor: Colors.pink,
-            collapsedTextColor: Colors.indigo,
-            iconColor: Colors.indigo,
-            leading: Container(
-              padding: const EdgeInsets.all(7),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: <Color>[Colors.orange.shade300, Colors.pink]),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: const Icon(Icons.bookmarks_rounded, color: Colors.white),
-            ),
-            title: Text(
-              doc['name'],
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            subtitle: FutureBuilder(
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Text('Cargando...');
-                  }
-                  return Text(
-                    '${snapshot.data} tópicos',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  );
-                },
-                future: nTopics),
-            children: [
-              StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('topics')
-                      .where('lesson',
+      elevation: 4,
+      margin: const EdgeInsets.only(bottom: 16),
+      child: ExpansionTile(
+        textColor: Colors.pink,
+        collapsedTextColor: Colors.indigo,
+        iconColor: Colors.indigo,
+        leading: Container(
+          padding: const EdgeInsets.all(7),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: <Color>[Colors.orange.shade300, Colors.pink]),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: const Icon(Icons.bookmarks_rounded, color: Colors.white),
+        ),
+        title: Text(
+          doc['name'],
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        subtitle: FutureBuilder(
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Text('Cargando...');
+              }
+              return Text(
+                '${snapshot.data} tópicos',
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w300,
+                ),
+              );
+            },
+            future: nTopics),
+        children: [
+          StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('topics')
+                  .where('lesson',
                       isEqualTo: FirebaseFirestore.instance
                           .collection('lessons')
                           .doc(doc.id))
-                      .orderBy('order')
-                      .snapshots(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    final List<DocumentSnapshot> docs = snapshot.data!.docs;
-                    return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.only(left: 40),
-                      itemCount: docs.length,
-                      itemBuilder: (context, index) {
-                        final DocumentSnapshot data = docs[index];
-                        return _buildTopicBlock(context, data, doc.id, false);
-                      },
-                    );
-                  })
-            ],
-          ),
-        ));
+                  .orderBy('order')
+                  .snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                final List<DocumentSnapshot> docs = snapshot.data!.docs;
+                return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(left: 40),
+                  itemCount: docs.length,
+                  itemBuilder: (context, index) {
+                    final DocumentSnapshot data = docs[index];
+                    return _buildTopicBlock(context, data, doc.id, false);
+                  },
+                );
+              })
+        ],
+      ),
+    ));
   }
 
   Widget _buildTopicBlock(BuildContext context, data, topicId, bool completed) {
@@ -162,14 +168,22 @@ class AlgorithmScreen extends StatelessWidget {
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(
-            color: Colors.grey.shade300,
-            borderRadius: BorderRadius.circular(17),
-          ),
-          child: Icon(Icons.bookmarks_rounded,
-              color: Colors.grey.shade600, size: 15),
-        ),
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              borderRadius: BorderRadius.circular(17),
+            ),
+            child: data['type'] == 'quiz'
+                ? Icon(Icons.quiz,
+                    color: Colors.grey.shade600, size: 15)
+                : data['type'] == 'text'
+                    ? Icon(Icons.document_scanner,
+                        color: Colors.grey.shade600, size: 15)
+                    : data['type'] == 'practice'
+                        ? Icon(Icons.auto_awesome_mosaic_rounded,
+                            color: Colors.grey.shade600, size: 15)
+                        : Icon(Icons.play_circle_outline,
+                            color: Colors.grey.shade600, size: 15)),
         const SizedBox(width: 10),
         FutureBuilder(
             builder: (context, snapshot) {
@@ -188,7 +202,7 @@ class AlgorithmScreen extends StatelessWidget {
                                 title: data['title'],
                                 parentId: data['order'].toString(),
                                 description: data['lesson'].id,
-                              ));
+                              )).then((_) => setState(() {}));
                         },
                         child: Row(children: [
                           Text(data['order'].toString() +
@@ -211,7 +225,7 @@ class AlgorithmScreen extends StatelessWidget {
                             title: data['title'],
                             description: data['lesson'].id,
                             parentId: data['order'].toString(),
-                          ));
+                          )).then((_) => setState(() {}));
                     },
                     child: Row(children: [
                       Text(data['order'].toString() +

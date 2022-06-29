@@ -17,7 +17,7 @@ class TopicContentScreen extends StatefulWidget {
 }
 
 class _TopicContentScreenState extends State<TopicContentScreen> {
-
+  int pos = 0;
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
@@ -193,6 +193,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
   }
 
   Widget _buildContent(BuildContext context, Map<String, dynamic> data) {
+
     switch (data['type']) {
       case 'text':
         return Text(data['content'], style: const TextStyle(fontSize: 17));
@@ -207,7 +208,6 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
         ]);
       case 'video':
         final _paso = Provider.of<TopicVideoProvider>(context);
-        int pos = 0;
         VideoPlayerController _controller =
             VideoPlayerController.network(data['video']);
         var stepWidget = Step(textStep: data['pasos'][pos]);
@@ -218,9 +218,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
         _controller.play();
         _controller.addListener(() {
           if (_controller.value.position.inSeconds == 5) {
-            pos = pos + 1;
             _controller.pause();
-            //_paso.updateUser(data['pasos'][pos]);
           }
           // print("VIDEO POSITION IS ${_controller.value.position.inMilliseconds}");
           // print("VIDEO DURATION (s) ${_controller.value.duration.inSeconds}");
@@ -263,7 +261,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
           TextButton(
               style: TextButton.styleFrom(
                 //backgroundColor: Colors.yellow.shade600,
-                fixedSize: const Size(30, 30),
+                fixedSize: const Size(200, 50),
               ),
               child: const Text('Siguiente Paso',
                   style: TextStyle(
@@ -271,6 +269,8 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                       fontWeight: FontWeight.bold,
                       color: Colors.indigo)),
               onPressed: () {
+                pos = pos + 1;
+                _controller.play();
                 _paso.updateUser(data['pasos'][pos]);
               })
         ]);
@@ -285,7 +285,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
 //   Step({Key? key,  required this.textStep}) : super(key: key);
 //   void update(String text) {
 //     textStep = text;
-//
+//      SetState
 //   }
 //   @override
 //   State<Step> createState() => _StepState();
@@ -294,7 +294,6 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
 class Step extends StatelessWidget {
   String textStep;
   Step({Key? key,  required this.textStep}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final _paso = Provider.of<TopicVideoProvider>(context);
