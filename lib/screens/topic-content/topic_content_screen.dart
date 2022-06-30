@@ -202,7 +202,11 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
 
         return Column(children: [
           Text(data['content'], style: const TextStyle(fontSize: 17)),
-          const SizedBox(height: 40),
+          const SizedBox(height: 20),
+          data['image'] == null ? SizedBox(height: 0) : Image.network(
+            data['image'],
+          ),
+          const SizedBox(height: 20),
           const Text("Selecciona una respuesta y presiona en validar...",
               style: TextStyle(fontSize: 15)),
           SurveyQuestion(
