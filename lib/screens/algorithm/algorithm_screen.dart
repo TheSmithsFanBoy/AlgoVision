@@ -168,7 +168,7 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
     return Row(
       children: [
         Container(
-            padding: const EdgeInsets.all(6),
+            padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: Colors.grey.shade300,
               borderRadius: BorderRadius.circular(17),
@@ -184,7 +184,7 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
                             color: Colors.grey.shade600, size: 15)
                         : Icon(Icons.play_circle_outline,
                             color: Colors.grey.shade600, size: 15)),
-        const SizedBox(width: 10),
+        const SizedBox(width: 5),
         FutureBuilder(
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -209,7 +209,8 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
                               ". " +
                               data['title'] +
                               ' - '),
-                          const Text('Completado',
+                          const Text('Completados',
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(color: Colors.green))
                         ]),
                         style: TextButton.styleFrom(
@@ -233,6 +234,7 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
                           data['title'] +
                           ' - '),
                       const Text('Por completar',
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(color: Colors.orange))
                     ]),
                     style: TextButton.styleFrom(

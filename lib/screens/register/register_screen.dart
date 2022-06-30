@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -19,9 +17,7 @@ class RegisterScreen extends StatefulWidget {
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-
 class _RegisterScreenState extends State<RegisterScreen> {
-
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
 
@@ -124,25 +120,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
               backgroundColor: Color(0xffFDCF09),
               child: _photo != null
                   ? ClipRRect(
-                borderRadius: BorderRadius.circular(55),
-                child: Image.file(
-                  _photo!,
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.fill,
-                ),
-              )
+                      borderRadius: BorderRadius.circular(55),
+                      child: Image.file(
+                        _photo!,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.fill,
+                      ),
+                    )
                   : Container(
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(50)),
-                width: 100,
-                height: 100,
-                child: Icon(
-                  Icons.camera_alt,
-                  color: Colors.grey[800],
-                ),
-              ),
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(50)),
+                      width: 100,
+                      height: 100,
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Colors.grey[800],
+                      ),
+                    ),
             ),
           ),
         )
@@ -353,11 +349,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             context
                 .read<AuthService>()
                 .signUp(
-                  email: emailController.text,
-                  password: passwordController.text,
-                  fullName: fullNameController.text,
-                  profileImg: imgUrl
-                )
+                    email: emailController.text,
+                    password: passwordController.text,
+                    fullName: fullNameController.text,
+                    profileImg: imgUrl)
                 .then((value) => ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(

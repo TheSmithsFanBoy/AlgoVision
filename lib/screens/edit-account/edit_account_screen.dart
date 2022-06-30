@@ -1,5 +1,11 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:tdpapp/services/auth_service.dart';
 
@@ -17,7 +23,46 @@ class EditAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _user = Provider.of<UserProvider>(context);
-    _user.updateUser(FirebaseAuth.instance.currentUser);
+    Future<void> uploadImage() async {
+
+      File image;
+      var imageCapture;
+      final imagePicker = ImagePicker();
+
+      imageCapture = await imagePicker.pickImage(source: ImageSource.gallery);
+
+      if (imageCapture != null) {
+        image = File(imageCapture.path);
+        final fileName = basename(image.path);
+        final destination = 'Perfil';
+        // var temp = FirebaseAuth.instance.currentUser?.displayName;
+        // var firebaseStorageRef = FirebaseStorage.instance
+        //     .ref()
+        //     .child("Perfil/${FirebaseAuth.instance.currentUser?.displayName}");
+        // var uploadTask = firebaseStorageRef.putFile(image);
+        // var taskSnapshot = uploadTask.snapshot;
+        //
+        // String storagePath = await taskSnapshot.ref.getDownloadURL();
+
+        final ref = FirebaseStorage.instance
+            .ref(destination)
+            .child(fileName);
+        await ref.putFile(image);
+        String imgUrl = await ref.getDownloadURL();
+
+        context
+            .read<AuthService>()
+            .updatePhoto(storagePath: imgUrl).whenComplete(() => _user.updateUser(FirebaseAuth.instance.currentUser));
+
+      } else {
+        const SnackBar(
+          content: Text('No se ha seleccionado nada'),
+          backgroundColor: Colors.red,
+        );
+      }
+    }
+
+    _user.setUser(FirebaseAuth.instance.currentUser);
     var email = _user.user != null ? _user.user?.email : '';
     var url = _user.user != null ? _user.user?.photoURL : '';
     url = (url! + "?s=200");
@@ -41,6 +86,17 @@ class EditAccountScreen extends StatelessWidget {
                     CircleAvatar(
                       radius: 60,
                       backgroundImage: NetworkImage(url),
+                      child: IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {
+                          uploadImage();
+                          // uploadImage().whenComplete(() => () {
+                          //   print("ejecutdando");
+                          //       _user.updateUser(FirebaseAuth.instance.currentUser);
+                          //       _user.notifyListeners();
+                          //     });
+                        },
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -91,7 +147,7 @@ class EditAccountScreen extends StatelessWidget {
                               )
                               .then((value) {
                             _user.updateUser(FirebaseAuth.instance.currentUser);
-                            _user.notifyListeners();
+                            // _user.notifyListeners();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text(

@@ -11,7 +11,7 @@ class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _user = Provider.of<UserProvider>(context);
-    _user.updateUser(FirebaseAuth.instance.currentUser);
+    _user.setUser(FirebaseAuth.instance.currentUser);
     var email = _user.user != null ? _user.user?.email : '';
     var displayName = _user.user != null ? _user.user?.displayName : '';
     var url = _user.user != null ? _user.user?.photoURL : '';

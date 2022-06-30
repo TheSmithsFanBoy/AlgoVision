@@ -47,7 +47,8 @@ class ChallengeQuizScreen extends StatelessWidget {
         const SizedBox(height: 16),
         SurveyQuestion(
           validOption: data['correctAnswer'],
-          options: data['options'],
+          options: data['options'].cast<String>(),
+      optionsInvalidText: data['optionInvalidText'].cast<String>(),
           callback: () => {
             FirebaseFirestore.instance
                 .collection('challenges')

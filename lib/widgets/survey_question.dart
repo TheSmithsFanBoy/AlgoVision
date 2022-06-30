@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 class SurveyQuestion extends StatefulWidget {
   final String validOption;
-  final List<dynamic> options;
+  final List<String> options;
+  final List<String> optionsInvalidText;
   final Function? callback;
   const SurveyQuestion(
       {Key? key,
       required this.validOption,
       required this.options,
+        required this.optionsInvalidText,
       this.callback})
       : super(key: key);
 
@@ -72,15 +74,24 @@ class _SurveyQuestionState extends State<SurveyQuestion> {
               },
             );
             // Create AlertDialog
+            print("test");
+            print(widget.options.indexOf(val));
             AlertDialog alert = AlertDialog(
               title: const Text('Respuesta correcta'),
               elevation: 10.0,
               actionsAlignment: MainAxisAlignment.center,
               alignment: Alignment.center,
-              content: Image.asset(
-                'assets/icons/good.png',
-                height: 95,
-                width: 95,
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/icons/good.png',
+                    height: 95,
+                    width: 95,
+                  ),
+                  const SizedBox(width: 20),
+                  Text(widget.optionsInvalidText[widget.options.indexOf(val)])
+                ],
               ),
               actions: [okButton],
             );
@@ -110,10 +121,16 @@ class _SurveyQuestionState extends State<SurveyQuestion> {
               elevation: 10.0,
               actionsAlignment: MainAxisAlignment.center,
               alignment: Alignment.center,
-              content: Image.asset(
-                'assets/icons/bad.png',
-                height: 95,
-                width: 95,
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/icons/bad.png',
+                    height: 95,
+                    width: 95,
+                  ),
+                  Text(widget.optionsInvalidText[widget.options.indexOf(val)])
+                ],
               ),
               actions: [okButton],
             );

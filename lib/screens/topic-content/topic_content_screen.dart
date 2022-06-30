@@ -18,6 +18,7 @@ class TopicContentScreen extends StatefulWidget {
 
 class _TopicContentScreenState extends State<TopicContentScreen> {
   int pos = 0;
+  bool play = true;
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
@@ -198,26 +199,27 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
       case 'text':
         return Text(data['content'], style: const TextStyle(fontSize: 17));
       case 'quiz':
+
         return Column(children: [
           Text(data['content'], style: const TextStyle(fontSize: 17)),
           const SizedBox(height: 40),
           const Text("Selecciona una respuesta y presiona en validar...",
               style: TextStyle(fontSize: 15)),
           SurveyQuestion(
-              validOption: data['validOption'], options: data['options'])
+              validOption: data['validOption'], options: data['options'].cast<String>(), optionsInvalidText: data['optionInvalidText'].cast<String>(), )
         ]);
       case 'video':
-        final _paso = Provider.of<TopicVideoProvider>(context);
+        // final _paso = Provider.of<TopicVideoProvider>(context);
         VideoPlayerController _controller =
             VideoPlayerController.network(data['video']);
         var stepWidget = Step(textStep: data['pasos'][pos]);
         Future<void> _initializeVideoPlayerFuture = _controller.initialize();
-        _controller.setLooping(true);
         _controller.setVolume(1.0);
         _controller.setLooping(false);
         _controller.play();
         _controller.addListener(() {
-          if (_controller.value.position.inSeconds == 5) {
+          if (_controller.value.position.inSeconds == 5 && play == true) {
+            play == false;
             _controller.pause();
           }
           // print("VIDEO POSITION IS ${_controller.value.position.inMilliseconds}");
@@ -269,9 +271,11 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                       fontWeight: FontWeight.bold,
                       color: Colors.indigo)),
               onPressed: () {
-                pos = pos + 1;
+
+                // pos = pos + 1;
                 _controller.play();
-                _paso.updateUser(data['pasos'][pos]);
+
+                // stepWidget.update(data['pasos'][pos]);
               })
         ]);
       default:
@@ -280,24 +284,33 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
   }
 }
 
-// class Step extends StatefulWidget {
-//   String textStep;
-//   Step({Key? key,  required this.textStep}) : super(key: key);
-//   void update(String text) {
-//     textStep = text;
-//      SetState
-//   }
-//   @override
-//   State<Step> createState() => _StepState();
-// }
-
-class Step extends StatelessWidget {
+class Step extends StatefulWidget {
   String textStep;
   Step({Key? key,  required this.textStep}) : super(key: key);
+
+  @override
+  State<Step> createState() => _StepState();
+
+  // void update(String text) {
+  //   textStep = text;
+  //   _StepState().test();
+  // }
+}
+
+class _StepState extends State<Step> {
+
+  // String textStep;
+  // Step({Key? key,  required this.textStep}) : super(key: key);
+  //
+  // void test () {
+  //   setState(() {
+  //     print("si esta ejecutando");
+  //   });
+  // }
   @override
   Widget build(BuildContext context) {
-    final _paso = Provider.of<TopicVideoProvider>(context);
-    _paso.updateUser(textStep);
-    return Text(_paso.paso , style: TextStyle(fontSize: 15));
+    // final _paso = Provider.of<TopicVideoProvider>(context);
+    // _paso.updateUser(widget.textStep);
+    return Text(widget.textStep , style: TextStyle(fontSize: 15));
   }
 }

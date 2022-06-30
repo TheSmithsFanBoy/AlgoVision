@@ -185,4 +185,29 @@ class AuthService {
       }
     }
   }
+
+  Future<String?> updatePhoto(
+      {required String storagePath}) async {
+    try {
+      await _firebaseAuth.currentUser!.updatePhotoURL(storagePath);
+      return "Datos actualizados correctamente";
+    } on FirebaseAuthException catch (e) {
+      switch (e.message) {
+        case "The email address is badly formatted.":
+          {
+            return "El correo electronico tiene un formato invalido.";
+          }
+
+        case "The email address is already in use by another account.":
+          {
+            return "La dirección de correo electrónico ya está en uso por otra cuenta.";
+          }
+
+        default:
+          {
+            return e.message;
+          }
+      }
+    }
+  }
 }
