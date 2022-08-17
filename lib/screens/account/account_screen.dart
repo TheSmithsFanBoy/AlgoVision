@@ -132,49 +132,7 @@ class AccountScreen extends StatelessWidget {
                     .collection('users')
                     .doc(FirebaseAuth.instance.currentUser!.uid)
                     .get()),
-            /*
-            GridView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, childAspectRatio: 1),
-              itemCount: medals.length,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100.0)),
-                      margin: const EdgeInsets.all(5.0),
-                      elevation: 15,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(65),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Image(
-                                image: NetworkImage(medals[index].coverImg),
-                                height: 70,
-                              ),
-                            ),
-                            // Usamos Container para el contenedor de la descripción
-                            Container(
-                              padding: const EdgeInsets.all(1.0),
-                              child: Text(
-                                medals[index].title,
-                                style: const TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )),
-                );
-              },
-            )
-            */
+           
           ],
         ),
       ),

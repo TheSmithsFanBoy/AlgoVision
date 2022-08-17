@@ -210,7 +210,8 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
           const Text("Selecciona una respuesta y presiona en validar...",
               style: TextStyle(fontSize: 15)),
           SurveyQuestion(
-              validOption: data['validOption'], options: data['options'].cast<String>(), optionsInvalidText: data['optionInvalidText'].cast<String>(), )
+              validOption: data['validOption'], options: data['options'].cast<String>(), optionsInvalidText: data['optionInvalidText'].cast<String>(),
+               )
         ]);
       case 'video':
         // final _paso = Provider.of<TopicVideoProvider>(context);

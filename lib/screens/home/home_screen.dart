@@ -9,18 +9,18 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // get current user
     return Scaffold(
-      drawer: const NavigationDrawer(),
+      drawer:  NavigationDrawer(),
       appBar: AppBar(
         title: const Text("Inicio"),
         backgroundColor: Colors.indigo,
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.account_circle_rounded),
-            onPressed: () {
-              Navigator.pushNamed(context, '/account');
-            },
-          ),
+          //*IconButton(
+          //*  icon: const Icon(Icons.account_circle_rounded),
+          //*  onPressed: () {
+          //*    Navigator.pushNamed(context, '/account');
+          //*  },
+          //*),
         ],
         leading: Builder(
           builder: (BuildContext context) {

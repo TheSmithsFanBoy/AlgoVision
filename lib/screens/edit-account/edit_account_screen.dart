@@ -52,7 +52,7 @@ class EditAccountScreen extends StatelessWidget {
 
         context
             .read<AuthService>()
-            .updatePhoto(storagePath: imgUrl).whenComplete(() => _user.updateUser(FirebaseAuth.instance.currentUser));
+            .updatePhoto(storagePath: imgUrl).whenComplete(() => _user.updateUser(FirebaseAuth.instance.currentUser!));
 
       } else {
         const SnackBar(
@@ -62,7 +62,7 @@ class EditAccountScreen extends StatelessWidget {
       }
     }
 
-    _user.setUser(FirebaseAuth.instance.currentUser);
+    _user.setUser(FirebaseAuth.instance.currentUser!);
     var email = _user.user != null ? _user.user?.email : '';
     var url = _user.user != null ? _user.user?.photoURL : '';
     url = (url! + "?s=200");
@@ -146,7 +146,7 @@ class EditAccountScreen extends StatelessWidget {
                                 email: _emailController.text,
                               )
                               .then((value) {
-                            _user.updateUser(FirebaseAuth.instance.currentUser);
+                            _user.updateUser(FirebaseAuth.instance.currentUser!);
                             // _user.notifyListeners();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(

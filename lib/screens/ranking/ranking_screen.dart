@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,33 +12,6 @@ class RankingScreen extends StatelessWidget {
     User? user = FirebaseAuth.instance.currentUser;
     var url = user != null ? user.photoURL : '';
     url = (url! + "?s=200");
-    // ignore: unused_local_variable
-    final List<Medal> medals = [
-      const Medal(
-          title: "FUNDAMENTOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535488.png"),
-      const Medal(
-          title: "ALGORÍTMOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535490.png"),
-      const Medal(
-          title: "FUNDAMENTOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535488.png"),
-      const Medal(
-          title: "ALGORÍTMOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535490.png"),
-      const Medal(
-          title: "FUNDAMENTOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535488.png"),
-      const Medal(
-          title: "ALGORÍTMOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535490.png"),
-      const Medal(
-          title: "FUNDAMENTOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535488.png"),
-      const Medal(
-          title: "ALGORÍTMOS",
-          coverImg: "https://cdn-icons-png.flaticon.com/512/2535/2535490.png"),
-    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -65,7 +40,7 @@ class RankingScreen extends StatelessWidget {
             }
             final List<DocumentSnapshot> docs = snapshot.data!.docs;
             return ListView.builder(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(10),
               itemCount: docs.length,
               itemBuilder: (context, index) {
                 final DocumentSnapshot doc = docs[index];
@@ -73,107 +48,42 @@ class RankingScreen extends StatelessWidget {
               },
             );
           }),
-
-      /*Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Card(
-              elevation: 5,
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 130,
-                    child: Image.network(
-                      url,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  FutureBuilder(
-                      future: FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(FirebaseAuth.instance.currentUser!.uid)
-                          .get(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
-                              snapshot) {
-                        if (!snapshot.hasData) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        final Map<String, dynamic>? data =
-                            snapshot.data?.data();
-                        if (data == null) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        return Column(
-                          children: [
-                            Text(data['fullName'],
-                                style: const TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.w500)),
-                            Text(data['points'].toString() + " puntos",
-                                style: const TextStyle(
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.red)),
-                          ],
-                        );
-                      }),
-                ],
-              )),
-          const SizedBox(
-            height: 30,
-          ),
-          Row(
-            children: [
-              const Expanded(
-                  child: Divider(
-                thickness: 1,
-                height: 10,
-                color: Colors.grey,
-              )),
-              Container(
-                margin: const EdgeInsets.only(left: 10.0, right: 10.0),
-                child: const Text("RANKING GLOBAL",
-                    style: TextStyle(fontSize: 12)),
-              ),
-              const Expanded(
-                  child: Divider(
-                thickness: 1,
-                height: 10,
-                color: Colors.grey,
-              )),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-        ],
-      )*/
     );
   }
 
   Widget _buildUserCard(BuildContext context, doc, index) {
+    var marginCard = const EdgeInsets.only(bottom: 15);
+    var shapeCard = const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topRight: Radius.circular(17)),
+        side: BorderSide(color: Colors.black, width: 0.15));
+
     return Card(
+      margin: marginCard,
+      shape: shapeCard,
+      clipBehavior: Clip.antiAlias,
       elevation: 5,
       child: Row(
         children: [
           SizedBox(
             width: 100,
-            child: Image.network(
-              doc['photoUrl'] + "?s=200",
-              fit: BoxFit.cover,
+            height: 100,
+            //! Habia un pequeño error debido a que al comienzo
+              //! el recusro habia usado una api para almacenar las fotos
+              //! y luego se implemento un imagePiker
+              //! el urlDomain google.apis/ ... debe ser el mismo para todos
+            child: FadeInImage.assetNetwork(
+              placeholder: 'assets/images/loading.gif',
+              image: doc['photoUrl'] + "?s=200",
+               fit: BoxFit.cover,
             ),
+            
+            
           ),
           const SizedBox(
             width: 15,
           ),
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("PUESTO #" + (index + 1).toString(),
@@ -195,8 +105,3 @@ class RankingScreen extends StatelessWidget {
   }
 }
 
-class Medal {
-  const Medal({required this.coverImg, required this.title});
-  final String coverImg;
-  final String title;
-}

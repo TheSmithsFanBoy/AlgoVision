@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,10 +8,13 @@ import '../provider/user_provider.dart';
 import 'drawer_item.dart';
 
 class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({Key? key}) : super(key: key);
 
+  
   @override
   Widget build(BuildContext context) {
+  
+  var userProvider = Provider.of<UserProvider>(context);
+
     return Drawer(
       child: Material(
         color: Colors.white24,
@@ -18,7 +22,7 @@ class NavigationDrawer extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(24.0, 80, 24, 0),
           child: Column(
             children: [
-              headerWidget(context),
+              headerWidget(context, userProvider),
               const SizedBox(
                 height: 40,
               ),
@@ -128,19 +132,27 @@ class NavigationDrawer extends StatelessWidget {
     );
   }
 
-  Widget headerWidget(context) {
-    final _user = Provider.of<UserProvider>(context);
-    _user.updateUser(FirebaseAuth.instance.currentUser);
-    if (_user.user != null) {
-      var email = _user.user?.email;
-      var displayName = _user.user?.displayName;
-      var photoUrl = _user.user?.photoURL.toString();
+  Widget headerWidget(context, userProvider) {
+    
+    //!Este widget esta escuchando
+    //! no es necesario crear una instancia de provider ya que 
+    //! la actualizacion solo se hace en updateUserPage
+  
+      var email = userProvider.user?.email;
+      var displayName = userProvider.user?.displayName;
+      var photoUrl = userProvider.user?.photoURL.toString();
       return Row(
         children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundImage: NetworkImage(photoUrl!),
-          ),
+            ClipRRect(
+                borderRadius: BorderRadius.circular(25.0),
+                child: CachedNetworkImage(
+                  
+                    fit: BoxFit.cover,
+                    width: 50,
+                    height: 50,
+                    placeholder: (context, url) => Image.asset('assets/images/loading.gif'),
+                    imageUrl: photoUrl!),
+              ),
           const SizedBox(
             width: 10,
           ),
@@ -161,14 +173,6 @@ class NavigationDrawer extends StatelessWidget {
           )
         ],
       );
-    } else {
-      return const Text(
-        'Iniciar Sesión',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-      );
-    }
+  
   }
 }

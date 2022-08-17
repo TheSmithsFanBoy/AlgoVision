@@ -14,10 +14,10 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  Widget _buildEmailTF() {
+  Widget _buildEmailTF(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         const Text(
           'Correo electrónico',
           style: kLabelStyle,
@@ -28,6 +28,7 @@ class LoginScreen extends StatelessWidget {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Por favor ingrese su correo electrónico';
@@ -72,7 +73,7 @@ class LoginScreen extends StatelessWidget {
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Por favor ingresa tu contraseña';
+                return 'Por favor ingrese su  contraseña';
               }
               return null;
             },
@@ -112,101 +113,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  // ignore: unused_element
-  Widget _buildRememberMeCheckbox() {
-    return SizedBox(
-      height: 20.0,
-      child: Row(
-        children: <Widget>[
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
-              value: false,
-              checkColor: Colors.green,
-              activeColor: Colors.white,
-              onChanged: (value) {
-                // ignore: avoid_print
-                print(value);
-              },
-            ),
-          ),
-          const Text(
-            'Recuérdame',
-            style: kLabelStyle,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSignInWithText() {
-    return Column(
-      children: const <Widget>[
-        Text(
-          '- O -',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        SizedBox(height: 20.0),
-        Text(
-          'Inicia Sesión con',
-          style: kLabelStyle,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSocialBtn(VoidCallback onTap, AssetImage logo) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 60.0,
-        width: 60.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 2),
-              blurRadius: 6.0,
-            ),
-          ],
-          image: DecorationImage(
-            image: logo,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialBtnRow() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _buildSocialBtn(
-            // ignore: avoid_print
-            () => print('Login with Facebook'),
-            const AssetImage(
-              "assets/icons/facebook.jpeg",
-            ),
-          ),
-          _buildSocialBtn(
-            // ignore: avoid_print
-            () => print('Login with Google'),
-            const AssetImage(
-              "assets/icons/google.jpeg",
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
+ 
   Widget _buildSignupBtn(context) {
     return GestureDetector(
       onTap: () => Navigator.of(context).pushNamed('/register'),
@@ -247,42 +154,7 @@ class LoginScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(30.0),
           ),
           primary: Colors.white,
-        ),
-        // ignore: avoid_print
-        onPressed: () {
-          if (_formKey.currentState != null &&
-              _formKey.currentState!.validate()) {
-            context
-                .read<AuthService>()
-                .signIn(
-                  email: emailController.text,
-                  password: passwordController.text,
-                )
-                .then((value) => ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text(
-                            value!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                          backgroundColor: Colors.grey),
-                    ));
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text(
-                    'Por favor ingresa todos los datos',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  backgroundColor: Colors.grey),
-            );
-          }
-        },
+        ),  
         child: const Text(
           'ACCEDER',
           style: TextStyle(
@@ -293,16 +165,54 @@ class LoginScreen extends StatelessWidget {
             fontFamily: 'OpenSans',
           ),
         ),
+        onPressed: ()=>_buildAccessPressed(context),
       ),
     );
   }
 
+  void _buildAccessPressed(BuildContext context) {
+    if (_formKey.currentState != null &&
+        _formKey.currentState!.validate()) {
+      context
+          .read<AuthService>()
+          .signIn(
+            email: emailController.text,
+            password: passwordController.text,
+          )
+          .then((value) => ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text(
+                      value!,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    backgroundColor: Colors.grey),
+              ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text(
+              'Por favor ingresa todos los datos',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16.0,
+              ),
+            ),
+            backgroundColor: Colors.grey),
+      );
+    }
+  }
+
+  //! Inicio de sesion
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: GestureDetector(
+          //! quita el foco del keyboard cuando tapeas a cualquier lado
           onTap: () => FocusScope.of(context).unfocus(),
           child: Stack(
             children: <Widget>[
@@ -324,16 +234,31 @@ class LoginScreen extends StatelessWidget {
                 height: double.infinity,
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 120.0,
+                  padding: const EdgeInsets.only(
+                    right: 40.0,
+                    left: 40.0,
+                    top: 50.0,
                   ),
                   child: Form(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      //? Con este valida automaticamente en los 2 textfield asociados ... es como si hiciera onChanged a los 2 
+                      //autovalidateMode: AutovalidateMode.onUserInteraction,
                       key: _formKey,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(bottom: 20),
+                            height: 100,
+                            width: 200,
+                            color: Colors.red,
+                            child: const Align(
+                              alignment: Alignment.center,
+                              child:  Text(
+                                'Logo de FUNdamental Algorithms',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
                           const Text(
                             'Iniciar Sesión',
                             style: TextStyle(
@@ -344,16 +269,11 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 30.0),
-                          _buildEmailTF(),
-                          const SizedBox(
-                            height: 30.0,
-                          ),
+                          _buildEmailTF(context),
+                          const SizedBox(height: 30.0),
                           _buildPasswordTF(),
                           _buildForgotPasswordBtn(context),
-                          //_buildRememberMeCheckbox(),
                           _buildLoginBtn(context),
-                          _buildSignInWithText(),
-                          _buildSocialBtnRow(),
                           _buildSignupBtn(context),
                         ],
                       )),

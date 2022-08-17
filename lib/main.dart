@@ -25,7 +25,6 @@ import 'package:tdpapp/screens/surveys/surveys_screen.dart';
 import 'package:tdpapp/screens/topic-content/topic_content_screen.dart';
 import 'package:tdpapp/screens/topic-quiz/topiz_quiz_screen.dart';
 import 'package:tdpapp/screens/topics/topics_screen.dart';
-import 'package:tdpapp/screens/welcome/welcome_screen.dart';
 import 'package:tdpapp/services/auth_service.dart';
 
 Future<void> main() async {
@@ -95,12 +94,16 @@ class _MyAppState extends State<MyApp> {
               FirebaseAuth.instance.currentUser == null ? '/login' : '/home',
           navigatorKey: _navigatorKey,
           routes: {
-            '/': (context) => const WelcomeScreen(),
+            '/login': (context) => LoginScreen(), //Pantalla de inicio Login
             '/register': (context) => RegisterScreen(),
-            '/sign-in': (context) => const SignInScreen(),
-            '/login': (context) => LoginScreen(),
-            '/forgot-password': (context) => ForgotPasswordScreen(),
+
             '/home': (context) => const HomeScreen(),
+            
+
+           
+            '/sign-in': (context) => const SignInScreen(),
+            '/forgot-password': (context) => ForgotPasswordScreen(),
+            
             '/fundamentals': (context) => const FundamentalsScreen(),
             '/algorithm': (context) => const AlgorithmScreen(),
             '/challenges': (context) => const ChallengesScreen(),

@@ -107,17 +107,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _buildImagePikerTF(context) {
     return Column(
       children: <Widget>[
-        SizedBox(
-          height: 32,
-        ),
         Center(
           child: GestureDetector(
             onTap: () {
               _showPicker(context);
             },
             child: CircleAvatar(
-              radius: 50,
-              backgroundColor: Color(0xffFDCF09),
+              radius: 45,
               child: _photo != null
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(55),
@@ -130,13 +126,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     )
                   : Container(
                       decoration: BoxDecoration(
-                          color: Colors.grey[200],
+                          color: Color(0xff212121).withOpacity(0.9),
                           borderRadius: BorderRadius.circular(50)),
                       width: 100,
                       height: 100,
-                      child: Icon(
-                        Icons.camera_alt,
-                        color: Colors.grey[800],
+                      child: const Icon(
+                        Icons.add_photo_alternate,
+                        color: Colors.white,
                       ),
                     ),
             ),
@@ -435,13 +431,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: double.infinity,
                 child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40.0,
-                      vertical: 120.0,
-                    ),
+                    padding: const EdgeInsets.only(
+                    right: 40.0,
+                    left: 40.0,
+                    top: 40.0,
+                    bottom: 40.0
+                  ),
                     child: Form(
                       key: _formKey,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      //autovalidateMode: AutovalidateMode.onUserInteraction,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -454,7 +452,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 30.0),
+                          const SizedBox(height: 15.0),
                           _buildImagePikerTF(context),
                           const SizedBox(
                             height: 20.0,
