@@ -1,5 +1,6 @@
-import 'dart:io';
+// ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_declarations
 
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -69,6 +70,11 @@ class EditAccountScreen extends StatelessWidget {
     var displayName = _user.user != null ? _user.user?.displayName : '';
     _emailController.text = email!;
     _displayNameController.text = displayName!;
+
+
+    CollectionReference collecion = FirebaseFirestore.instance.collection('users');
+
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Editar cuenta'),
@@ -139,6 +145,9 @@ class EditAccountScreen extends StatelessWidget {
                       onPressed: () {
                         if (_formKey.currentState != null &&
                             _formKey.currentState!.validate()) {
+                         
+                          
+                          
                           context
                               .read<AuthService>()
                               .updateAccount(

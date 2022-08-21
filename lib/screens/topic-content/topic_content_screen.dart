@@ -1,13 +1,13 @@
+// ignore_for_file: prefer_const_constructors, must_be_immutable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:provider/provider.dart';
 import 'package:tdpapp/models/screen_arguments.dart';
 import 'package:tdpapp/widgets/survey_question.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../provider/topic_video_provider.dart';
 
 class TopicContentScreen extends StatefulWidget {
   const TopicContentScreen({Key? key}) : super(key: key);

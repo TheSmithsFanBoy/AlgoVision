@@ -52,6 +52,12 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 		multiDexEnabled true
+        lintOptions {
+            disable 'InvalidPackage'
+            disable "Instantiatable"
+            checkReleaseBuilds false
+            abortOnError false
+        }
     }
 
     buildTypes {

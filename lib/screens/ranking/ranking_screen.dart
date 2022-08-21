@@ -1,14 +1,24 @@
-import 'dart:typed_data';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class RankingScreen extends StatelessWidget {
+class RankingScreen extends StatefulWidget {
   const RankingScreen({Key? key}) : super(key: key);
 
   @override
+  State<RankingScreen> createState() => _RankingScreenState();
+}
+
+class _RankingScreenState extends State<RankingScreen> with AutomaticKeepAliveClientMixin{
+
+  bool get wantKeepAlive=>true;
+
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     User? user = FirebaseAuth.instance.currentUser;
     var url = user != null ? user.photoURL : '';
     url = (url! + "?s=200");
@@ -103,5 +113,7 @@ class RankingScreen extends StatelessWidget {
       ),
     );
   }
+  
+  
 }
 

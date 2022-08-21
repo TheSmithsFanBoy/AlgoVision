@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tdpapp/provider/user_provider.dart';
-import 'package:tdpapp/services/auth_service.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -116,7 +115,7 @@ class AccountScreen extends StatelessWidget {
                                     title: Text(m['name']),
                                     subtitle: Text(p['medals'][index].id),
                                   );
-                                }
+                                }       
                                 return Container();
                               },
                               future: FirebaseFirestore.instance

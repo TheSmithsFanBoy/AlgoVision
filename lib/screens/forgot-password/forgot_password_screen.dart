@@ -57,13 +57,17 @@ class ForgotPasswordScreen extends StatelessWidget {
   }
 
   Widget _buildPasswordTF() {
-    return const Text(
-      "Si olvidaste tu contraseña, ingresa tu correo electrónico y te enviaremos un enlace para restablecerla.",
-      style: TextStyle(
-        color: Colors.white,
-        fontFamily: 'OpenSans',
-        fontSize: 15.0,
-        fontWeight: FontWeight.w400,
+    return const Align(
+      alignment: Alignment.center,
+      child:  Text(
+        "Si olvidaste tu contraseña, ingresa tu correo electrónico y te enviaremos un enlace para restablecerla.",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.white,
+          fontFamily: 'OpenSans',
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+        ),
       ),
     );
   }

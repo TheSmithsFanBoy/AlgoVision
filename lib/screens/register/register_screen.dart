@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, duplicate_ignore, prefer_const_constructors
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -11,7 +13,7 @@ import 'package:path/path.dart';
 import '../../constants/theme_constants.dart';
 
 class RegisterScreen extends StatefulWidget {
-  RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
@@ -38,6 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _photo = File(pickedFile.path);
         uploadFile();
       } else {
+        // ignore: avoid_print
         print('No image selected.');
       }
     });
@@ -51,6 +54,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _photo = File(pickedFile.path);
         uploadFile();
       } else {
+        // ignore: avoid_print
         print('No image selected.');
       }
     });
@@ -59,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future uploadFile() async {
     if (_photo == null) return;
     final fileName = basename(_photo!.path);
-    final destination = 'Perfil';
+    const destination = 'Perfil';
 
     try {
       final ref = firebase_storage.FirebaseStorage.instance
@@ -68,6 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       await ref.putFile(_photo!);
       imgUrl = await ref.getDownloadURL();
       print("imagen");
+      // ignore: avoid_print
       print(imgUrl);
     } catch (e) {
       print('error occured');
@@ -79,19 +84,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
         context: context,
         builder: (BuildContext bc) {
           return SafeArea(
+            // ignore: avoid_unnecessary_containers
             child: Container(
-              child: new Wrap(
-                children: <Widget>[
-                  new ListTile(
-                      leading: new Icon(Icons.photo_library),
-                      title: new Text('Gallery'),
+              child:  Wrap(
+                children: [
+                   ListTile(
+                      leading:  const Icon(Icons.photo_library),
+                      title:  const Text('Gallery'),
                       onTap: () {
                         imgFromGallery();
                         Navigator.of(context).pop();
                       }),
-                  new ListTile(
-                    leading: new Icon(Icons.photo_camera),
-                    title: new Text('Camera'),
+                   ListTile(
+                    leading:  const Icon(Icons.photo_camera),
+                    title:  const Text('Camera'),
                     onTap: () {
                       imgFromCamera();
                       Navigator.of(context).pop();
@@ -156,18 +162,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp('[a-zA-Z a space]')),
+            ],
             controller: fullNameController,
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Por favor ingrese su nombre';
-              } else if (value.length < 3) {
-                return 'Ingrese un nombre válido';
-              } else if (value.length > 30) {
-                return 'Máximo 30 caracteres';
-              }
+                return 'Por favor ingrese sus nombre y apellidos';
+              } else if (value.length < 3 || value.length > 30) {
+                return 'Los nombres y apellidos deben tener entre 3 a 30 caracteres';
+              } 
               return null;
             },
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.text,
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -210,8 +217,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                   .hasMatch(value)) {
                 return 'Ingrese un correo electrónico válido';
-              } else if (value.length > 30) {
-                return 'Máximo 30 caracteres';
+                
+              } else if (value.length < 5 || value.length > 30) {
+                return 'El correo debe tener entre 5 a 30 caracteres';
               }
               return null;
             },
@@ -250,16 +258,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            
             controller: passwordController,
             validator: (value) {
+              
+                RegExp regex =
+                  RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
               if (value!.isEmpty) {
                 return 'Por favor ingrese su contraseña';
-              } else if (value.length < 8) {
-                return 'Ingrese una contraseña válida';
-              } else if (value.length > 16) {
-                return 'Máximo 16 caracteres';
+              }  else if (value.length < 8 || value.length > 16) {
+                return 'La contraseña debe tener entre 8 a 16 caracteres';
+              } else  {
+                if (!regex.hasMatch(value)) {
+                  return 'Ingrese una contraseña válida';
+                } else {
+                  return null;
+                }
               }
-              return null;
+              
             },
             obscureText: true,
             style: const TextStyle(

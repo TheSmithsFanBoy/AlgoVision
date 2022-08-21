@@ -23,11 +23,13 @@ class AuthService {
   /// This is to make it as easy as possible but a better way would be to
   /// use your own custom class that would take the exception and return better
   /// error messages. That way you can throw, return or whatever you prefer with that instead.
-  Future<String?> signIn(
-      {required String email, required String password}) async {
+  Future<String?> signIn({required String email, required String password}) async {
+    
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+                                                      email: email, 
+                                                      password: password
+                                                    );
       // This is the same as await _firebaseAuth.currentUser();
       return "¡Bienvenido de vuelta!";
     } on FirebaseAuthException catch (e) {
@@ -39,7 +41,7 @@ class AuthService {
 
         case "The email address is already in use by another account.":
           {
-            return "La dirección de correo electrónico ya está en uso por otra cuenta.";
+            return "La dirección de correo electrónico ya está en uso, por favor ingresa otro correo.";
           }
 
         case "There is no user record corresponding to this identifier. The user have been deleted.":
@@ -56,7 +58,6 @@ class AuthService {
           {
             return e.message;
           }
-          break;
       }
     }
   }
@@ -77,13 +78,13 @@ class AuthService {
     });
   }
 
+ 
+
   /// There are a lot of different ways on how you can do exception handling.
   /// This is to make it as easy as possible but a better way would be to
   /// use your own custom class that would take the exception and return better
   /// error messages. That way you can throw, return or whatever you prefer with that instead.
-  Future<String?> signUp({required String email,
-    required String password,
-    required String fullName, required String profileImg}) async {
+  Future<String?> signUp({required String email, required String password, required String fullName, required String profileImg}) async {
     try {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -113,7 +114,7 @@ class AuthService {
 
         case "The email address is already in use by another account.":
           {
-            return "La dirección de correo electrónico ya está en uso por otra cuenta.";
+            return "La dirección de correo electrónico ya está en uso, por favor ingresa otro correo.";
           }
 
         default:
@@ -175,7 +176,7 @@ class AuthService {
 
         case "The email address is already in use by another account.":
           {
-            return "La dirección de correo electrónico ya está en uso por otra cuenta.";
+            return "La dirección de correo electrónico ya está en uso, por favor ingresa otro correo.";
           }
 
         default:
@@ -200,7 +201,7 @@ class AuthService {
 
         case "The email address is already in use by another account.":
           {
-            return "La dirección de correo electrónico ya está en uso por otra cuenta.";
+            return "La dirección de correo electrónico ya está en uso, por favor ingresa otro correo.";
           }
 
         default:

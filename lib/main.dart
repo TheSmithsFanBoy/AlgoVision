@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,6 +28,7 @@ import 'package:tdpapp/screens/topic-content/topic_content_screen.dart';
 import 'package:tdpapp/screens/topic-quiz/topiz_quiz_screen.dart';
 import 'package:tdpapp/screens/topics/topics_screen.dart';
 import 'package:tdpapp/services/auth_service.dart';
+import 'package:tdpapp/widgets/video_prueba.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -96,10 +99,10 @@ class _MyAppState extends State<MyApp> {
           routes: {
             '/login': (context) => LoginScreen(), //Pantalla de inicio Login
             '/register': (context) => RegisterScreen(),
-
             '/home': (context) => const HomeScreen(),
             
 
+            '/video-test' : (_)=> const VideoPlayerFlutterTest(),
            
             '/sign-in': (context) => const SignInScreen(),
             '/forgot-password': (context) => ForgotPasswordScreen(),

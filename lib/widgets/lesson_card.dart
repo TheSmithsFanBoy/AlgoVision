@@ -12,8 +12,8 @@ class LessonCard extends StatefulWidget {
 class _LessonCardState extends State<LessonCard> {
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: const Text('Tópicos'),
+    return const ExpansionTile(
+      title: Text('Tópicos'),
       children: [],
     );
   }

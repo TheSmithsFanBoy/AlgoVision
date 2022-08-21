@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -179,6 +179,7 @@ class LoginScreen extends StatelessWidget {
             email: emailController.text,
             password: passwordController.text,
           )
+          //! se muestra el snackbar con cada uno de los mensajes de las validaciones de firebase
           .then((value) => ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                     content: Text(
@@ -250,14 +251,14 @@ class LoginScreen extends StatelessWidget {
                             margin: EdgeInsets.only(bottom: 20),
                             height: 100,
                             width: 200,
-                            color: Colors.red,
-                            child: const Align(
-                              alignment: Alignment.center,
-                              child:  Text(
-                                'Logo de FUNdamental Algorithms',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
+                            color: Colors.transparent,
+                            //child: const Align(
+                            //  alignment: Alignment.center,
+                            //  child:  Text(
+                            //    'Logo de FUNdamental Algorithms',
+                            //    textAlign: TextAlign.center,
+                            //  ),
+                            //),
                           ),
                           const Text(
                             'Iniciar Sesión',
