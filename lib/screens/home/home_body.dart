@@ -54,7 +54,7 @@ class HomeBody extends StatelessWidget {
                                   parentId: ''));
                         }
                         break;
-                      case "Fundamentos de Progra":
+                      case "Fundamentos de Programación":
                         {
 
                           Navigator.pushNamed(context, "/fundamentals",
@@ -89,8 +89,9 @@ class HomeBody extends StatelessWidget {
                               children: [
                                 Text(
                                   doc['name'],
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 17,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

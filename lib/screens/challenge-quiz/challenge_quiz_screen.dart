@@ -41,41 +41,53 @@ class ChallengeQuizScreen extends StatelessWidget {
   }
 
   Widget _buildSurvey(BuildContext context, data, challengeId) {
-    return Column(
-      children: [
-        _buildCaption(data),
-        const SizedBox(height: 16),
-        SurveyQuestion(
-          validOption: data['correctAnswer'],
-          options: data['options'].cast<String>(),
-      optionsInvalidText: data['optionInvalidText'].cast<String>(),
-          callback: () => {
-            FirebaseFirestore.instance
-                .collection('challenges')
-                .doc(challengeId)
-                .update({
-              'completedBy': FieldValue.arrayUnion([
-                FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(FirebaseAuth.instance.currentUser?.uid ?? 'null')
-              ])
-            }),
-            FirebaseFirestore.instance
-                .collection('users')
-                .doc(FirebaseAuth.instance.currentUser?.uid ?? 'null')
-                .update({'points': FieldValue.increment(data['points'])}),
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil('/home', (route) => false)
-          },
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildCaption(data),
+          const SizedBox(height: 16),
+          SurveyQuestion(
+            validOption: data['correctAnswer'],
+            options: data['options'].cast<String>(),
+        optionsInvalidText: data['optionInvalidText'].cast<String>(),
+            callback: () => {
+              FirebaseFirestore.instance
+                  .collection('challenges')
+                  .doc(challengeId)
+                  .update({
+                'completedBy': FieldValue.arrayUnion([
+                  FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(FirebaseAuth.instance.currentUser?.uid ?? 'null')
+                ])
+              }),
+              FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(FirebaseAuth.instance.currentUser?.uid ?? 'null')
+                  .update({'points': FieldValue.increment(data['points'])}),
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/home', (route) => false)
+            },
+          ),
+        ],
+      ),
     );
   }
 
   _buildCaption(doc) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Text(doc['caption'], style: const TextStyle(fontSize: 18)),
+      child: Column(
+        children: [
+          Text(doc['caption'], style: const TextStyle(fontSize: 18)),
+          SizedBox(height: 10,),
+          Container(
+            child: Image.asset(
+              'assets/icons/bloque.png'
+            ),
+          )
+        ],
+      ),
     );
   }
 }

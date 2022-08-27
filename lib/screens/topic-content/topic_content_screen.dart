@@ -30,12 +30,8 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
           backgroundColor: Colors.transparent,
         ),
         body: FutureBuilder(
-          future: FirebaseFirestore.instance
-              .collection('topics')
-              .doc(args.id)
-              .get(),
-          builder: (context,
-              AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+          future: FirebaseFirestore.instance.collection('topics').doc(args.id).get(),
+          builder: (context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.hasData &&
                 snapshot.connectionState == ConnectionState.done) {
               if (!snapshot.hasData) {
@@ -51,6 +47,9 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                 child: Column(
                   children: [
                     const SizedBox(height: 15),
+                   
+          
+                    
                     Center(
                         child: Text(data['title'],
                             style: const TextStyle(
@@ -88,32 +87,33 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                           backgroundColor: Colors.yellow.shade600,
                           fixedSize: const Size(30, 30),
                         ),
-                        child: const Text('SIGUIENTE TÓPICO',
+                        child: const Text('FINALIZAR CONTENIDO DE TÓPICO',
                             style: TextStyle(
                                 fontSize: 19,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.indigo)),
                         onPressed: () {
-                          FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .update({
-                            'topics': FieldValue.arrayUnion([
-                              FirebaseFirestore.instance
-                                  .collection('topics')
-                                  .doc(args.id)
-                            ])
+                          FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid)
+                          .update({
+                            'topics': FieldValue.arrayUnion(
+                              [
+                                FirebaseFirestore.instance
+                                    .collection('topics')
+                                    .doc(args.id)
+                              ]
+                            )
                           });
-
-                          Navigator.pushReplacementNamed(
-                              context, '/topic-content',
-                              arguments: ScreenArguments(
-                                  id: p.docs[0].id,
-                                  parentId:
-                                      (int.parse(args.parentId) + 1).toString(),
-                                  title: "",
-                                  description: p.docs[0]['lesson'].id));
-                        });
+                          Navigator.pop(context);
+                          //Navigator.pushReplacementNamed(
+                          //    context, '/topic-content',
+                          //    arguments: ScreenArguments(
+                          //        id: p.docs[0].id,
+                          //        parentId:
+                          //            (int.parse(args.parentId) + 1).toString(),
+                          //        title: "",
+                          //        description: p.docs[0]['lesson'].id));
+                        }
+                      );
                   } else {
                     return TextButton(
                         style: TextButton.styleFrom(
@@ -296,10 +296,7 @@ class Step extends StatefulWidget {
   @override
   State<Step> createState() => _StepState();
 
-  // void update(String text) {
-  //   textStep = text;
-  //   _StepState().test();
-  // }
+
 }
 
 class _StepState extends State<Step> {

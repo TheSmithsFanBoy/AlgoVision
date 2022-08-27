@@ -104,7 +104,7 @@ class AuthService {
         'topics': [],
         'medals': [],
       });
-      return "¡Bienvenido a TDAPP!";
+      return "¡Bienvenido!";
     } on FirebaseAuthException catch (e) {
       switch (e.message) {
         case "The email address is badly formatted.":

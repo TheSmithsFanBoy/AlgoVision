@@ -1,5 +1,6 @@
 
 
+import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,9 @@ class _RankingScreenState extends State<RankingScreen> with AutomaticKeepAliveCl
               itemCount: docs.length,
               itemBuilder: (context, index) {
                 final DocumentSnapshot doc = docs[index];
-                return _buildUserCard(context, doc, index);
+                return SlideInLeft(
+                  duration: Duration(milliseconds: 2000+ index*700),
+                  child: _buildUserCard(context, doc, index));
               },
             );
           }),

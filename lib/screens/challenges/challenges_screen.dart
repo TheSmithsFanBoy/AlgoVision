@@ -30,7 +30,7 @@ class ChallengesScreen extends StatelessWidget {
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('challenges')
-              .orderBy('points', descending: true)
+              .orderBy('points', descending: false)
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
@@ -56,63 +56,6 @@ class ChallengesScreen extends StatelessWidget {
             );
           }),
     );
-    /* ListView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: menu.length,
-          itemBuilder: (context, index) {
-            final MenuData item = menu[index];
-            return InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, item.route);
-                },
-                child: Card(
-                  elevation: 4,
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                item.title,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                item.description,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const Text(
-                                "60% completado",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.green,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Image.network(
-                          item.coverImg,
-                          width: 90,
-                          height: 90,
-                        ),
-                      ],
-                    ),
-                  ),
-                ));
-          },
-        )*/
   }
 
   Widget _buildChallengeCard(BuildContext context,
@@ -195,20 +138,3 @@ class ChallengesScreen extends StatelessWidget {
   }
 }
 
-/*
-class MenuData {
-  const MenuData(
-      {required this.coverImg,
-      required this.title,
-      required this.description,
-      required this.route});
-
-  final String coverImg;
-
-  final String title;
-
-  final String description;
-
-  final String route;
-}
-*/
