@@ -1,3 +1,5 @@
+// ignore_for_file: override_on_non_overriding_member, avoid_print, unused_element, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -83,7 +85,7 @@ class _VideoPlayerFlutterTestState extends State<VideoPlayerFlutterTest> {
         return SafeArea(
           child: Scaffold(
             appBar: AppBar(
-              title: Text('Prueba Video'),
+              title: const Text('Prueba Video'),
               centerTitle: true,
             ),
             body: ListView(
@@ -123,12 +125,12 @@ class _VideoPlayerFlutterTestState extends State<VideoPlayerFlutterTest> {
                                       textAlign: TextAlign.center,
                                     ))),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
                   height: 40,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
 
-                    physics: ScrollPhysics(), //*
+                    physics: const ScrollPhysics(), //*
                     shrinkWrap: true, //*
 
                     children: [
@@ -146,7 +148,7 @@ class _VideoPlayerFlutterTestState extends State<VideoPlayerFlutterTest> {
                           onPressed: () {
                             //getUsuarios();
                           },
-                          child: Text('llamada HTTP'))
+                          child: const Text('llamada HTTP'))
                     ],
                   ),
                 ),
@@ -193,7 +195,7 @@ class _VideoPlayerFlutterTestState extends State<VideoPlayerFlutterTest> {
   Widget _botonPlayerAdelantar(String textoBoton, int segundo) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Container(
+      child: SizedBox(
         width: 150,
         height: 40,
         child: ElevatedButton(
@@ -217,7 +219,7 @@ class _VideoPlayerFlutterTestState extends State<VideoPlayerFlutterTest> {
   Widget _botonContinuarPausear() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Container(
+      child: SizedBox(
         width: 150,
         height: 40,
         child: ElevatedButton(
@@ -282,7 +284,7 @@ class _ListViewUsuarios extends StatelessWidget {
         height: 100,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          physics: ScrollPhysics(), //*
+          physics: const ScrollPhysics(), //*
           shrinkWrap: true, //*
           itemCount: usuarios.length,
           itemBuilder: (BuildContext context, int index) {

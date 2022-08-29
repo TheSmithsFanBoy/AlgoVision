@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tdpapp/models/screen_arguments.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class FundamentalsScreen extends StatefulWidget {
   const FundamentalsScreen({Key? key}) : super(key: key);
@@ -45,7 +46,7 @@ class _FundamentalsScreenState extends State<FundamentalsScreen> {
 
             final List<DocumentSnapshot> docs = snapshot.data!.docs;
             var prevLessonCompleted = true;
-            
+
             return ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: docs.length,
@@ -157,7 +158,7 @@ class _FundamentalsScreenState extends State<FundamentalsScreen> {
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      padding: const EdgeInsets.only(left: 40),
+                      padding: const EdgeInsets.only(left: 25),
                       itemCount: docs.length,
                       itemBuilder: (context, index) {
                         final DocumentSnapshot data = docs[index];
@@ -175,22 +176,19 @@ class _FundamentalsScreenState extends State<FundamentalsScreen> {
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(
-            color: Colors.grey.shade300,
-            borderRadius: BorderRadius.circular(17),
-          ),
           child: data['type'] == 'quiz'
-              ? Icon(Icons.quiz,
-              color: Colors.grey.shade600, size: 15)
+              ? _buildIconType('assets/icons/test.svg', 0xff1e130c, 0xff9a8478)
               : data['type'] == 'text'
-              ? Icon(Icons.document_scanner,
-              color: Colors.grey.shade600, size: 15)
+
+              ? _buildIconType('assets/icons/teoria.svg', 0xff6441A5, 0xff6441A5)
+              : data['type'] == 'text-ejemplo'
+              ? _buildIconType('assets/icons/example.svg', 0xff16222A, 0xff3A6073)
+              
               : data['type'] == 'practice'
               ? Icon(Icons.auto_awesome_mosaic_rounded,
-              color: Colors.grey.shade600, size: 15)
+              color: Colors.grey.shade600, size: 26)
               : Icon(Icons.play_circle_outline,
-              color: Colors.grey.shade600, size: 15)
+              color: Colors.grey.shade600, size: 26)
         ),
         const SizedBox(width: 10),
         FutureBuilder(
@@ -212,17 +210,22 @@ class _FundamentalsScreenState extends State<FundamentalsScreen> {
                                 description: data['lesson'].id,
                               )).then((_) => setState(() {}));
                         },
-                        child: Row(children: [
-                          Text(data['order'].toString() +
-                              ". " +
-                              data['title'] +
-                              ' - '),
+                        child: Row(
+                          children: [
+                            Text(
+                                data['order'].toString() +". " +data['title'] +' - ', 
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black54
+                              ),
+                            ),
                           const Text('Completado',
                               style: TextStyle(color: Colors.green))
                         ]),
-                        style: TextButton.styleFrom(
-                          primary: Colors.grey.shade600,
-                        ));
+                        //style: TextButton.styleFrom(
+                        //  primary: Colors.grey.shade600,
+                        //)
+                    );
                   }
                 }
                 return TextButton(
@@ -256,5 +259,28 @@ class _FundamentalsScreenState extends State<FundamentalsScreen> {
                 .get()),
       ],
     );
+  }
+
+  Container _buildIconType(String iconUrl, int color1, int color2) {
+    return Container(
+              padding: const EdgeInsets.all(6),
+              width: 35,
+              height: 35,
+                child: SvgPicture.asset(
+                  iconUrl,
+                  alignment: Alignment.center,
+                ),
+                decoration:  BoxDecoration(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(17)
+                  ),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(color1),
+                      Color(color2)
+                    ]
+                  )
+                ),
+              );
   }
 }

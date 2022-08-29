@@ -9,13 +9,13 @@ class SurveyQuestion extends StatefulWidget {
   final Function? callback;
 
 
-  const SurveyQuestion(
-      {Key? key,
+  const SurveyQuestion({
+      Key? key,
       required this.validOption,
       required this.options,
-        required this.optionsInvalidText,
-      this.callback})
-      : super(key: key);
+      required this.optionsInvalidText,
+      this.callback
+    }): super(key: key);
 
   @override
   State<SurveyQuestion> createState() => _SurveyQuestionState();

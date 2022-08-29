@@ -80,11 +80,9 @@ class ChallengeQuizScreen extends StatelessWidget {
       child: Column(
         children: [
           Text(doc['caption'], style: const TextStyle(fontSize: 18)),
-          SizedBox(height: 10,),
-          Container(
-            child: Image.asset(
-              'assets/icons/bloque.png'
-            ),
+          const SizedBox(height: 10,),
+          Image.asset(
+            'assets/icons/bloque.png'
           )
         ],
       ),
