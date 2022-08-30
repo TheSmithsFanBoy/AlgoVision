@@ -93,37 +93,39 @@ class AccountScreen extends StatelessWidget {
                     for (var medal in p['medals']) {
                       idList.add(medal.id);
                     }
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return FutureBuilder(
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                                if (snapshot.hasData) {
-                                  var m = snapshot.data! as DocumentSnapshot;
-                                  return ListTile(
-                                    leading: Image.network(
-                                      m['image'],
-                                      width: 60,
-                                      height: 60,
-                                    ),
-                                    title: Text(m['name']),
-                                    subtitle: Text(p['medals'][index].id),
-                                  );
-                                }       
-                                return Container();
-                              },
-                              future: FirebaseFirestore.instance
-                                  .collection('medals')
-                                  .doc(idList[index])
-                                  .get());
-                        },
-                        itemCount: idList.length);
+                    return Expanded(
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return FutureBuilder(
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                  if (snapshot.hasData) {
+                                    var m = snapshot.data! as DocumentSnapshot;
+                                    return ListTile(
+                                      leading: Image.network(
+                                        m['image'],
+                                        width: 60,
+                                        height: 60,
+                                      ),
+                                      title: Text(m['name']),
+                                      subtitle: Text(p['medals'][index].id),
+                                    );
+                                  }       
+                                  return Container();
+                                },
+                                future: FirebaseFirestore.instance
+                                    .collection('medals')
+                                    .doc(idList[index])
+                                    .get());
+                          },
+                          itemCount: idList.length),
+                    );
                   }
                   return Container();
                 },
