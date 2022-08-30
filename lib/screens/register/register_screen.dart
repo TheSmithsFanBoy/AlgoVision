@@ -31,6 +31,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   File? _photo;
   String imgUrl = "";
   final ImagePicker _picker = ImagePicker();
+  bool _isDisabled = true;
+
+
+  void _enableButton(){
+    setState(() {
+      _isDisabled=false;
+    });
+  }
 
   Future imgFromGallery() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -39,6 +47,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (pickedFile != null) {
         _photo = File(pickedFile.path);
         uploadFile();
+        _enableButton();
       } else {
         // ignore: avoid_print
         print('No image selected.');
@@ -53,6 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (pickedFile != null) {
         _photo = File(pickedFile.path);
         uploadFile();
+        _enableButton();
       } else {
         // ignore: avoid_print
         print('No image selected.');
@@ -355,7 +365,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           primary: Colors.white,
         ),
         // ignore: avoid_print
-        onPressed: () {
+        onPressed: _isDisabled ? null : () {
           if (_formKey.currentState != null &&
               _formKey.currentState!.validate()) {
             context

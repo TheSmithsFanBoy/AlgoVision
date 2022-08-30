@@ -96,6 +96,7 @@ class ChallengesScreen extends StatelessWidget {
                     Text("RETO #" + (index + 1).toString() + ": ",
                         style: const TextStyle(
                             fontSize: 17, fontWeight: FontWeight.w700)),
+
                     Text(doc['title'].toString().toUpperCase(),
                         style: const TextStyle(
                             fontSize: 17, fontWeight: FontWeight.w700)),
@@ -104,6 +105,7 @@ class ChallengesScreen extends StatelessWidget {
                 Text(doc['description'],
                     style: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w400)),
+
                 Row(
                   children: [
                     Text(doc['points'].toString() + " puntos",

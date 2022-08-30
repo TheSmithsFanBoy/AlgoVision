@@ -164,8 +164,10 @@ class AuthService {
   Future<String?> updateAccount(
       {required String displayName, required String email}) async {
     try {
+      final docUser = FirebaseFirestore.instance.collection('users').doc(_firebaseAuth.currentUser!.uid);
       await _firebaseAuth.currentUser!.updateEmail(email);
       await _firebaseAuth.currentUser!.updateDisplayName(displayName);
+      docUser.update({'fullName': displayName,'email':email});
       return "Datos actualizados correctamente";
     } on FirebaseAuthException catch (e) {
       switch (e.message) {
