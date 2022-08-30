@@ -15,6 +15,7 @@ class ChallengeQuizScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(args.title),
           centerTitle: true,
+         
         ),
         body: FutureBuilder(
             future: FirebaseFirestore.instance
@@ -65,8 +66,7 @@ class ChallengeQuizScreen extends StatelessWidget {
                   .collection('users')
                   .doc(FirebaseAuth.instance.currentUser?.uid ?? 'null')
                   .update({'points': FieldValue.increment(data['points'])}),
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil('/home', (route) => false)
+              Navigator.of(context).pushReplacementNamed('/challenges')
             },
           ),
         ],

@@ -80,27 +80,42 @@ class AccountScreen extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            FutureBuilder(
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+            _listMedals(),
+           
+          ],
+        ),
+      ),
+    );
+  }
+
+  FutureBuilder<DocumentSnapshot<Map<String, dynamic>>> _listMedals() {
+    
+    return FutureBuilder(
+              future: FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get(),
+              builder: (context, snapshot) {
+                
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                if (snapshot.hasData) {
+                  var p = snapshot.data! as DocumentSnapshot;
+                  var idList = [];
+                  for (var medal in p['medals']) {
+                    idList.add(medal.id);
                   }
-                  if (snapshot.hasData) {
-                    var p = snapshot.data! as DocumentSnapshot;
-                    var idList = [];
-                    for (var medal in p['medals']) {
-                      idList.add(medal.id);
-                    }
+
                     return Expanded(
                       child: ListView.builder(
                           shrinkWrap: true,
+                          itemCount: idList.length,
                           itemBuilder: (context, index) {
                             return FutureBuilder(
+                              future: FirebaseFirestore.instance.collection('medals').doc(idList[index]).get(),
                                 builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
                                     return const Center(
                                       child: CircularProgressIndicator(),
                                     );
@@ -108,35 +123,23 @@ class AccountScreen extends StatelessWidget {
                                   if (snapshot.hasData) {
                                     var m = snapshot.data! as DocumentSnapshot;
                                     return ListTile(
-                                      leading: Image.network(
-                                        m['image'],
-                                        width: 60,
-                                        height: 60,
-                                      ),
+                                      leading: Image.network(m['image'],
+                                          width: 60,
+                                          height: 60,
+                                        ),
                                       title: Text(m['name']),
                                       subtitle: Text(p['medals'][index].id),
                                     );
                                   }       
                                   return Container();
                                 },
-                                future: FirebaseFirestore.instance
-                                    .collection('medals')
-                                    .doc(idList[index])
-                                    .get());
+                                );
                           },
-                          itemCount: idList.length),
+                        ),
                     );
-                  }
-                  return Container();
-                },
-                future: FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .get()),
-           
-          ],
-        ),
-      ),
-    );
+                }
+                return Container();
+              },
+              );
   }
 }

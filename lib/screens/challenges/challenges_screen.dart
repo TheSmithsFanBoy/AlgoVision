@@ -12,6 +12,7 @@ class ChallengesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        
         title: const Text('Retos'),
         centerTitle: true,
         backgroundColor: Colors.blueGrey,
@@ -28,40 +29,39 @@ class ChallengesScreen extends StatelessWidget {
         ),
       ),
       body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('challenges')
-              .orderBy('points', descending: false)
-              .snapshots(),
+          stream: FirebaseFirestore.instance.collection('challenges').orderBy('pos', descending: false).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
+            
             final List<DocumentSnapshot> docs = snapshot.data!.docs;
+
+            
+            
             return ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: docs.length,
               itemBuilder: (context, index) {
-                final DocumentSnapshot doc = docs[index];
+                final DocumentSnapshot doc = docs[index]; //each doc
                 var isCompleted = false;
                 if (doc['completedBy'] != null) {
-                  isCompleted = doc['completedBy'].contains(FirebaseFirestore
-                      .instance
-                      .collection('users')
-                      .doc(FirebaseAuth.instance.currentUser?.uid ?? 'null'));
+                  isCompleted = doc['completedBy'].contains(FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid ?? 'null'));
                 }
-                return _buildChallengeCard(context, doc, index, isCompleted);
+
+                
+                return  _buildChallengeCard(context, doc, index, isCompleted);
               },
             );
           }),
     );
   }
 
-  Widget _buildChallengeCard(BuildContext context,
-      DocumentSnapshot<Object?> doc, int index, bool completed) {
+  Widget _buildChallengeCard(BuildContext context, DocumentSnapshot<Object?> doc, int index, bool completed) {
     return InkWell(
-      onTap: () {
+      onTap:   () {
         completed
             ? Scaffold.of(context).showSnackBar(
                 const SnackBar(
@@ -93,21 +93,18 @@ class ChallengesScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      child: Row(
-                        children: [
-                          Text("RETO #" + (index + 1).toString() + ": ",
+                    Row(
+                      children: [
+                        Text("RETO #" + (index + 1).toString() + ": ",
+                            style: const TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w700)),
+                        Expanded(
+                          child: Text(doc['title'].toString().toUpperCase(),
+                          overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.w700)),
-                          Expanded(
-                            child: Text(doc['title'].toString().toUpperCase(),
-                            overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.w700)),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     Text(doc['description'],
                         style: const TextStyle(

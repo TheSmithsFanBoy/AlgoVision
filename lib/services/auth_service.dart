@@ -150,7 +150,7 @@ class AuthService {
       switch (e.message) {
         case "The password is invalid or the user does not have a password.":
           {
-            return "La contraseña no es válida o el usuario no tiene contraseña";
+            return "La contraseña es invalidad o el usuario no tiene una contraseña";
           }
 
         default:
@@ -164,8 +164,10 @@ class AuthService {
   Future<String?> updateAccount(
       {required String displayName, required String email}) async {
     try {
+      final docUser = FirebaseFirestore.instance.collection('users').doc(_firebaseAuth.currentUser!.uid);
       await _firebaseAuth.currentUser!.updateEmail(email);
       await _firebaseAuth.currentUser!.updateDisplayName(displayName);
+      docUser.update({'fullName': displayName,'email':email});
       return "Datos actualizados correctamente";
     } on FirebaseAuthException catch (e) {
       switch (e.message) {
