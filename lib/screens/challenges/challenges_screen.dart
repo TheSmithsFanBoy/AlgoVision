@@ -76,62 +76,72 @@ class ChallengesScreen extends StatelessWidget {
                     description: "description",
                     parentId: "parentId"));
       },
-      child: Card(
-        elevation: 5,
-        child: Row(
-          children: [
-            Image.network(
-              doc['coverImage'],
-              width: 90,
-              height: 90,
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+      child: ClipRRect(
+        child: Card(
+          elevation: 5,
+          child: Row(
+            children: [
+              Image.network(
+                doc['coverImage'],
+                width: 90,
+                height: 90,
+              ),
+              const SizedBox(
+                width: 15,
+              ),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("RETO #" + (index + 1).toString() + ": ",
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: Row(
+                        children: [
+                          Text("RETO #" + (index + 1).toString() + ": ",
+                              style: const TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.w700)),
+                          Expanded(
+                            child: Text(doc['title'].toString().toUpperCase(),
+                            overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 17, fontWeight: FontWeight.w700)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(doc['description'],
                         style: const TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w700)),
-                    Text(doc['title'].toString().toUpperCase(),
-                        style: const TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w700)),
+                            fontSize: 16, fontWeight: FontWeight.w400)),
+                    Row(
+                      children: [
+                        Text(doc['points'].toString() + " puntos",
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.pink)),
+                        const Text(" - ",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black)),
+                        completed
+                            ? const Text('Completado',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.green))
+                            : const Text('Disponible',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.orange)),
+                      ],
+                    )
                   ],
                 ),
-                Text(doc['description'],
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w400)),
-                Row(
-                  children: [
-                    Text(doc['points'].toString() + " puntos",
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.pink)),
-                    const Text(" - ",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black)),
-                    completed
-                        ? const Text('Completado',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.green))
-                        : const Text('Disponible',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.orange)),
-                  ],
-                )
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );
