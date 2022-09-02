@@ -16,9 +16,6 @@ class TopicContentScreen extends StatefulWidget {
 }
 
 class _TopicContentScreenState extends State<TopicContentScreen> {
-
-
-
   int pos = 0;
   bool play = true;
   @override
@@ -27,14 +24,14 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
     debugPrint(args.description);
     return SafeArea(
       child: Scaffold(
-          
           body: FutureBuilder(
             future: FirebaseFirestore.instance
                 .collection('topics')
                 .doc(args.id)
                 .get(),
             builder: (context,
-                AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+                AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+                    snapshot) {
               if (snapshot.hasData &&
                   snapshot.connectionState == ConnectionState.done) {
                 if (!snapshot.hasData) {
@@ -49,7 +46,9 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                 return SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Center(
                           child: Text(data['title'],
                               style: const TextStyle(
@@ -81,7 +80,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                   if (snapshot.hasData && snapshot.data != null) {
                     var p = (snapshot.data!) as QuerySnapshot;
                     if (p.docs.isNotEmpty) {
-                      return  TextButton(
+                      return TextButton(
                           style: TextButton.styleFrom(
                             backgroundColor: Colors.yellow.shade600,
                             fixedSize: const Size(30, 30),
@@ -103,14 +102,6 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                               ])
                             });
                             Navigator.pop(context);
-                            //Navigator.pushReplacementNamed(
-                            //    context, '/topic-content',
-                            //    arguments: ScreenArguments(
-                            //        id: p.docs[0].id,
-                            //        parentId:
-                            //            (int.parse(args.parentId) + 1).toString(),
-                            //        title: "",
-                            //        description: p.docs[0]['lesson'].id));
                           });
                     } else {
                       return TextButton(
@@ -123,7 +114,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                                   fontSize: 19,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.indigo)),
-                          onPressed:  () {
+                          onPressed: () {
                             var lessonRef = FirebaseFirestore.instance
                                 .collection('lessons')
                                 .doc(args.description);
@@ -194,7 +185,6 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
 
   Widget _buildContent(BuildContext context, Map<String, dynamic> data) {
     switch (data['type']) {
-
       case 'text':
         return SingleChildScrollView(
           child: Padding(
@@ -203,22 +193,75 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
-                SizedBox(width: double.infinity,),
+                SizedBox(
+                  width: double.infinity,
+                ),
                 _titleIfContent(data['content']),
-                data['contentBody1'].isNotEmpty ? _bodyIfContent(data['contentBody1']) : Container(),
-                data['contentBody2'].isNotEmpty ? _bodyIfContent(data['contentBody2']) : Container(),
-                Padding( padding: const EdgeInsets.symmetric(horizontal: 5), child: Divider( thickness: 0.5, color: Colors.black,),),
-                data['contentTitle2'].isNotEmpty ? _titleIfContent(data['contentTitle2']):  Container(),
-                data['contentBody3'].isNotEmpty ? _bodyIfContent(data['contentBody3']) : Container(),
-                data['contentBody4'].isNotEmpty ? _bodyIfContent(data['contentBody4']) : Container(),
+                data['contentBody1'].isNotEmpty? _bodyIfContent(data['contentBody1'])   : Container(),
+                data['contentBody2'].isNotEmpty? _bodyIfContent(data['contentBody2'])   : Container(),
+                data['contentBody3W'].isNotEmpty? _bodyIfContent(data['contentBody3W'])   : Container(),
+                data['contentTitle2'].isEmpty 
+                  ? Container()
+                  : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Divider(
+                      thickness: 0.5,
+                      color: Colors.black,
+                    ),
+                  ),
+                data['contentTitle2'].isNotEmpty  ? _titleIfContent(data['contentTitle2'])   : Container(),
+                data['contentBody3'].isNotEmpty   ? _bodyIfContent(data['contentBody3'])     : Container(),
+                data['contentBody4'].isNotEmpty   ? _bodyIfContent(data['contentBody4'])     : Container(),
+                //!---
                 SizedBox(height: 5,),
-                data['contentImage2'].isNotEmpty ? Image.network(data['contentImage2']) : Container(),
-                Padding(padding: const EdgeInsets.symmetric(horizontal: 5),child: Divider(thickness: 0.5,color: Colors.black,),),
-                data['contentTitle3'].isNotEmpty ? _titleIfContent(data['contentTitle3']):  Container(),
-                data['contentBody5'].isNotEmpty ? _bodyIfContent(data['contentBody5']) : Container(),
-                data['contentBody6'].isNotEmpty ? _bodyIfContent(data['contentBody6']) : Container(),
+                //!---
+                data['contentImage2'].isNotEmpty ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: ClipRRect(borderRadius: BorderRadius.circular(20),child: Image.network(data['contentImage2'])),
+                ) : Container(),
+                    
+                data['contentImage2'].isEmpty    ? Container() :
+                data['contentTitle3'].isEmpty 
+                                                 ? Container() 
+                                                 : Padding(
+                                                   padding: const EdgeInsets.symmetric(horizontal: 5),
+                                                   child: Divider(
+                                                     thickness: 0.5,
+                                                     color: Colors.black,
+                                                   ),
+                                               ),
+                data['contentTitle3'].isNotEmpty  ? _titleIfContent(data['contentTitle3']) : Container(),
+                data['contentBody5'].isNotEmpty   ? _bodyIfContent(data['contentBody5'])    : Container(),
+                data['contentBody6'].isNotEmpty   ? _bodyIfContent(data['contentBody6'])   : Container(),
+                //!---
                 SizedBox(height: 5,),
-                data['contentImage'].isNotEmpty ? Image.network(data['contentImage']) : Container(),
+                //!---
+                data['contentImage'].isNotEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.network(data['contentImage'])),
+                    )
+                  : Container(),
+                data['contentBody7'].isNotEmpty  ? SizedBox(height: 10,)                  : Container(),
+                data['contentBody7'].isNotEmpty  ? _bodyIfContent(data['contentBody7'])   : Container(),
+                data['contentBody7'].isNotEmpty  ? SizedBox(height: 5,)                   : Container() ,
+                data['contentBody8'].isNotEmpty  ? _bodyIfContent(data['contentBody8'])   : Container(),
+                data['contentBody8'].isNotEmpty  ? SizedBox(height: 5,)                   : Container(),
+                data['contentBody9'].isNotEmpty  ? _bodyIfContent(data['contentBody9'])   : Container(),
+                data['contentBody9'].isNotEmpty  ? SizedBox(height: 5,)                   : Container(),
+                data['contentBody10'].isNotEmpty ? _bodyIfContent(data['contentBody10'])  : Container(),
+                data['contentBody10'].isNotEmpty ? SizedBox(height: 5,)                   : Container(),
+                data['contentBody11'].isNotEmpty ? _bodyIfContent(data['contentBody11'])  : Container(),
+                data['contentBodyExample'].isNotEmpty ? 
+                Column(
+                  children: [
+                    SizedBox(height: 10,),
+                    
+                    _bodyIfContent(data['contentBodyExample']),
+                  ],
+                ) : Container(),
               ],
             ),
           ),
@@ -232,93 +275,168 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: Column(
               children: [
-                SizedBox(
-                  width: double.infinity,
-                ),
-                _titleIfContent(data['content']),
-                _bodyIfContent(
-                    '* La sintaxis de un condicional if, es muy simple e intuitiva. A continuación, se observa un ejemplo de su estructura en código.'),
-                _bodyIfContent(
-                    '* A continuación, se observa un ejemplo de su estructura en código.'),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset('assets/icons/sintaxis_if.png')),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Divider(
-                    thickness: 0.5,
-                    color: Colors.black,
-                  ),
-                ),
-                _titleIfContent('Los condicionales selectivos'),
-                _bodyIfContent(
-                    '* La sintaxis de un condicional if-else es similar a la del condicional if, pero se le adiciona una nueva "estructura" que es el else, el cual indica el conjunto de acciones a llevar a cabo, en caso de que la condición del if no se cumpla.'),
-                _bodyIfContent(
-                    '* La sintaxis de un condicional if, es muy simple e intuitiva. A continuación, se observa un ejemplo de su estructura en código.'),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset('assets/icons/if_else_estructura.png')),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Divider(
-                    thickness: 0.5,
-                    color: Colors.black,
-                  ),
-                ),
-                _titleIfContent('Ejemplo en código'),
-                _bodyIfContent(
-                    '* A continuación, se presenta un ejemplo de un pequeño programa en el cual se pone en práctica lo aprendido en la lección.'),
-                _bodyIfContent(
-                    'En este ejemplo se busca determinar si el usuario el mayor o menor de edad en base a la edad ingresada. Sí la edad que se ingresa es mayor o igual a 18, el programa mostrára un mensaje en consola el cual indicara "Eres mayor de edad.". En caso de no cumplir la condición, el programa mostrara el siguiente mensaje en consola "Eres menor de edad.".'),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset('assets/icons/if_else.png')),
-                ),
+                SizedBox(width: double.infinity,),
+                data['content'].isNotEmpty            ?   _titleIfContent(data['content'])             : Container(),
+                data['contentBody1'].isNotEmpty       ?   _bodyIfContent(data['contentBody1'])         : Container(),
+                data['contentBody2'].isNotEmpty       ?   _bodyIfContent(data['contentBody2'])         : Container(),
+                data['imageContentBody'].isNotEmpty   ?   _imageExampleText(data['imageContentBody'])  : Container(),
+                data['contentBody1WH'].isNotEmpty      ? SizedBox(height: 10,)                     : Container(),
+                data['contentBody1WH'].isNotEmpty       ?   _bodyIfContent(data['contentBody1WH'])         : Container(),
+                data['contentBody1F'].isNotEmpty      ? SizedBox(height: 10,)              : Container(),          
+                data['contentBody1F'].isNotEmpty      ?   _bodyIfContent(data['contentBody1F'])        : Container(),
+                data['contentTitle1F'].isNotEmpty      ?   _dividerHeight()                             : Container(),
+                
+                data['contentTitle1F'].isNotEmpty      ?   _titleIfContent(data['contentTitle1F'])       : Container(), //!
+                data['contentBody2F'].isNotEmpty       ?   _bodyIfContent(data['contentBody2F'])         : Container(),
+                data['imageContentBody3'].isNotEmpty  ?   _imageExampleText(data['imageContentBody3']) : Container(),//!
+                data['contentBody2WH'].isNotEmpty      ? SizedBox(height: 10,)                     : Container(),
+                data['contentBody2WH'].isNotEmpty       ?   _bodyIfContent(data['contentBody2WH'])         : Container(),
+                data['contentBody2F'].isNotEmpty      ? SizedBox(height: 10,)                          : Container(),
+                data['contentTitle2'].isNotEmpty      ?   _dividerHeight() : Container(),
+
+
+                data['contentTitle2'].isNotEmpty      ?   _titleIfContent(data['contentTitle2'])       : Container(),
+                data['contentBody3'].isNotEmpty       ?   _bodyIfContent(data['contentBody3'])         : Container(),
+                 data['contentBody4'].isNotEmpty      ?   _bodyIfContent(data['contentBody4'])         : Container(),
+                data['imageContentBody2'].isNotEmpty  ?   _imageExampleText(data['imageContentBody2']) : Container(),
+                
+                data['contentTitle3'].isNotEmpty      ?   _dividerHeight()                             : Container(),
+                data['contentTitle3'].isNotEmpty      ?   _titleIfContent(data['contentTitle3'])       : Container(),
+                data['contentBody5'].isNotEmpty       ?   _bodyIfContent(data['contentBody5'])         : Container(),
+                data['contentBody6'].isNotEmpty       ?   _bodyIfContent(data['contentBody6'])         : Container(),
+                data['imageContentBody4'].isNotEmpty  ?   _imageExampleText(data['imageContentBody4']) : Container(),
               ],
             ),
           ),
         );
 
-
-
       case 'quiz':
-        return Column(children: [
-          Text(data['content'], style: const TextStyle(fontSize: 16)),
-          const SizedBox(height: 20),
-          data['image'] == null
-              ? SizedBox(height: 0)
-              : Image.network(
-                  data['image'],
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: Column(children: [
+              SizedBox(width: double.infinity,),
+              data['titleContent1'].isEmpty ? Container() : _titleIfContent(data['titleContent1']),
+              data['content'].isEmpty ? Container() : _bodyIfContent(data['content']),
+              SizedBox(height: 10,),
+                Padding(padding: const EdgeInsets.symmetric(horizontal: 10),child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                      child: Image.network(data['imageQuiz'],fit: BoxFit.cover, height: MediaQuery.of(context).size.height*0.40,)),
                 ),
-          const SizedBox(height: 20),
-          const Text("Selecciona una respuesta y presiona en validar...",
-              style: TextStyle(fontSize: 15)),
-          SurveyQuestion(
-            validOption: data['validOption'],
-            options: data['options'].cast<String>(),
-            optionsInvalidText: data['optionInvalidText'].cast<String>(),
-          )
-        ]);
-
-
+              SizedBox(height: 10,),
+              SurveyQuestion(
+                validOption: data['validOption'],
+                options: data['options'].cast<String>(),
+                optionsInvalidText: data['optionInvalidText'].cast<String>(),
+              )
+            ]),
+          ),
+        );
 
       case 'video':
-        // final _paso = Provider.of<TopicVideoProvider>(context);
-        VideoPlayerController _controller =
+        return Container();
+
+
+
+      default:
+        return const Text('data');
+    }
+  }
+
+  Widget _imageExampleText(String imageRoute) {
+    return Padding(padding: const EdgeInsets.symmetric(horizontal: 10),child: ClipRRect(
+                  borderRadius: BorderRadius.circular(25),
+                  child: Image.network(imageRoute, height: 220,)),
+                );
+  }
+
+  Widget _dividerHeight() {
+    return Column(
+                children: const [
+                  SizedBox(height: 5,),
+                  Padding(padding:  EdgeInsets.symmetric(horizontal: 5),child: 
+                    Divider(
+                    thickness: 0.5,
+                    color: Colors.black,),
+                ),
+                ],
+              );
+  }
+
+  Widget _bodyIfContent(String content) {
+    return Container(
+        margin: EdgeInsets.only(bottom: 10),
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Text(
+          content,
+          textAlign: TextAlign.justify,
+          style:
+              TextStyle(wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14),
+        ));
+  }
+
+  Widget _titleIfContent(String title) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      child: Container(
+        height: 35,
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.black, width: 1.3),
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: const [Color(0xff1488CC), Color(0xff2B32B2)]),
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(17),
+              bottomLeft: Radius.circular(17),
+            ),
+            color: Colors.black.withOpacity(0.3)),
+        margin: EdgeInsets.only(top: 10, bottom: 10),
+        child: Center(
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/*
+class Step extends StatefulWidget {
+  String textStep;
+  Step({Key? key, required this.textStep}) : super(key: key);
+
+  @override
+  State<Step> createState() => _StepState();
+}
+
+class _StepState extends State<Step> {
+  // String textStep;
+  // Step({Key? key,  required this.textStep}) : super(key: key);
+  //
+  // void test () {
+  //   setState(() {
+  //     print("si esta ejecutando");
+  //   });
+  // }
+  @override
+  Widget build(BuildContext context) {
+    // final _paso = Provider.of<TopicVideoProvider>(context);
+    // _paso.updateUser(widget.textStep);
+    return Text(widget.textStep, style: TextStyle(fontSize: 15));
+  }
+}
+*/
+
+
+/*
+video
+// final _paso = Provider.of<TopicVideoProvider>(context);
+VideoPlayerController _controller =
             VideoPlayerController.network(data['video']);
         var stepWidget = Step(textStep: data['pasos'][pos]);
         Future<void> _initializeVideoPlayerFuture = _controller.initialize();
@@ -385,74 +503,5 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                 // stepWidget.update(data['pasos'][pos]);
               })
         ]);
-      default:
-        return const Text('data');
-    }
-  }
 
-  Widget _bodyIfContent(String content) {
-    return Container(
-        margin: EdgeInsets.only(bottom: 10),
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Text(
-          content,
-          textAlign: TextAlign.justify,
-          style:
-              TextStyle(wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14),
-        ));
-  }
-
-  Widget _titleIfContent(String title) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5),
-      child: Container(
-        height: 35,
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 1.3),
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: const [Color(0xff1488CC), Color(0xff2B32B2)]),
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(17),
-              bottomLeft: Radius.circular(17),
-            ),
-            color: Colors.black.withOpacity(0.3)),
-        margin: EdgeInsets.only(top: 10, bottom: 10),
-        child: Center(
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class Step extends StatefulWidget {
-  String textStep;
-  Step({Key? key, required this.textStep}) : super(key: key);
-
-  @override
-  State<Step> createState() => _StepState();
-}
-
-class _StepState extends State<Step> {
-  // String textStep;
-  // Step({Key? key,  required this.textStep}) : super(key: key);
-  //
-  // void test () {
-  //   setState(() {
-  //     print("si esta ejecutando");
-  //   });
-  // }
-  @override
-  Widget build(BuildContext context) {
-    // final _paso = Provider.of<TopicVideoProvider>(context);
-    // _paso.updateUser(widget.textStep);
-    return Text(widget.textStep, style: TextStyle(fontSize: 15));
-  }
-}
+*/

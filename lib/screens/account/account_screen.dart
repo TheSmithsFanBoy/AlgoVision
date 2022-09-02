@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,7 @@ class AccountScreen extends StatelessWidget {
                 )),
                 Container(
                   margin: const EdgeInsets.only(left: 10.0, right: 10.0),
-                  child: const Text("MEDALLAS", style: TextStyle(fontSize: 12)),
+                  child: const Text("MEDALLAS", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                 ),
                 const Expanded(
                     child: Divider(
@@ -122,13 +123,22 @@ class AccountScreen extends StatelessWidget {
                                   }
                                   if (snapshot.hasData) {
                                     var m = snapshot.data! as DocumentSnapshot;
-                                    return ListTile(
-                                      leading: Image.network(m['image'],
-                                          width: 60,
-                                          height: 60,
-                                        ),
-                                      title: Text(m['name']),
-                                      subtitle: Text(p['medals'][index].id),
+                                    return FadeInLeft(
+                                      duration: Duration( milliseconds: 1000 + index*1000),
+                                      child: Column(
+                                        children: [
+                                          ListTile(
+                                            leading: Image.network(m['image'],
+                                                width: 60,
+                                                height: 60,
+                                              ),
+                                            title: Text(m['name'], style: TextStyle(fontWeight: FontWeight.bold),),
+                                            subtitle: Text('Logro obtenido por haber finalizado la lección al 100%', style: TextStyle(fontSize: 14),),
+                                            //subtitle: Text(p['medals'][index].id),
+                                          ),
+                                          SizedBox(height: 10,),
+                                        ],
+                                      ),
                                     );
                                   }       
                                   return Container();

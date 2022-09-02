@@ -59,7 +59,7 @@ class _SurveyQuestionState extends State<SurveyQuestion> {
       child: TextButton(
         child: const Text('VALIDAR RESPUESTA',
             style: TextStyle(color: Colors.indigo)),
-        onPressed: () {
+        onPressed: val.isEmpty ? null : () {
           if (val == widget.validOption) {
             // Correct Answer
             Widget okButton = TextButton(
@@ -81,21 +81,25 @@ class _SurveyQuestionState extends State<SurveyQuestion> {
             print("test");
             print(widget.options.indexOf(val));
             AlertDialog alert = AlertDialog(
-              title: const Text('Respuesta correcta'),
+              title: const Center(child:  Text('Felicidades', style: TextStyle(fontSize: 23),)),
               elevation: 10.0,
               actionsAlignment: MainAxisAlignment.center,
               alignment: Alignment.center,
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    'assets/icons/good.png',
-                    height: 95,
-                    width: 95,
-                  ),
-                  const SizedBox(width: 20),
-                  Text(widget.optionsInvalidText[widget.options.indexOf(val)])
-                ],
+              content: Container(
+                width: MediaQuery.of(context).size.width*0.55,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(width: double.infinity,),
+                    Image.asset(
+                      'assets/icons/good.png',
+                      height: 95,
+                      width: 95,
+                    ),
+                    const SizedBox(height: 30),
+                    Center(child: Text(widget.optionsInvalidText[widget.options.indexOf(val)], textAlign: TextAlign.center,))
+                  ],
+                ),
               ),
               actions: [okButton],
             );
@@ -121,20 +125,25 @@ class _SurveyQuestionState extends State<SurveyQuestion> {
             );
             // Create AlertDialog
             AlertDialog alert = AlertDialog(
-              title: const Text('Respuesta incorrecta'),
+              title: const Center(child:  Text('Alternativa incorrecta', style: TextStyle(fontSize: 23),)),
               elevation: 10.0,
               actionsAlignment: MainAxisAlignment.center,
               alignment: Alignment.center,
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    'assets/icons/bad.png',
-                    height: 95,
-                    width: 95,
-                  ),
-                  Text(widget.optionsInvalidText[widget.options.indexOf(val)])
-                ],
+              content: Container(
+                width: MediaQuery.of(context).size.width*0.55,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(width: double.infinity,),
+                    Image.asset(
+                      'assets/icons/bad.png',
+                      height: 95,
+                      width: 95,
+                    ),
+                    const SizedBox(height: 30),
+                    Center(child: Text(widget.optionsInvalidText[widget.options.indexOf(val)], textAlign: TextAlign.center,))
+                  ],
+                ),
               ),
               actions: [okButton],
             );
