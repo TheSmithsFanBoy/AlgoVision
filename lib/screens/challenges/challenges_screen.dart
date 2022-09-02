@@ -10,8 +10,11 @@ class ChallengesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var listLessonCompleted = FirebaseFirestore.instance.collection('lessons').where('completedBy',arrayContains: FirebaseAuth.instance.currentUser!.uid).snapshots();
+    
     return Scaffold(
       appBar: AppBar(
+
         title: const Text('Retos'),
         centerTitle: true,
         backgroundColor: Colors.blueGrey,
@@ -28,115 +31,118 @@ class ChallengesScreen extends StatelessWidget {
         ),
       ),
       body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('challenges')
-              .orderBy('points', descending: false)
-              .snapshots(),
+          stream: FirebaseFirestore.instance.collection('challenges').orderBy('pos', descending: false).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
+
             final List<DocumentSnapshot> docs = snapshot.data!.docs;
+
+
+
             return ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: docs.length,
               itemBuilder: (context, index) {
-                final DocumentSnapshot doc = docs[index];
+                final DocumentSnapshot doc = docs[index]; //each doc
                 var isCompleted = false;
                 if (doc['completedBy'] != null) {
-                  isCompleted = doc['completedBy'].contains(FirebaseFirestore
-                      .instance
-                      .collection('users')
-                      .doc(FirebaseAuth.instance.currentUser?.uid ?? 'null'));
+                  isCompleted = doc['completedBy'].contains(FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid ?? 'null'));
                 }
-                return _buildChallengeCard(context, doc, index, isCompleted);
+
+
+                return  _buildChallengeCard(context, doc, index, isCompleted);
               },
             );
           }),
     );
   }
 
-  Widget _buildChallengeCard(BuildContext context,
-      DocumentSnapshot<Object?> doc, int index, bool completed) {
+  Widget _buildChallengeCard(BuildContext context, DocumentSnapshot<Object?> doc, int index, bool completed) {
     return InkWell(
-      onTap: () {
+      onTap:   () {
         completed
             ? Scaffold.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Ya has completado este reto'),
-                  backgroundColor: Colors.red,
-                ),
-              )
+          const SnackBar(
+            content: Text('Ya has completado este reto'),
+            backgroundColor: Colors.red,
+          ),
+        )
             : Navigator.pushNamed(context, '/challenge-quiz',
-                arguments: ScreenArguments(
-                    id: doc.id,
-                    title: doc['title'],
-                    description: "description",
-                    parentId: "parentId"));
+            arguments: ScreenArguments(
+                id: doc.id,
+                title: doc['title'],
+                description: "description",
+                parentId: "parentId"));
       },
-      child: Card(
-        elevation: 5,
-        child: Row(
-          children: [
-            Image.network(
-              doc['coverImage'],
-              width: 90,
-              height: 90,
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+      child: ClipRRect(
+        child: Card(
+          elevation: 5,
+          child: Row(
+            children: [
+              Image.network(
+                doc['coverImage'],
+                width: 90,
+                height: 90,
+              ),
+              const SizedBox(
+                width: 15,
+              ),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("RETO #" + (index + 1).toString() + ": ",
+                    Row(
+                      children: [
+                        Text("RETO #" + (index + 1).toString() + ": ",
+                            style: const TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w700)),
+                        Expanded(
+                          child: Text(doc['title'].toString().toUpperCase(),
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.w700)),
+                        ),
+                      ],
+                    ),
+                    Text(doc['description'],
                         style: const TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w700)),
-
-                    Text(doc['title'].toString().toUpperCase(),
-                        style: const TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w700)),
-                  ],
-                ),
-                Text(doc['description'],
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w400)),
-
-                Row(
-                  children: [
-                    Text(doc['points'].toString() + " puntos",
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.pink)),
-                    const Text(" - ",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black)),
-                    completed
-                        ? const Text('Completado',
+                            fontSize: 16, fontWeight: FontWeight.w400)),
+                    Row(
+                      children: [
+                        Text(doc['points'].toString() + " puntos",
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.pink)),
+                        const Text(" - ",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black)),
+                        completed
+                            ? const Text('Completado',
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.green))
-                        : const Text('Disponible',
+                            : const Text('Disponible',
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.orange)),
+                      ],
+                    )
                   ],
-                )
-              ],
-            ),
-          ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
