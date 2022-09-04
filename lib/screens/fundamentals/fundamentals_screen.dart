@@ -155,6 +155,7 @@ class _FundamentalsScreenState extends State<FundamentalsScreen> {
                       );
                     }
                     final List<DocumentSnapshot> docs = snapshot.data!.docs;
+                    var prevTopicCompleted = true;
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
@@ -162,16 +163,32 @@ class _FundamentalsScreenState extends State<FundamentalsScreen> {
                       itemCount: docs.length,
                       itemBuilder: (context, index) {
                         final DocumentSnapshot data = docs[index];
-                        return _buildTopicBlock(context, data, doc.id, false);
+                        var userReferenceTopic = FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(FirebaseAuth.instance.currentUser?.uid ?? 'null');
+                        var isTopicCompleted = false;
+                        for (var i = 0; i < doc['completedBy'].length; i++) {
+                          if (doc['completedBy'][i] == userReferenceTopic) {
+                            isTopicCompleted = true;
+                          }
+                        }
+
+                          if (prevTopicCompleted == false && isTopicCompleted == false) {
+                            prevTopicCompleted = isTopicCompleted;
+                            return _buildTopicBlock(context, data, doc.id, isTopicCompleted,true);
+                          } else {
+                            prevTopicCompleted = isTopicCompleted;
+                            return _buildTopicBlock(context, data, doc.id, isTopicCompleted,false);
+                          }
                       },
                     );
-                  })
+                  }),
             ],
           ),
         ));
   }
 
-  Widget _buildTopicBlock(BuildContext context, data, topicId, bool completed) {
+  Widget _buildTopicBlock(BuildContext context, data, topicId, bool completed, bool isBlocked) {
     var topicUid = data.id;
     return Row(
       children: [
@@ -199,16 +216,22 @@ class _FundamentalsScreenState extends State<FundamentalsScreen> {
                     .collection('topics')
                     .doc(topicUid);
                 for (var topic in p['topics']) {
-                  if (topic == topicRef) {
                     return TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/topic-content',
+                          isBlocked
+                          ? Scaffold.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Completa las lecciones anteriores'),
+                              backgroundColor: Colors.red,
+                            ),
+                          ) : Navigator.pushNamed(context, '/topic-content',
                               arguments: ScreenArguments(
                                 id: data.id,
                                 title: data['title'],
                                 parentId: data['order'].toString(),
                                 description: data['lesson'].id,
                               )).then((_) => setState(() {}));
+
                         },
                         child: Row(
                           children: [
@@ -219,36 +242,22 @@ class _FundamentalsScreenState extends State<FundamentalsScreen> {
                                 color: Colors.black54
                               ),
                             ),
-                          const Text('Completado',
-                              style: TextStyle(color: Colors.green))
+                          isBlocked
+                            ? const Text('Bloqueado',
+                              style: TextStyle(color: Colors.red))
+                              : completed
+                            ? const Text('Completado',
+                              style: TextStyle(color: Colors.green,),)
+                              : const Text('Por Completar',
+                            style: TextStyle(color: Colors.orange,),)
+
                         ]),
                         //style: TextButton.styleFrom(
                         //  primary: Colors.grey.shade600,
                         //)
                     );
-                  }
                 }
-                return TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/topic-content',
-                          arguments: ScreenArguments(
-                            id: data.id,
-                            title: data['title'],
-                            description: data['lesson'].id,
-                            parentId: data['order'].toString(),
-                          )).then((_) => setState(() {}));
-                    },
-                    child: Row(children: [
-                      Text(data['order'].toString() +
-                          ". " +
-                          data['title'] +
-                          ' - '),
-                      const Text('Por completar',
-                          style: TextStyle(color: Colors.orange))
-                    ]),
-                    style: TextButton.styleFrom(
-                      primary: Colors.grey.shade600,
-                    ));
+                return const Text("no se encuentra nada");
               } else {
                 return const Text("Cargando...");
               }
