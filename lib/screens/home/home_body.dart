@@ -54,7 +54,7 @@ class HomeBody extends StatelessWidget {
                     }
                   },
                   child: doc['name'] == "Algoritmos Ordenamiento" ? SlideInLeft(
-                    duration: Duration(milliseconds: 2500),
+                    duration: const Duration(milliseconds: 2500),
                     child: Card(
                       elevation: 4,
                       margin: const EdgeInsets.only(bottom: 16),
@@ -63,8 +63,8 @@ class HomeBody extends StatelessWidget {
                         child: Row(
                           children: [
                             FadeInDownBig(
-                              delay: Duration(milliseconds: 500),
-                              duration: Duration(milliseconds: 2000),
+                              delay: const Duration(milliseconds: 500),
+                              duration: const Duration(milliseconds: 2000),
                               child: Image.network(
                                 doc['coverImage'],
                                 width: 90,
@@ -102,7 +102,7 @@ class HomeBody extends StatelessWidget {
                   )
                   :
                   SlideInRight(
-                    duration: Duration(milliseconds: 2500),
+                    duration: const Duration(milliseconds: 2500),
                     child: Card(
                       elevation: 4,
                       margin: const EdgeInsets.only(bottom: 16),
@@ -111,8 +111,8 @@ class HomeBody extends StatelessWidget {
                         child: Row(
                           children: [
                             FadeInUpBig(
-                              delay: Duration(milliseconds: 500),
-                              duration: Duration(milliseconds: 2000),
+                              delay: const Duration(milliseconds: 500),
+                              duration: const Duration(milliseconds: 2000),
                               child: Image.network(
                                 doc['coverImage'],
                                 width: 90,

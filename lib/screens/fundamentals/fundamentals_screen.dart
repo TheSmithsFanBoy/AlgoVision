@@ -125,7 +125,7 @@ class _FundamentalsScreenState extends State<FundamentalsScreen> {
             subtitle: FutureBuilder(
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return const Text('Cargando...');
+                    return Container();
                   }
                   return FadeInRight(
                     child: Text(
@@ -175,21 +175,19 @@ class _FundamentalsScreenState extends State<FundamentalsScreen> {
     var topicUid = data.id;
     return Row(
       children: [
-        Container(
-          child: data['type'] == 'quiz'
-              ? _buildIconType('assets/icons/test.svg', 0xff1e130c, 0xff9a8478)
-              : data['type'] == 'text'
+        data['type'] == 'quiz'
+            ? _buildIconType('assets/icons/test.svg', 0xff1e130c, 0xff9a8478)
+            : data['type'] == 'text'
 
-              ? _buildIconType('assets/icons/teoria.svg', 0xff6441A5, 0xff6441A5)
-              : data['type'] == 'text-ejemplo'
-              ? _buildIconType('assets/icons/example.svg', 0xff16222A, 0xff3A6073)
-              
-              : data['type'] == 'practice'
-              ? Icon(Icons.auto_awesome_mosaic_rounded,
-              color: Colors.grey.shade600, size: 26)
-              : Icon(Icons.play_circle_outline,
-              color: Colors.grey.shade600, size: 26)
-        ),
+            ? _buildIconType('assets/icons/teoria.svg', 0xff6441A5, 0xff6441A5)
+            : data['type'] == 'text-ejemplo'
+            ? _buildIconType('assets/icons/example.svg', 0xff16222A, 0xff3A6073)
+            
+            : data['type'] == 'practice'
+            ? Icon(Icons.auto_awesome_mosaic_rounded,
+            color: Colors.grey.shade600, size: 26)
+            : Icon(Icons.play_circle_outline,
+            color: Colors.grey.shade600, size: 26),
         const SizedBox(width: 10),
         FutureBuilder(
             builder: (context, snapshot) {

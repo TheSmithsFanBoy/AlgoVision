@@ -2,9 +2,11 @@
 
 // ignore_for_file: unused_local_variable
 
+import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tdpapp/models/screen_arguments.dart';
 
 class AlgorithmScreen extends StatefulWidget {
@@ -100,34 +102,37 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
         textColor: Colors.pink,
         collapsedTextColor: Colors.indigo,
         iconColor: Colors.indigo,
-        leading: Container(
-          padding: const EdgeInsets.all(7),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: <Color>[Colors.orange.shade300, Colors.pink]),
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: const Icon(Icons.bookmarks_rounded, color: Colors.white),
-        ),
-        title: Text(
-          doc['name'],
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+        leading: FadeInLeft(
+              child: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                radius: 30,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.network(doc['coverImage']),
+                ),
+              ),
+            ),
+        title: FadeInRight(
+          child: Text(
+            doc['name'],
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         subtitle: FutureBuilder(
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return const Text('Cargando...');
+                return  Container();
               }
-              return Text(
-                '${snapshot.data} tópicos',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w300,
+              return FadeInRight(
+                child: Text(
+                  '${snapshot.data} tópicos',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                  ),
                 ),
               );
             },
@@ -152,7 +157,7 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
                 return ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  padding: const EdgeInsets.only(left: 40),
+                  padding: const EdgeInsets.only(left: 25),
                   itemCount: docs.length,
                   itemBuilder: (context, index) {
                     final DocumentSnapshot data = docs[index];
@@ -169,23 +174,13 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
     var topicUid = data.id;
     return Row(
       children: [
-        Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade300,
-              borderRadius: BorderRadius.circular(17),
-            ),
-            child: data['type'] == 'quiz'
-                ? Icon(Icons.quiz,
-                    color: Colors.grey.shade600, size: 15)
-                : data['type'] == 'text'
-                    ? Icon(Icons.document_scanner,
-                        color: Colors.grey.shade600, size: 15)
-                    : data['type'] == 'practice'
-                        ? Icon(Icons.auto_awesome_mosaic_rounded,
-                            color: Colors.grey.shade600, size: 15)
-                        : Icon(Icons.play_circle_outline,
-                            color: Colors.grey.shade600, size: 15)),
+        data['type'] == 'quiz'
+            ? _buildIconType('assets/icons/test.svg', 0xff1e130c, 0xff9a8478)
+            : data['type'] == 'text'
+                ? _buildIconType('assets/icons/theory2.svg', 0xff6441A5, 0xff6441A5)
+                : data['type'] == 'practice'
+                    ? _buildIconType('assets/icons/practice.svg', 0xff1e130c, 0xff9a8478) : 
+                     _buildIconType('assets/icons/videodemo.svg', 0xff16222A, 0xff3A6073),
         const SizedBox(width: 5),
         FutureBuilder(
             builder: (context, snapshot) {
@@ -253,4 +248,28 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
       ],
     );
   }
+
+  Container _buildIconType(String iconUrl, int color1, int color2) {
+    return Container(
+              padding: const EdgeInsets.all(6),
+              width: 35,
+              height: 35,
+                child: SvgPicture.asset(
+                  iconUrl,
+                  alignment: Alignment.center,
+                ),
+                decoration:  BoxDecoration(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(17)
+                  ),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(color1),
+                      Color(color2)
+                    ]
+                  )
+                ),
+              );
+  }
 }
+

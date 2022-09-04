@@ -102,7 +102,7 @@ class AccountScreen extends StatelessWidget {
                 }
 
                 if (snapshot.hasData) {
-                  var p = snapshot.data! as DocumentSnapshot;
+                  var p = snapshot.data!;
                   var idList = [];
                   for (var medal in p['medals']) {
                     idList.add(medal.id);
@@ -132,11 +132,11 @@ class AccountScreen extends StatelessWidget {
                                                 width: 60,
                                                 height: 60,
                                               ),
-                                            title: Text(m['name'], style: TextStyle(fontWeight: FontWeight.bold),),
-                                            subtitle: Text('Logro obtenido por haber finalizado la lección al 100%', style: TextStyle(fontSize: 14),),
+                                            title: Text(m['name'], style: const TextStyle(fontWeight: FontWeight.bold),),
+                                            subtitle: const Text('Logro obtenido por haber finalizado la lección al 100%', style: TextStyle(fontSize: 14),),
                                             //subtitle: Text(p['medals'][index].id),
                                           ),
-                                          SizedBox(height: 10,),
+                                          const SizedBox(height: 10,),
                                         ],
                                       ),
                                     );

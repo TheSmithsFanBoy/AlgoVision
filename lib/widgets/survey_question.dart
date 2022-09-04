@@ -85,12 +85,12 @@ class _SurveyQuestionState extends State<SurveyQuestion> {
               elevation: 10.0,
               actionsAlignment: MainAxisAlignment.center,
               alignment: Alignment.center,
-              content: Container(
+              content: SizedBox(
                 width: MediaQuery.of(context).size.width*0.55,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(width: double.infinity,),
+                    const SizedBox(width: double.infinity,),
                     Image.asset(
                       'assets/icons/good.png',
                       height: 95,
@@ -129,12 +129,12 @@ class _SurveyQuestionState extends State<SurveyQuestion> {
               elevation: 10.0,
               actionsAlignment: MainAxisAlignment.center,
               alignment: Alignment.center,
-              content: Container(
+              content: SizedBox(
                 width: MediaQuery.of(context).size.width*0.55,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(width: double.infinity,),
+                    const SizedBox(width: double.infinity,),
                     Image.asset(
                       'assets/icons/bad.png',
                       height: 95,
