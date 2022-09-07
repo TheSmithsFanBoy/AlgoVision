@@ -31,8 +31,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
         _user.setUser(FirebaseAuth.instance.currentUser);
         
         return Drawer(
+          width: MediaQuery.of(context).size.width * 0.65,
           child: Material(
-            color: Colors.white24,
+            color: Colors.indigo.withOpacity(0.9),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(24.0, 80, 24, 0),
               child: Column(
@@ -44,7 +45,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   const Divider(
                     thickness: 1,
                     height: 10,
-                    color: Colors.grey,
+                    color: Colors.white,
                   ),
                   const SizedBox(
                     height: 40,
@@ -82,7 +83,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   const Divider(
                     thickness: 1,
                     height: 10,
-                    color: Colors.grey,
+                    color: Colors.white,
                   ),
                   const SizedBox(
                     height: 30,
@@ -122,13 +123,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   showAlertDialog(BuildContext context, String message) {
     // Create button
     Widget okButton = TextButton(
-      child: const Text("Cancelar"),
+      child: const Text("Cancelar", style: TextStyle(color: Colors.indigo),),
       onPressed: () {
         Navigator.of(context).pop();
       },
     );
     Widget signOutButton = TextButton(
-      child: const Text("Cerrar Sesión"),
+      child: const Text("Cerrar Sesión", style: TextStyle(color: Colors.indigo),),
       onPressed: () {
         context.read<AuthService>().signOut();
       },
@@ -136,7 +137,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
     // Create AlertDialog
     AlertDialog alert = AlertDialog(
-      content: Text(message),
+      content: Text(message, style: const TextStyle(fontSize: 18, color: Colors.black),),
       actions: [okButton, signOutButton],
     );
 
@@ -169,7 +170,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                     imageUrl:   photoUrl!),
               ),
           const SizedBox(
-            width: 10,
+            width: 20,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

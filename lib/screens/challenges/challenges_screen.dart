@@ -10,52 +10,68 @@ class ChallengesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        
-        title: const Text('Retos'),
-        centerTitle: true,
-        backgroundColor: Colors.blueGrey,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: <Color>[
-                  Color.fromARGB(255, 218, 78, 162),
-                  Colors.blue,
-                ]),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: SafeArea(
+        top: true,
+        child: Scaffold(
+          appBar: AppBar(
+            leading: GestureDetector(
+              onTap: (){
+                Navigator.pushNamed(context, '/home');
+              },
+              child: const Icon(Icons.arrow_back)
+            )
+            ,
+            automaticallyImplyLeading: false,
+            title: const Text('Retos'),
+            centerTitle: true,
+            backgroundColor: Colors.indigo
           ),
+          body: StreamBuilder(
+              stream: FirebaseFirestore.instance.collection('challenges').orderBy('pos', descending: false).snapshots(),
+              
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+          
+                
+                
+                final List<DocumentSnapshot> docs = snapshot.data!.docs;
+          
+                
+                
+                return ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: docs.length,
+                  itemBuilder: (context, index) {
+                    final DocumentSnapshot doc = docs[index]; //each doc
+                    var isCompleted = false;
+                    if (doc['completedBy'] != null) {
+                      isCompleted = doc['completedBy'].contains(FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid ?? 'null'));
+                    }
+          
+                    
+                    var userReferenceTopic = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid ?? 'null');
+                   
+          
+                    for (var i = 0; i < doc['lessonDone'].length; i++) {
+                      if (doc['lessonDone'][i]  ==  userReferenceTopic) {
+                        return  _buildChallengeCard(context, doc, index, isCompleted);
+                    }
+                    }
+                    
+          
+                    return Container();
+                    
+                  },
+                );
+              }),
         ),
       ),
-      body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('challenges').orderBy('pos', descending: false).snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            
-            final List<DocumentSnapshot> docs = snapshot.data!.docs;
-
-            
-            
-            return ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: docs.length,
-              itemBuilder: (context, index) {
-                final DocumentSnapshot doc = docs[index]; //each doc
-                var isCompleted = false;
-                if (doc['completedBy'] != null) {
-                  isCompleted = doc['completedBy'].contains(FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid ?? 'null'));
-                }
-
-                
-                return  _buildChallengeCard(context, doc, index, isCompleted);
-              },
-            );
-          }),
     );
   }
 
@@ -65,7 +81,7 @@ class ChallengesScreen extends StatelessWidget {
         completed
             ? Scaffold.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Ya has completado este reto'),
+                  content: Text('Ya has realizado este reto'),
                   backgroundColor: Colors.red,
                 ),
               )
@@ -115,14 +131,14 @@ class ChallengesScreen extends StatelessWidget {
                             style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.pink)),
+                                color: Colors.indigo)),
                         const Text(" - ",
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black)),
                         completed
-                            ? const Text('Completado',
+                            ? const Text('Realizado',
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
@@ -144,4 +160,3 @@ class ChallengesScreen extends StatelessWidget {
     );
   }
 }
-

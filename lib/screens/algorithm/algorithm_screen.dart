@@ -22,56 +22,54 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     // module reference
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(args.title),
-        centerTitle: true,
-        backgroundColor: Colors.indigo,
-      ),
-      body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('lessons')
-              .where('module',
-                  isEqualTo: FirebaseFirestore.instance
-                      .collection('modules')
-                      .doc(args.id))
-              .orderBy('order')
-              .snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
+    return SafeArea(
+      top: true,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(args.title),
+          centerTitle: true,
+          backgroundColor: Colors.indigo,
+        ),
+        body: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('lessons')
+                .where('module',
+                    isEqualTo: FirebaseFirestore.instance
+                        .collection('modules')
+                        .doc(args.id))
+                .orderBy('order')
+                .snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              final List<DocumentSnapshot> docs = snapshot.data!.docs;
+              var prevLessonCompleted = true;
+              return ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: docs.length,
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot doc = docs[index];
+                  var userReference = FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(FirebaseAuth.instance.currentUser?.uid ?? 'null');
+                  var isCompleted = false;
+    
+                  
+    
+                  if (prevLessonCompleted == false && isCompleted == false) {
+                    prevLessonCompleted = isCompleted;
+                    return _buildLessonCard(context, doc, isCompleted, true);
+                  } else {
+                    prevLessonCompleted = isCompleted;
+                    return _buildLessonCard(context, doc, isCompleted, false);
+                  }
+                },
               );
-            }
-            final List<DocumentSnapshot> docs = snapshot.data!.docs;
-            var prevLessonCompleted = true;
-            return ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: docs.length,
-              itemBuilder: (context, index) {
-                final DocumentSnapshot doc = docs[index];
-                var userReference = FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(FirebaseAuth.instance.currentUser?.uid ?? 'null');
-                var isCompleted = false;
-
-                //El campo completeby esta sin d en metodo de insercion
-                // for (var i = 0; i < doc['completedBy'].length; i++) {
-                //   if (doc['completedBy'][i] == userReference) {
-                //     isCompleted = true;
-                //   }
-                // }
-
-                if (prevLessonCompleted == false && isCompleted == false) {
-                  prevLessonCompleted = isCompleted;
-                  return _buildLessonCard(context, doc, isCompleted, true);
-                } else {
-                  prevLessonCompleted = isCompleted;
-                  return _buildLessonCard(context, doc, isCompleted, false);
-                }
-              },
-            );
-          }),
+            }),
+      ),
     );
   }
 
@@ -139,13 +137,7 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
             future: nTopics),
         children: [
           StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection('topics')
-                  .where('lesson',
-                      isEqualTo: FirebaseFirestore.instance
-                          .collection('lessons')
-                          .doc(doc.id))
-                  .orderBy('order')
+              stream: FirebaseFirestore.instance.collection('topics').where('lesson',isEqualTo: FirebaseFirestore.instance.collection('lessons').doc(doc.id)).orderBy('order')
                   .snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) {
@@ -154,14 +146,32 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
                   );
                 }
                 final List<DocumentSnapshot> docs = snapshot.data!.docs;
+                var prevTopicCompleted = true;
+                
                 return ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(left: 25),
                   itemCount: docs.length,
                   itemBuilder: (context, index) {
-                    final DocumentSnapshot data = docs[index];
-                    return _buildTopicBlock(context, data, doc.id, false);
+                  final DocumentSnapshot data = docs[index];
+                        
+                        var userReferenceTopic = FirebaseFirestore.instance.collection('users') .doc(FirebaseAuth.instance.currentUser?.uid ?? 'null');
+                        var isTopicCompleted = false;
+                        for (var i = 0; i < data['completedBy'].length; i++) {
+                          if (data['completedBy'][i] == userReferenceTopic) {
+                            isTopicCompleted = true;
+                          }
+                        }
+
+                          if (prevTopicCompleted == false && isTopicCompleted == false) {
+                            prevTopicCompleted = isTopicCompleted;
+                            return _buildTopicBlock(context, data, isTopicCompleted,true);
+                          } else {
+                            prevTopicCompleted = isTopicCompleted;
+                            return _buildTopicBlock(context, data, isTopicCompleted,false);
+                          }
                   },
                 );
               })
@@ -170,7 +180,7 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
     ));
   }
 
-  Widget _buildTopicBlock(BuildContext context, data, topicId, bool completed) {
+ Widget _buildTopicBlock(BuildContext context, data, bool completed, bool isBlocked) {
     var topicUid = data.id;
     return Row(
       children: [
@@ -189,35 +199,17 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
                 var topicRef = FirebaseFirestore.instance
                     .collection('topics')
                     .doc(topicUid);
-                for (var topic in p['topics']) {
-                  if (topic == topicRef) {
-                    return TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/topic-content',
-                              arguments: ScreenArguments(
-                                id: data.id,
-                                title: data['title'],
-                                parentId: data['order'].toString(),
-                                description: data['lesson'].id,
-                              )).then((_) => setState(() {}));
-                        },
-                        child: Row(children: [
-                          Text(data['order'].toString() +
-                              ". " +
-                              data['title'] +
-                              ' - '),
-                          const Text('Completados',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(color: Colors.green))
-                        ]),
-                        style: TextButton.styleFrom(
-                          primary: Colors.grey.shade600,
-                        ));
-                  }
-                }
+                
                 return TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/topic-content',
+                      isBlocked
+                          // ignore: deprecated_member_use
+                          ? Scaffold.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Completa las lecciones anteriores'),
+                              backgroundColor: Colors.red,
+                            ),
+                          ) : Navigator.pushNamed(context, '/topic-content',
                           arguments: ScreenArguments(
                             id: data.id,
                             title: data['title'],
@@ -226,19 +218,21 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
                           )).then((_) => setState(() {}));
                     },
                     child: Row(children: [
-                      Text(data['order'].toString() +
-                          ". " +
-                          data['title'] +
-                          ' - '),
-                      const Text('Por completar',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: Colors.orange))
+                      Text(data['order'].toString() +". " +data['title'] + ' - '),
+                      isBlocked
+                            ? const Text('Bloqueado',
+                              style: TextStyle(color: Colors.red))
+                              : completed
+                            ? const Text('Completado',
+                              style: TextStyle(color: Colors.green,),)
+                              : const Text('Por Completar',
+                            style: TextStyle(color: Colors.orange,),)
                     ]),
                     style: TextButton.styleFrom(
                       primary: Colors.grey.shade600,
                     ));
               } else {
-                return const Text("Cargando...");
+                return Container();
               }
             },
             future: FirebaseFirestore.instance

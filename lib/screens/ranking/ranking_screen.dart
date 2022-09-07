@@ -26,43 +26,39 @@ class _RankingScreenState extends State<RankingScreen> with AutomaticKeepAliveCl
     var url = user != null ? user.photoURL : '';
     url = (url! + "?s=200");
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Ranking"),
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: <Color>[Colors.orangeAccent, Colors.yellow]),
-          ),
+    return SafeArea(
+      top: true,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Ranking"),
+          centerTitle: true,
+          backgroundColor: Colors.indigo,
+          elevation: 0,
         ),
-        elevation: 0,
-      ),
-      body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('users')
-              .orderBy('points', descending: true)
-              .snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
+        body: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .orderBy('points', descending: true)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              final List<DocumentSnapshot> docs = snapshot.data!.docs;
+              return ListView.builder(
+                padding: const EdgeInsets.all(10),
+                itemCount: docs.length,
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot doc = docs[index];
+                  return SlideInLeft(
+                    duration: Duration(milliseconds: 2000+ index*700),
+                    child: _buildUserCard(context, doc, index));
+                },
               );
-            }
-            final List<DocumentSnapshot> docs = snapshot.data!.docs;
-            return ListView.builder(
-              padding: const EdgeInsets.all(10),
-              itemCount: docs.length,
-              itemBuilder: (context, index) {
-                final DocumentSnapshot doc = docs[index];
-                return SlideInLeft(
-                  duration: Duration(milliseconds: 2000+ index*700),
-                  child: _buildUserCard(context, doc, index));
-              },
-            );
-          }),
+            }),
+      ),
     );
   }
 

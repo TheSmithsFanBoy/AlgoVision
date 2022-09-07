@@ -16,74 +16,77 @@ class AccountScreen extends StatelessWidget {
     var displayName = _user.user != null ? _user.user?.displayName : '';
     var url = _user.user != null ? _user.user?.photoURL : '';
     url = (url! + "?s=200");
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black54),
-        title: const Text("Cuenta"),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {
-              Navigator.pushNamed(context, '/edit-account');
-            },
-          ),
-        ],
-        elevation: 0,
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 30,
+    return SafeArea(
+      top: true,
+      child: Scaffold(
+        appBar: AppBar(
+          foregroundColor: Colors.white,
+          title: const Text("Cuenta"),
+          centerTitle: true,
+          backgroundColor: Colors.indigo,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                Navigator.pushNamed(context, '/edit-account');
+              },
             ),
-            CircleAvatar(
-              radius: 60,
-              backgroundImage: NetworkImage(url),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(displayName!,
-                style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w700)),
-            const SizedBox(
-              height: 4,
-            ),
-            Text(email!,
-                style: const TextStyle(fontSize: 14, color: Colors.black45)),
-            const SizedBox(
-              height: 40,
-            ),
-            Row(
-              children: [
-                const Expanded(
-                    child: Divider(
-                  thickness: 1,
-                  height: 10,
-                  color: Colors.grey,
-                )),
-                Container(
-                  margin: const EdgeInsets.only(left: 10.0, right: 10.0),
-                  child: const Text("MEDALLAS", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                ),
-                const Expanded(
-                    child: Divider(
-                  thickness: 1,
-                  height: 10,
-                  color: Colors.grey,
-                )),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            _listMedals(),
-           
           ],
+          elevation: 0,
+        ),
+        body: Center(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 30,
+              ),
+              CircleAvatar(
+                radius: 60,
+                backgroundImage: NetworkImage(url),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(displayName!,
+                  style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w700)),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(email!,
+                  style: const TextStyle(fontSize: 14, color: Colors.black45)),
+              const SizedBox(
+                height: 40,
+              ),
+              Row(
+                children: [
+                  const Expanded(
+                      child: Divider(
+                    thickness: 1,
+                    height: 10,
+                    color: Colors.grey,
+                  )),
+                  Container(
+                    margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                    child: const Text("MEDALLAS", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                  ),
+                  const Expanded(
+                      child: Divider(
+                    thickness: 1,
+                    height: 10,
+                    color: Colors.grey,
+                  )),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              _listMedals(),
+             
+            ],
+          ),
         ),
       ),
     );
