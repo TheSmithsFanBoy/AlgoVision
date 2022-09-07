@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -99,16 +100,72 @@ class ChallengeQuizScreen extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Text(doc['caption'],
-          textAlign: TextAlign.justify,
-          style:
-              const TextStyle(wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14), 
-            ),
-          const SizedBox(height: 15,),
-          ClipRRect(
+          Container( 
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
             borderRadius: BorderRadius.circular(15),
-            child: Image.network(
-              doc['imageChallenge']
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: const LinearGradient(
+              colors:  [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops:  [0.3, 0.9],
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
+            child: Column(
+              children: [
+                
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 10, bottom: 10),
+                  child: Text(doc['caption'], textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),
+                
+                
+              ],
+            ),
+          ),
+        ),
+       
+          const SizedBox(height: 15,),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10).copyWith(top: 10, bottom: 10),
+            decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: const LinearGradient(
+              colors:  [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops:  [0.3, 0.9],
+            )
+          ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: CachedNetworkImage(
+                imageUrl :doc['imageChallenge'],
+                placeholder: (context, url) => Center(child: Text('Cargando'),),
+              ),
             ),
           )
         ],

@@ -3,6 +3,7 @@
 // ignore_for_file: annotate_overrides
 
 import 'package:animate_do/animate_do.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -82,9 +83,9 @@ class _RankingScreenState extends State<RankingScreen> with AutomaticKeepAliveCl
               //! el recusro habia usado una api para almacenar las fotos
               //! y luego se implemento un imagePiker
               //! el urlDomain google.apis/ ... debe ser el mismo para todos
-            child: FadeInImage.assetNetwork(
-              placeholder: 'assets/images/loading.gif',
-              image: doc['photoUrl'] + "?s=200",
+            child: CachedNetworkImage(
+              placeholder: (context, url) => Image.asset('assets/images/loading.gif'),
+              imageUrl: doc['photoUrl'] + "?s=200",
                fit: BoxFit.cover,
             ),
             
