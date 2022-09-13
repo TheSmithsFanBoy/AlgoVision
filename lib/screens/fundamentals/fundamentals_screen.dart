@@ -203,7 +203,7 @@ Widget _buildTopicBlock(BuildContext context, data, bool completed, bool isBlock
                     onPressed: () {
                       isBlocked
                           // ignore: deprecated_member_use
-                          ? Scaffold.of(context).showSnackBar(
+                          ? ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Completa las lecciones anteriores'),
                               backgroundColor: Colors.red,

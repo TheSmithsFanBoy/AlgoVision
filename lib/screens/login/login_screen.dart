@@ -290,7 +290,7 @@ class LoginScreen extends StatelessWidget {
 
 showAlertDialog(BuildContext context, String message) {
   // Create button
-  Widget okButton = FlatButton(
+  Widget okButton = TextButton(
     child: const Text("OK"),
     onPressed: () {
       Navigator.of(context).pop();

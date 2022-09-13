@@ -79,7 +79,7 @@ class ChallengesScreen extends StatelessWidget {
     return InkWell(
       onTap:   () {
         completed
-            ? Scaffold.of(context).showSnackBar(
+            ? ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Ya has realizado este reto'),
                   backgroundColor: Colors.red,
