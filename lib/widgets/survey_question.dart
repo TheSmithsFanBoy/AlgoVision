@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, prefer_const_constructors, deprecated_member_use
 
 import 'package:flutter/material.dart';
 
@@ -132,7 +132,7 @@ class _SurveyQuestionState extends State<SurveyQuestion> {
                   backgroundColor: Colors.indigo,
                   padding: const EdgeInsets.only(left: 30, right: 30),
                   textStyle: const TextStyle(fontWeight: FontWeight.bold)),
-              child: const Text("VOLVER A INTENTARLO", ),
+              child: const Text("FINALIZAR", ),
               onPressed: () {
                 if (widget.callback2 != null) {
                   widget.callback2!();
@@ -167,6 +167,7 @@ class _SurveyQuestionState extends State<SurveyQuestion> {
             );
             // show the dialog
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (BuildContext context) {
                 return alert;

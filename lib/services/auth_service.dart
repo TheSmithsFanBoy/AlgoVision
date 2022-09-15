@@ -145,7 +145,7 @@ class AuthService {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: oldPassword);
       await _firebaseAuth.currentUser!.updatePassword(newPassword);
-      return "Password changed";
+      return "Contraseña modificada";
     } on FirebaseAuthException catch (e) {
       switch (e.message) {
         case "The password is invalid or the user does not have a password.":

@@ -127,8 +127,8 @@ class ChallengeQuizScreen extends StatelessWidget {
               children: [
                 
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 10, bottom: 10),
-                  child: Text(doc['caption'], textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                  padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 10, bottom: 10),
+                  child: Text(doc['caption'], textAlign: TextAlign.justify, style: const TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
                 ),
                 
                 
@@ -139,7 +139,7 @@ class ChallengeQuizScreen extends StatelessWidget {
        
           const SizedBox(height: 15,),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10).copyWith(top: 10, bottom: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10).copyWith(top: 10, bottom: 10),
             decoration: BoxDecoration(
             boxShadow: const [
               BoxShadow(
@@ -164,7 +164,7 @@ class ChallengeQuizScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
               child: CachedNetworkImage(
                 imageUrl :doc['imageChallenge'],
-                placeholder: (context, url) => Center(child: Text('Cargando'),),
+                placeholder: (context, url) => const Center(child: Text('Cargando'),),
               ),
             ),
           )

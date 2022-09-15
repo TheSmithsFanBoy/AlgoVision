@@ -72,11 +72,11 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   const SizedBox(
                     height: 30,
                   ),
-                  DrawerItem(
-                    name: 'Ayuda',
-                    icon: Icons.help_center,
-                    onPressed: () => onItemPressed(context, index: 3),
-                  ),
+                  //DrawerItem(
+                  //  name: 'Ayuda',
+                  //  icon: Icons.help_center,
+                  //  onPressed: () => onItemPressed(context, index: 3),
+                  //),
                   const SizedBox(
                     height: 30,
                   ),

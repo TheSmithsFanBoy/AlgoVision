@@ -1,6 +1,6 @@
 
 
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, prefer_const_constructors, deprecated_member_use, duplicate_ignore
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -205,7 +205,7 @@ Widget _buildTopicBlock(BuildContext context, data, bool completed, bool isBlock
                           // ignore: deprecated_member_use
                           ? ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Completa las lecciones anteriores'),
+                              content: Text('Completa el tópico anterior para desbloquear el contenido'),
                               backgroundColor: Colors.red,
                             ),
                           ) : Navigator.pushNamed(context, '/topic-content',

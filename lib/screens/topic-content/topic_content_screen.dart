@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable
+// ignore_for_file: prefer_const_constructors, must_be_immutable, avoid_print, deprecated_member_use
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -321,73 +321,12 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                 data['widgetTeoriaIF'].isNotEmpty ? _widgetIfTeoria(context) : Container(),
                 data['widgetTeoriaFOR'].isNotEmpty ? _widgetFORTeoria(context) : Container(),
                 data['widgetTeoriaWHILE'].isNotEmpty ? _widgetWhileTeoria(context) : Container(),
-                
-            //    _titleIfContent(data['content']),
-            //    data['contentBody1'].isNotEmpty? _bodyIfContent(data['contentBody1'])   : Container(),
-            //    data['contentBody2'].isNotEmpty? _bodyIfContent(data['contentBody2'])   : Container(),
-            //    data['contentBody3W'].isNotEmpty? _bodyIfContent(data['contentBody3W'])   : Container(),
-            //    data['contentTitle2'].isEmpty 
-            //      ? Container()
-            //      : Padding(
-            //        padding: const EdgeInsets.symmetric(horizontal: 5),
-            //        child: Divider(
-            //          thickness: 0.5,
-            //          color: Colors.black,
-            //        ),
-            //      ),
-            //    data['contentTitle2'].isNotEmpty  ? _titleIfContent(data['contentTitle2'])   : Container(),
-            //    data['contentBody3'].isNotEmpty   ? _bodyIfContent(data['contentBody3'])     : Container(),
-            //    data['contentBody4'].isNotEmpty   ? _bodyIfContent(data['contentBody4'])     : Container(),
-            //    //!---
-            //    SizedBox(height: 5,),
-            //    //!---
-            //    data['contentImage2'].isNotEmpty ? Padding(
-            //      padding: const EdgeInsets.symmetric(horizontal: 10),
-            //      child: ClipRRect(borderRadius: BorderRadius.circular(20),child: CachedNetworkImage(data['contentImage2'])),
-            //    ) : Container(),
-            //        
-            //    data['contentImage2'].isEmpty    ? Container() :
-            //    data['contentTitle3'].isEmpty 
-            //                                     ? Container() 
-            //                                     : Padding(
-            //                                       padding: const EdgeInsets.symmetric(horizontal: 5),
-            //                                       child: Divider(
-            //                                         thickness: 0.5,
-            //                                         color: Colors.black,
-            //                                       ),
-            //                                   ),
-            //    data['contentTitle3'].isNotEmpty  ? _titleIfContent(data['contentTitle3']) : Container(),
-            //    data['contentBody5'].isNotEmpty   ? _bodyIfContent(data['contentBody5'])    : Container(),
-            //    data['contentBody6'].isNotEmpty   ? _bodyIfContent(data['contentBody6'])   : Container(),
-            //    //!---
-            //    SizedBox(height: 5,),
-            //    //!---
-            //    data['contentImage'].isNotEmpty
-            //      ? Padding(
-            //          padding: const EdgeInsets.symmetric(horizontal: 10),
-            //          child: ClipRRect(
-            //            borderRadius: BorderRadius.circular(20),
-            //            child: CachedNetworkImage(data['contentImage'])),
-            //        )
-            //      : Container(),
-            //    data['contentBody7'].isNotEmpty  ? SizedBox(height: 10,)                  : Container(),
-            //    data['contentBody7'].isNotEmpty  ? _bodyIfContent(data['contentBody7'])   : Container(),
-            //    data['contentBody7'].isNotEmpty  ? SizedBox(height: 5,)                   : Container() ,
-            //    data['contentBody8'].isNotEmpty  ? _bodyIfContent(data['contentBody8'])   : Container(),
-            //    data['contentBody8'].isNotEmpty  ? SizedBox(height: 5,)                   : Container(),
-            //    data['contentBody9'].isNotEmpty  ? _bodyIfContent(data['contentBody9'])   : Container(),
-            //    data['contentBody9'].isNotEmpty  ? SizedBox(height: 5,)                   : Container(),
-            //    data['contentBody10'].isNotEmpty ? _bodyIfContent(data['contentBody10'])  : Container(),
-            //    data['contentBody10'].isNotEmpty ? SizedBox(height: 5,)                   : Container(),
-            //    data['contentBody11'].isNotEmpty ? _bodyIfContent(data['contentBody11'])  : Container(),
-            //    data['contentBodyExample'].isNotEmpty ? 
-            //    Column(
-            //      children: [
-            //        SizedBox(height: 10,),
-            //        
-            //        _bodyIfContent(data['contentBodyExample']),
-            //      ],
-            //    ) : Container(),
+                data['AO1Teoria'].isNotEmpty ? _widgetAO1Teoria(context) : Container(),
+                data['AO1Importancia'].isNotEmpty ? _widgetAO1Importancia(context) : Container(),
+                data['AO1Tipos'].isNotEmpty ? _widgetAO1Tipos(context) : Container(),
+                 data['TeoriaBurbuja'].isNotEmpty ? _teoriaBurbuja(context) : Container(), 
+                 
+                data['TeoriaSeleccion'].isNotEmpty ? _teoriaSeleccion(context) : Container(), 
               ],
             ),
           ),
@@ -405,30 +344,9 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                 data['widgetIfEjemplo'].isNotEmpty            ?   _widgetIfEjemplo(context)       : Container(),
                 data['widgetFOREjemplo'].isNotEmpty            ?   _widgetFOREjemplo(context)       : Container(),
                 data['widgetWHILEEjemplo'].isNotEmpty            ?   widgetWHILEEjemplo(context)       : Container(),
-                //data['content'].isNotEmpty            ?   _titleIfContent(data['content'])             : Container(),
-                //data['contentBody1'].isNotEmpty       ?   _bodyIfContent(data['contentBody1'])         : Container(),
-                //data['contentBody2'].isNotEmpty       ?   _bodyIfContent(data['contentBody2'])         : Container(),
-                //data['imageContentBody'].isNotEmpty   ?   _imageExampleText(data['imageContentBody'])  : Container(),
-                //data['contentBody1WH'].isNotEmpty      ? SizedBox(height: 10,)                     : Container(),
-                //data['contentBody1WH'].isNotEmpty       ?   _bodyIfContent(data['contentBody1WH'])         : Container(),
-                //data['contentBody1F'].isNotEmpty      ? SizedBox(height: 10,)              : Container(),          
-                //data['contentBody1F'].isNotEmpty      ?   _bodyIfContent(data['contentBody1F'])        : Container(),
-                //data['contentTitle1F'].isNotEmpty      ?   _dividerHeight()                             : Container(),
-                //data['contentTitle1F'].isNotEmpty      ?   _titleIfContent(data['contentTitle1F'])       : Container(), //!
-                //data['contentBody2F'].isNotEmpty       ?   _bodyIfContent(data['contentBody2F'])         : Container(),
-                //data['imageContentBody3'].isNotEmpty  ?   _imageExampleText(data['imageContentBody3']) : Container(),//!
-                //data['contentBody2WH'].isNotEmpty      ? SizedBox(height: 10,)                     : Container(),
-                //data['contentBody2WH'].isNotEmpty       ?   _bodyIfContent(data['contentBody2WH'])         : Container(),
-                //data['contentBody2F'].isNotEmpty      ? SizedBox(height: 10,)                          : Container(),
-                //data['contentTitle2'].isNotEmpty      ?   _titleIfContent(data['contentTitle2'])       : Container(),
-                //data['contentBody3'].isNotEmpty       ?   _bodyIfContent(data['contentBody3'])         : Container(),
-                // data['contentBody4'].isNotEmpty      ?   _bodyIfContent(data['contentBody4'])         : Container(),
-                //data['imageContentBody2'].isNotEmpty  ?   _imageExampleText(data['imageContentBody2']) : Container(),
-                //data['contentTitle3'].isNotEmpty      ?   _dividerHeight()                             : Container(),
-                //data['contentTitle3'].isNotEmpty      ?   _titleIfContent(data['contentTitle3'])       : Container(),
-                //data['contentBody5'].isNotEmpty       ?   _bodyIfContent(data['contentBody5'])         : Container(),
-                //data['contentBody6'].isNotEmpty       ?   _bodyIfContent(data['contentBody6'])         : Container(),
-                //data['imageContentBody4'].isNotEmpty  ?   _imageExampleText(data['imageContentBody4']) : Container(),
+                
+
+
               ],
             ),
           ),
@@ -443,14 +361,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
               data['quizIF'].isNotEmpty ? _quizIF(context) : Container(),
               data['quizFOR'].isNotEmpty ? _quizFOR(context) : Container(),
               data['quizWHILE'].isNotEmpty ? _quizWHILE(context) : Container(),
-              //data['titleContent1'].isEmpty ? Container() : _titleIfContent(data['titleContent1']),
-              //data['content'].isEmpty ? Container() : _bodyIfContent(data['content']),
-              //SizedBox(height: 10,),
-              //  Padding(padding: const EdgeInsets.symmetric(horizontal: 10),child: ClipRRect(
-              //    borderRadius: BorderRadius.circular(20),
-              //        child: CachedNetworkImage(data['imageQuiz'],fit: BoxFit.cover, height: MediaQuery.of(context).size.height*0.40,)),
-              //  ),
-              //////SizedBox(height: 10,),
+            
               SurveyQuestion(
                 validOption: data['validOption'],
                 options: data['options'].cast<String>(),
@@ -470,69 +381,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
     }
   }
 
-  Widget _imageExampleText(String imageRoute) {
-    return Padding(padding: const EdgeInsets.symmetric(horizontal: 10),child: ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
-                  child: CachedNetworkImage(
-                    imageUrl: imageRoute, 
-                    placeholder: (context, url) => Center(child: Text('Cargando')),
-                    height: 220,)),
-                );
-  }
 
-  Widget _dividerHeight() {
-    return Column(
-                children: const [
-                  SizedBox(height: 5,),
-                  Padding(padding:  EdgeInsets.symmetric(horizontal: 5),child: 
-                    Divider(
-                    thickness: 0.5,
-                    color: Colors.black,),
-                ),
-                ],
-              );
-  }
-
-  Widget _bodyIfContent(String content) {
-    return Container(
-        margin: EdgeInsets.only(bottom: 10),
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Text(
-          content,
-          textAlign: TextAlign.justify,
-          style:
-              TextStyle(wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14),
-        ));
-  }
-
-  Widget _titleIfContent(String title) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5),
-      child: Container(
-        height: 35,
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 1.3),
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: const [Color(0xff1488CC), Color(0xff2B32B2)]),
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(17),
-              bottomLeft: Radius.circular(17),
-            ),
-            color: Colors.black.withOpacity(0.3)),
-        margin: EdgeInsets.only(top: 10, bottom: 10),
-        child: Center(
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-    );
-  }
   
   Widget _quizWHILE(BuildContext context) {
     var sizeWidth = MediaQuery.of(context).size.width;
@@ -567,11 +416,9 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             child: Column(
               children: [
                 SizedBox(height: 5,),
-                Container(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('¡Corrobora lo aprendido!', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
-                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('¡Corrobora lo aprendido!', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
                   child: Text('Dada la siguiente imagen, selecciona la alternativa correcta la cuál será la salida del programa', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
@@ -624,7 +471,6 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
 
   Widget _quizFOR(BuildContext context) {
 
-    var sizeHeight = MediaQuery.of(context).size.height;
     var sizeWidth = MediaQuery.of(context).size.width;
 
     return Column(
@@ -657,11 +503,9 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             child: Column(
               children: [
                 SizedBox(height: 5,),
-                Container(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('¡Corrobora lo aprendido!', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
-                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('¡Corrobora lo aprendido!', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
                   child: Text('Dada la siguiente imagen, selecciona la alternativa correcta la cuál será la salida del programa', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
@@ -714,7 +558,6 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
 
   Widget _quizIF(BuildContext context) {
 
-    var sizeHeight = MediaQuery.of(context).size.height;
     var sizeWidth = MediaQuery.of(context).size.width;
 
     return Column(
@@ -747,11 +590,9 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             child: Column(
               children: [
                 SizedBox(height: 5,),
-                Container(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('¡Corrobora lo aprendido!', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
-                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('¡Corrobora lo aprendido!', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
                   child: Text('Dada la siguiente imagen, selecciona la alternativa correcta la cuál será la salida del programa', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
@@ -804,7 +645,6 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
 
   Widget widgetWHILEEjemplo(BuildContext context) {
 
-    var sizeHeight = MediaQuery.of(context).size.height;
     var sizeWidth = MediaQuery.of(context).size.width;
 
     return Column(
@@ -837,14 +677,11 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             child: Column(
               children: [
                 SizedBox(height: 5,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Ejemplo: Multiplicación de números', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
                 Container(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Ejemplo: Multiplicación de números', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15),
-                  height: sizeHeight* 0.22,
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
                   child: Text('En este ejemplo, el ciclo se detendrá cuando el valor de "i" sea mayor a "final", es decir, 40. Como se observa, en cada iteración a "i" se le asignará un nuevo valor el cual será la multiplicación de "j" x "10". Luego de ello, el valor de "j" aumentara en 1. Esto se repetira hasta que la condición deje de cumplirse.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
                 ),
               ],
@@ -921,11 +758,9 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             child: Column(
               children: [
                 SizedBox(height: 5,),
-                Container(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Ejemplo: Suma de números', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
-                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Ejemplo: Suma de números', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
                   child: Text('En este ejemplo, se pide que se ingrese un número el cual permitirá saber hasta cuando deberá ejecutarse la estructura repetitiva. Como se observa, en cada iteración se deberá ingresar un número, el cual se sumará con lo almacenado en "suma" y "contador" aumentará en 1 luego de cada iteración, hasta que la condición deje de cumplirse.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
@@ -978,17 +813,19 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
     );
   }
 
-  Widget _widgetWhileTeoria(BuildContext context) {
+    
 
-    var sizeHeight = MediaQuery.of(context).size.height;
+  Widget _teoriaSeleccion(BuildContext context) {
+
     var sizeWidth = MediaQuery.of(context).size.width;
+    var sizeHeight = MediaQuery.of(context).size.height;
 
     return Column(
       children: [
+        
         SizedBox(height: 20,),
-        Container( //! Condicionales
+        Container( 
           width: sizeWidth * 0.9,
-          height: sizeHeight * 0.3,
           decoration: BoxDecoration(
             boxShadow: const [
               BoxShadow(
@@ -1013,30 +850,923 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
             child: Column(
               children: [
-                Expanded(
-                  child: Align(
+                Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('Estructura Repetitiva WHILE', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                    child: Text('Ordenamiento por Selección', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 15, top: 15),
+                  child: Text('SEste algoritmo consiste en repetir los siguientes pasos: Se busca el elemento más pequeño del array y se coloca en la primera posición. Entre los restantes, se busca el elemento más pequeño y se coloca en la segunda posición. Entre los restantes se busca el elemento más pequeño y se coloca en la tercera posición. Este proceso se repite hasta colocar el último elemento.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),   
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: ()=>dialogSeleccionCodigo(context, sizeWidth, sizeHeight), 
+                      style: ElevatedButton.styleFrom(
+                        
+                        side: BorderSide(
+                          color: Colors.white,
+                          width: 0.65
+                        ),
+                        primary: Colors.transparent
+                      ),
+                      child: Text('CÓDIGO', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 12, fontWeight: FontWeight.w600)),
+                    
+                    ),
+                    ElevatedButton(
+                  onPressed: ()=>dialogSeleccionEjecucion(context, sizeWidth, sizeHeight), 
+                  style: ElevatedButton.styleFrom(
+                    
+                    side: BorderSide(
+                      color: Colors.white,
+                      width: 0.65
+                    ),
+                    primary: Colors.transparent
+                  ),
+                  child: Text('DEMOSTRACIÓN', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 12, fontWeight: FontWeight.w600)),
+                
+                ),
+                  ],
+                ),
+
+                
+                
+                       
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 30,),
+      ],
+    );
+  }
+
+
+  Widget _teoriaBurbuja(BuildContext context) {
+
+    var sizeWidth = MediaQuery.of(context).size.width;
+    var sizeHeight = MediaQuery.of(context).size.height;
+
+    return Column(
+      children: [
+        SizedBox(height: 20,),
+        Container( 
+          width: sizeWidth * 0.9,
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: LinearGradient(
+              colors: const [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops: const [0.3, 0.9],
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Ordenamiento Burbuja', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 15, top: 15),
+                  child: Text('Este algoritmo de ordenamiento consiste en comparar pares de elementos adyacentes en una lista y si están desordenanos intercambiarlos hasta que estén todos ordenados. Este algoritmo obtiene su nombre de la forma con la que suben por la lista los elementos durante los intercambios, como si fueran pequeñas burbujas. También es conocido como el método del intercambio directo.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),          
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 20,),
+        Container( 
+          width: sizeWidth * 0.9,
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: LinearGradient(
+              colors: const [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops: const [0.3, 0.9],
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Ejecución', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 15, top: 15),
+                  child: Text('Si A es la lista a ordenar, se realizan A.length-1 pasadas. Si la variable i es la que cuenta el número de pasadas, en cada pasada i se comprueban los elementos adyacentes desde el primero hasta A.length-i-1 ya que el resto hasta el final del array están ya ordenados. Si los elementos adyacentes están desordenados se intercambian.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),   
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: ()=>dialogBurbujaCodigo(context, sizeWidth, sizeHeight), 
+                      style: ElevatedButton.styleFrom(
+                        
+                        side: BorderSide(
+                          color: Colors.white,
+                          width: 0.65
+                        ),
+                        primary: Colors.transparent
+                      ),
+                      child: Text('CÓDIGO', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 12, fontWeight: FontWeight.w600)),
+                    
+                    ),
+                    ElevatedButton(
+                  onPressed: ()=>dialogBurbujaEjecucion(context, sizeWidth, sizeHeight), 
+                  style: ElevatedButton.styleFrom(
+                    
+                    side: BorderSide(
+                      color: Colors.white,
+                      width: 0.65
+                    ),
+                    primary: Colors.transparent
+                  ),
+                  child: Text('DEMOSTRACIÓN', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 12, fontWeight: FontWeight.w600)),
+                
+                ),
+                  ],
+                ),
+
+                
+                
+                       
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 30,),
+      ],
+    );
+  }
+
+
+  Widget _widgetAO1Tipos(BuildContext context) {
+
+    var sizeWidth = MediaQuery.of(context).size.width;
+
+    return Column(
+      children: [
+        SizedBox(height: 20,),
+        Container( 
+          width: sizeWidth * 0.9,
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: LinearGradient(
+              colors: const [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops: const [0.3, 0.9],
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Algoritmos de Ordenamiento', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 15, top: 15),
+                  child: Text('Existen diversos tipos de algoritmos de ordenamiento. A continuación, se presentan algunos de estos', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),          
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 20,),
+        Container( 
+          width: sizeWidth * 0.9,
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: LinearGradient(
+              colors: const [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops: const [0.3, 0.9],
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Algoritmo de Ordenamiento Burbuja', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 15, top: 15),
+                  child: Text('El algoritmo de ordenamiento burbuja avanza repetidamente a través de la lista, comparando pares de elementos adyacentes e intercambiando sus posiciones si están en el orden incorrecto. El algoritmo pasa a través de la lista de esa manera hasta que se haya ordenado toda la lista.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),          
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 20,),
+        Container( 
+          width: sizeWidth * 0.9,
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: LinearGradient(
+              colors: const [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops: const [0.3, 0.9],
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Algoritmo de Ordenamiento por Inserción', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 15, top: 15),
+                  child: Text('El algoritmo de ordenamiento por inserción comienza poniendo los dos primeros elementos en orden y luego compara el tercer elemento con el segundo, intercambia posiciones si es necesario y repite esa acción con el primer elemento. Los elementos subsiguientes sujetos al mismo proceso a menudo no tienen que moverse demasiado a través de los elementos ordenados.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),          
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 20,),
+        Container( 
+          width: sizeWidth * 0.9,
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: LinearGradient(
+              colors: const [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops: const [0.3, 0.9],
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Algoritmo de Ordenamiento Shell', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 15, top: 15),
+                  child: Text('El algoritmo de ordenamiento Shell compara y ordena los elementos a intervalos, reduciendo el tamaño del intervalo en cada pasada por la lista. Los pases finales son tipo burbuja, pero es mucho más rápido porque los elementos ya están más cerca de sus posiciones deseadas.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),          
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 20,),
+        Container( 
+          width: sizeWidth * 0.9,
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: LinearGradient(
+              colors: const [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops: const [0.3, 0.9],
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('QuickSort', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 15, top: 15),
+                  child: Text('El algoritmo QuickSort selecciona un elemento aleatorio de la lista, compara todos los demás elementos con él y los organiza en los que pertenecen antes del elemento seleccionado y los que pertenecen después. Eso significa que ninguno de los elementos tiene que compararse con los del otro grupo nuevamente. El método procede seleccionando elementos al azar dentro de esos dos grupos de elementos y repitiendo el proceso. Eventualmente, algún otro método, como el algoritmo de inserción, realiza la clasificación final.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),          
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 30,),
+      ],
+    );
+  }
+
+
+
+  Widget _widgetAO1Importancia(BuildContext context) {
+
+    var sizeWidth = MediaQuery.of(context).size.width;
+
+    return Column(
+      children: [
+        SizedBox(height: 20,),
+        Container( 
+          width: sizeWidth * 0.9,
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: LinearGradient(
+              colors: const [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops: const [0.3, 0.9],
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('¿Por qué los datos ordenados son tan importantes?', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
+                  child: Text('Hay muchas cosas que el ordenamiento facilita cuando se esta tratando de trabajar con datos.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 10),
-                  height: sizeHeight* 0.14,
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith( bottom: 15),
+                  child: Text('Por ejemplo, buscar un elemento en una lista es mucho, mucho más rápido si la lista está ordenada.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith( bottom: 15),
+                  child: Text('Seleccionar elementos de una lista en función de su relación con el resto de los elementos es más fácil con datos ordenados. Por ejemplo, encontrar el k-ésimo valor más grande o más pequeño, o encontrar el valor mediano de la lista, es mucho más fácil cuando los valores están en orden ascendente o descendente.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith( bottom: 15),
+                  child: Text('Encontrar valores duplicados en una lista se puede hacer muy rápidamente cuando la lista está ordenada.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith( bottom: 15),
+                  child: Text('Analizar la distribución de frecuencias de los elementos de una lista es muy rápido si la lista está ordenada. Por ejemplo, encontrar el elemento que aparece con mayor o menor frecuencia es relativamente sencillo con una lista ordenada.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),
+
+                
+
+
+                
+                
+                
+                
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 30,),
+      ],
+    );
+  }
+
+
+  Widget _widgetAO1Teoria(BuildContext context) {
+
+    var sizeHeight = MediaQuery.of(context).size.height;
+    var sizeWidth = MediaQuery.of(context).size.width;
+
+    return Column(
+      children: [
+        SizedBox(height: 20,),
+        Container( //! C
+          width: sizeWidth * 0.9,
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: LinearGradient(
+              colors: const [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops: const [0.3, 0.9],
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Algoritmos de ordenamiento', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
+                  child: Text('Los algoritmos de ordenamiento son un método para organizar datos en un cierto orden, como alfabético, de mayor a menor valor o de menor a mayor distancia y se pueden usar para organizar datos desordenados para que sean más fáciles de usar. Por lo tanto, desarrollar una sólida comprensión de los algoritmos de ordenamiento y cómo funcionan es un fundamento crucial de la informática.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),
+                ElevatedButton(
+                  onPressed: ()=>dialog01AO(context, sizeWidth, sizeHeight), 
+                  style: ElevatedButton.styleFrom(
+                    
+                    side: BorderSide(
+                      color: Colors.white,
+                      width: 0.65
+                    ),
+                    primary: Colors.transparent
+                  ),
+                  child: Text('EJEMPLO', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 12, fontWeight: FontWeight.w600)),
+                
+                ),
+                
+                
+              ],
+            ),
+          ),
+        ),
+        
+        SizedBox(height: 30,),
+
+        Container( //! C
+          width: sizeWidth * 0.9,
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: LinearGradient(
+              colors: const [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops: const [0.3, 0.9],
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('¿Por qué los datos ordenados son tan importantes?', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
+                  child: Text('Hay muchas cosas que el ordenamiento facilita cuando se esta tratando de trabajar con datos.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith( bottom: 15),
+                  child: Text('Por ejemplo, buscar un elemento en una lista es mucho, mucho más rápido si la lista está ordenada.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith( bottom: 15),
+                  child: Text('Seleccionar elementos de una lista en función de su relación con el resto de los elementos es más fácil con datos ordenados. Por ejemplo, encontrar el k-ésimo valor más grande o más pequeño, o encontrar el valor mediano de la lista, es mucho más fácil cuando los valores están en orden ascendente o descendente.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith( bottom: 15),
+                  child: Text('Encontrar valores duplicados en una lista se puede hacer muy rápidamente cuando la lista está ordenada.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith( bottom: 15),
+                  child: Text('Analizar la distribución de frecuencias de los elementos de una lista es muy rápido si la lista está ordenada. Por ejemplo, encontrar el elemento que aparece con mayor o menor frecuencia es relativamente sencillo con una lista ordenada.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),
+
+                
+
+
+                
+                
+                
+                
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
+
+dialogSeleccionEjecucion(BuildContext context, var sizeWidth, var sizeHeight){
+  showDialog(context: context, builder: (context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16)
+      ),
+      insetPadding: EdgeInsets.symmetric(horizontal: 5),
+      contentPadding: EdgeInsets.all(3),
+      content: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          width: sizeWidth * 0.99,
+          height: sizeHeight * 0.6,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: const [
+                  Colors.indigo,
+                  Color(0xff1c1c1c)
+                ],
+                stops: const [0.3, 0.9],
+              )
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                  padding: EdgeInsets.only(top: 15),
+                  width: sizeWidth * 0.85,
+                  height: sizeHeight * 0.45,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                      imageUrl: 'https://firebasestorage.googleapis.com/v0/b/tdpapp-8d28b.appspot.com/o/selecciondemostracion.png?alt=media&token=04af4dd8-caad-450f-ab63-a3a8a603b45a', 
+                      placeholder: (context, url) => Center(child: Text('Cargando')),
+                      ),
+                  ),
+                              ),
+                ),
+                Container(
+                      padding: EdgeInsets.symmetric(horizontal: 30).copyWith(top: 20, bottom: 25),
+                      child: Text('Se presenta la demostración y ejecución del algoritmo de ordenamiento por selección con este ejemplo en la imagen.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                    ),
+                SizedBox(height: 15,)
+                
+          
+                    
+                
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  },);
+}
+
+dialogBurbujaEjecucion(BuildContext context, var sizeWidth, var sizeHeight){
+  showDialog(context: context, builder: (context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16)
+      ),
+      insetPadding: EdgeInsets.symmetric(horizontal: 5),
+      contentPadding: EdgeInsets.all(3),
+      content: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          width: sizeWidth * 0.99,
+          height: sizeHeight * 0.70,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: const [
+                  Colors.indigo,
+                  Color(0xff1c1c1c)
+                ],
+                stops: const [0.3, 0.9],
+              )
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                  padding: EdgeInsets.only(top: 15),
+                  width: sizeWidth * 0.85,
+                  height: sizeHeight * 0.55,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                      imageUrl: 'https://firebasestorage.googleapis.com/v0/b/tdpapp-8d28b.appspot.com/o/listaordenarburbuja.png?alt=media&token=e5c4cd41-e365-4ef4-9ae7-d2a80a3a7416', fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(child: Text('Cargando')),
+                      ),
+                  ),
+                              ),
+                ),
+                Container(
+                      padding: EdgeInsets.symmetric(horizontal: 30).copyWith(top: 20, bottom: 25),
+                      child: Text('Se presenta la demostración y ejecución del algoritmo de ordenamiento burbuja con este ejemplo en la imagen. La lista ya se encuentra ordenada en la segunda iteración, pero el bucle for seguirá ejecutándose hasta el final.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                    ),
+                SizedBox(height: 15,)
+                
+          
+                    
+                
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  },);
+}
+
+dialogSeleccionCodigo(BuildContext context, var sizeWidth, var sizeHeight){
+  showDialog(context: context, builder: (context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16)
+      ),
+      insetPadding: EdgeInsets.symmetric(horizontal: 5),
+      contentPadding: EdgeInsets.all(3),
+      content: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          width: sizeWidth * 0.99,
+          height: sizeHeight * 0.65,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: const [
+                  Colors.indigo,
+                  Color(0xff1c1c1c)
+                ],
+                stops: const [0.3, 0.9],
+              )
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                  padding: EdgeInsets.only(top:15),
+                  width: sizeWidth * 0.85,
+                  height: sizeHeight * 0.6,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                      imageUrl: 'https://firebasestorage.googleapis.com/v0/b/tdpapp-8d28b.appspot.com/o/ordenamientoseleccion.png?alt=media&token=fa8d1bd7-098c-4085-995d-b9d53fa7446a', fit: BoxFit.fitHeight,
+                      placeholder: (context, url) => Center(child: Text('Cargando')),
+                      ),
+                  ),
+                              ),
+                ),
+                Container(
+                      padding: EdgeInsets.symmetric(horizontal: 30).copyWith(top: 20, bottom: 25),
+                      child: Text('Se presenta la implementación en código del algoritmo de ordenamiento por selección', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                    ),
+          
+                    
+                
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  },);
+}
+
+dialogBurbujaCodigo(BuildContext context, var sizeWidth, var sizeHeight){
+  showDialog(context: context, builder: (context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16)
+      ),
+      insetPadding: EdgeInsets.symmetric(horizontal: 5),
+      contentPadding: EdgeInsets.all(3),
+      content: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          width: sizeWidth * 0.99,
+          height: sizeHeight * 0.65,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: const [
+                  Colors.indigo,
+                  Color(0xff1c1c1c)
+                ],
+                stops: const [0.3, 0.9],
+              )
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                  padding: EdgeInsets.only(top:15),
+                  width: sizeWidth * 0.85,
+                  height: sizeHeight * 0.4,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                      imageUrl: 'https://firebasestorage.googleapis.com/v0/b/tdpapp-8d28b.appspot.com/o/ordenamientoburbuja.png?alt=media&token=636ef16a-843e-45f8-ba12-036936028cba', fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(child: Text('Cargando')),
+                      ),
+                  ),
+                              ),
+                ),
+                Container(
+                      padding: EdgeInsets.symmetric(horizontal: 30).copyWith(top: 20, bottom: 25),
+                      child: Text('Se presenta la implementación en código del algoritmo de ordenamiento burbuja', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                    ),
+          
+                    
+                
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  },);
+}
+
+  dialog01AO(BuildContext context, var sizeWidth, var sizeHeight){
+  showDialog(context: context, builder: (context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16)
+      ),
+      insetPadding: EdgeInsets.symmetric(horizontal: 15),
+      contentPadding: EdgeInsets.all(3),
+      content: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          width: sizeWidth * 0.99,
+          height: sizeHeight * 0.65,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: const [
+                  Colors.indigo,
+                  Color(0xff1c1c1c)
+                ],
+                stops: const [0.3, 0.9],
+              )
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 20, bottom: 25),
+                      child: Text('Imagina que tienes una base de datos con información sobre los clientes en una tienda en línea y te encuentras tratando de averiguar a quién invitar a participar en un programa de recompensas. No puedes simplemente decir: "Oh, el cliente A tiene un valor numérico mayor que el cliente B". Se deben realizar algunas otras comparaciones.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                    ),
+                Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 25),
+                      child: Text('Por lo tanto, es posible que se desee dar prioridad a las personas que han sido clientes durante más tiempo, por lo que es una comparación de escala de tiempo. Pero también es posible que se desee tener en cuenta cuánto dinero ha gastado cada cliente y tal vez la última vez que realizó una compra.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                    ),
+                  Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 25),
+                      child: Text('Asimismo, es posible que se desee ofrecer a las personas que hayan realizado una compra más recientemente que participen en el programa de recompensas más fácilmente. Puede combinar todas esas cosas en una gran función de comparación que tiene en cuenta todos esos factores diferentes, y mientras esa función de comparación funcione, podrá ordenar a esos clientes de una manera que tenga sentido.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 25),
+                      child: Text('Eso es todo lo que realmente significa ordenar. Es solo ordenar algo de una manera adecuada.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                    ),
+          
+                    
+                
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  },);
+}
+
+  Widget _widgetWhileTeoria(BuildContext context) {
+
+    var sizeHeight = MediaQuery.of(context).size.height;
+    var sizeWidth = MediaQuery.of(context).size.width;
+
+    return Column(
+      children: [
+        SizedBox(height: 20,),
+        Container( //! Condicionales
+          width: sizeWidth * 0.9,
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: LinearGradient(
+              colors: const [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops: const [0.3, 0.9],
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Estructura Repetitiva WHILE', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
                   child: Text('Esta estructura de control permite ejecutar un conjunto de instrucciones siempre y cuando la condición se cumpla, en cuanto la condición se cumpla el ciclo deja de ejecutarse.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
                 ),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: ()=>dialogWHILE(context, sizeWidth, sizeHeight), 
-                    style: ElevatedButton.styleFrom(
-                      
-                      side: BorderSide(
-                        color: Colors.white,
-                        width: 0.65
-                      ),
-                      primary: Colors.transparent
+                ElevatedButton(
+                  onPressed: ()=>dialogWHILE(context, sizeWidth, sizeHeight), 
+                  style: ElevatedButton.styleFrom(
+                    
+                    side: BorderSide(
+                      color: Colors.white,
+                      width: 0.65
                     ),
-                    child: Text('SINTAXIS', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 12, fontWeight: FontWeight.w600)),
-                  
+                    primary: Colors.transparent
                   ),
+                  child: Text('SINTAXIS', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 12, fontWeight: FontWeight.w600)),
+                
                 ),
                 
                 
@@ -1085,11 +1815,9 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             child: Column(
               children: [
                 SizedBox(height: 5,),
-                Container(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Ejemplo: Cuenta Regresiva', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
-                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Ejemplo: Cuenta Regresiva', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15),
                   height: sizeHeight* 0.22,
@@ -1160,11 +1888,9 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             child: Column(
               children: [
                 SizedBox(height: 5,),
-                Container(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Ejemplo: Números pares', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
-                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Ejemplo: Números pares', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15),
                   height: sizeHeight* 0.22,
@@ -1234,14 +1960,11 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             child: Column(
               children: [
                 SizedBox(height: 5,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Ejemplo: Múltiplos', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
                 Container(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Ejemplo: Múltiplos', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15),
-                  height: sizeHeight* 0.22,
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
                   child: Text('Este siguiente ejemplo consiste en contar al interior de un ciclo for, cuántos números entre el 0 y el 10.000 son múltiplos del 5. Para ello, se utilizará el operador % (modulo) que obtiene el residuo de una división. Además, se usará un condicional para verificar que el modulo sea cero al dividir por 5.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
                 ),
               ],
@@ -1320,11 +2043,9 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             child: Column(
               children: [
                 SizedBox(height: 5,),
-                Container(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Ejemplo: Mayor de Edad', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
-                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Ejemplo: Mayor de Edad', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15),
                   height: sizeHeight* 0.27,
@@ -1384,7 +2105,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
         SizedBox(height: 20,),
         Container( //! Condicionales
           width: sizeWidth * 0.9,
-          height: sizeHeight * 0.3,
+          height: sizeHeight * 0.31,
           decoration: BoxDecoration(
             boxShadow: const [
               BoxShadow(
@@ -1409,19 +2130,15 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
             child: Column(
               children: [
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Condicionales', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
-                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Condicionales', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15),
-                  height: sizeHeight* 0.115,
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
                   child: Text('Un condicional es una condición para discernir entre una opción u otra, y en el proceso mental normalmente se manifiesta con un «Si».', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15),
-                  height: sizeHeight* 0.115,
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith( bottom: 15),
                   child: Text('En esta lección, se presentan los condicionales IF e IF-ELSE.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
                 ),
                 
@@ -1457,14 +2174,11 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
             child: Column(
               children: [
-                Expanded(
-                  child: Align(
+                Align(
                     alignment: Alignment.centerLeft,
                     child: Text('Condicionales Simples', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
-                ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15),
-                  height: sizeHeight* 0.115,
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
                   child: Text('Los condicionales IF permiten determinar qué acciones ejecutar según cierta condición sea verdadera.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
                 ),
                 SizedBox(height: 15.0,),
@@ -1530,14 +2244,11 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
             child: Column(
               children: [
-                Expanded(
-                  child: Align(
+                Align(
                     alignment: Alignment.centerLeft,
                     child: Text('Condicionales Selectivos', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
-                ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15),
-                  height: sizeHeight* 0.115,
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
                   child: Text('Los condicionales IF-ELSE son una estructura de control que permiten determinar que acciones tomar dada o no cierta condición.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
                 ),
                 SizedBox(height: 15.0,),
@@ -1587,9 +2298,8 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
     return Column(
       children: [
         SizedBox(height: 20,),
-        Container( //! Condicionales
+        Container( //! 
           width: sizeWidth * 0.9,
-          height: sizeHeight * 0.32,
           decoration: BoxDecoration(
             boxShadow: const [
               BoxShadow(
@@ -1619,8 +2329,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                   alignment: Alignment.centerLeft,
                   child: Text('Estructura Repetitiva FOR', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15),
-                  height: sizeHeight* 0.17,
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(top: 15, bottom: 15),
                   child: Text('Permite ejecutar una o varias líneas de código de forma iterativa, indicando un valor inicial, la condición que debe cumplir para seguir en el ciclo y el incremento de cada iteración.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
                 ),
                 ElevatedButton(
@@ -1635,6 +2344,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                     child: Text('SINTAXIS', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 12, fontWeight: FontWeight.w600)),
                   
                   ),
+                  SizedBox(height: 10,)
               ],
             ),
           ),
@@ -1819,19 +2529,13 @@ dialogIfConSimple(BuildContext context, var sizeWidth, var sizeHeight){
                   placeholder: (context, url) => Center(child: Text('Cargando')),
                   ),
               ),
+              
               Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    height: sizeHeight* 0.080,
-                    child: Text('En este esquema, se puede observar un ejemplo de una estructura condicional simple.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
-                  ),
-              Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    height: sizeHeight* 0.080,
+                    padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 15),
                     child: Text('El rombo representa la condición y se tiene dos opciones que se pueden tomar. ', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
                   ),
               Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    height: sizeHeight* 0.090,
+                    padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 15),
                     child: Text('Si la condición devuelve un resultado verdadero, ejecutará las instrucciones que se encuentren en su interior, si por el contrario es falso no realizará dicha acción.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.bold),),
                   ),
             ],
@@ -1877,8 +2581,7 @@ dialogIfConSelectiva(BuildContext context, var sizeWidth, var sizeHeight){
               
               Container(
                     margin: EdgeInsets.only(bottom: 15),
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    height: sizeHeight* 0.080,
+                    padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 0.15),
                     child: Text('En este esquema de una estructura condicional selectiva, se observa dos posibilidades a realizarse dada una cierta condición.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
                   ),
               Container(
@@ -1904,7 +2607,7 @@ dialogFOR(BuildContext context, var sizeWidth, var sizeHeight){
       ),
       insetPadding: EdgeInsets.symmetric(horizontal: 2),
       contentPadding: EdgeInsets.all(0),
-      content: Container(
+      content: SizedBox(
         width: double.maxFinite,
         height: 500,
         child: ListView(

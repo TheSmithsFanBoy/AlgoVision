@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
@@ -123,6 +124,9 @@ class EditAccountScreen extends StatelessWidget {
                         height: 30,
                       ),
                       TextFormField(
+                        inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp('[a-zA-Z a space]')),
+            ],
                         controller: _displayNameController,
                         decoration: const InputDecoration(
                           labelText: 'Nombres y apellidos',

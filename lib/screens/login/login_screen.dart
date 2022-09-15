@@ -28,7 +28,7 @@ class LoginScreen extends StatelessWidget {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            
+            cursorColor: Colors.white,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Por favor ingrese su correo electrónico';
@@ -71,6 +71,7 @@ class LoginScreen extends StatelessWidget {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            cursorColor: Colors.white,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Por favor ingrese su  contraseña';
@@ -158,7 +159,7 @@ class LoginScreen extends StatelessWidget {
         child: const Text(
           'ACCEDER',
           style: TextStyle(
-            color: Colors.purple,
+            color: Colors.black,
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
@@ -225,8 +226,8 @@ class LoginScreen extends StatelessWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.blue,
-                      Colors.purple,
+                      Colors.indigo,
+                Color(0xff1c1c1c)
                     ],
                   ),
                 ),

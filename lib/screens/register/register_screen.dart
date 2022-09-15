@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, duplicate_ignore, prefer_const_constructors
+// ignore_for_file: avoid_print, duplicate_ignore, prefer_const_constructors, deprecated_member_use
 
 import 'dart:io';
 
@@ -170,6 +170,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            cursorColor: Colors.white,
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp('[a-zA-Z a space]')),
             ],
@@ -217,6 +218,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            cursorColor: Colors.white,
             controller: emailController,
             validator: (value) {
               if (value!.isEmpty) {
@@ -266,7 +268,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            
+            cursorColor: Colors.white,
             controller: passwordController,
             validator: (value) {
               
@@ -320,6 +322,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            cursorColor: Colors.white,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Por favor ingrese su contraseña';
@@ -389,7 +392,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: const Text(
           'CREAR CUENTA',
           style: TextStyle(
-            color: Colors.purple,
+            color: Colors.black,
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
@@ -445,8 +448,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.blue,
-                      Colors.purple,
+                      Colors.indigo,
+                Color(0xff1c1c1c)
                     ],
                   ),
                 ),

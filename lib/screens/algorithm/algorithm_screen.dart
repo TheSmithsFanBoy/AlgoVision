@@ -1,6 +1,6 @@
 
 
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, deprecated_member_use, duplicate_ignore
 
 import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -97,7 +97,8 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
       elevation: 4,
       margin: const EdgeInsets.only(bottom: 16),
       child: ExpansionTile(
-        textColor: Colors.pink,
+        
+        textColor: Colors.indigo,
         collapsedTextColor: Colors.indigo,
         iconColor: Colors.indigo,
         leading: FadeInLeft(
@@ -149,7 +150,7 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
                 var prevTopicCompleted = true;
                 
                 return ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(left: 25),
@@ -206,7 +207,7 @@ class _AlgorithmScreenState extends State<AlgorithmScreen> {
                           // ignore: deprecated_member_use
                           ? ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Completa las lecciones anteriores'),
+                              content: Text('Completa el tópico anterior para desbloquear el contenido'),
                               backgroundColor: Colors.red,
                             ),
                           ) : Navigator.pushNamed(context, '/topic-content',
