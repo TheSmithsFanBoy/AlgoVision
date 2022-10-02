@@ -4,6 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:tdpapp/models/screen_arguments.dart';
 import 'package:tdpapp/widgets/survey_question.dart';
 
@@ -15,19 +17,28 @@ class TopicContentScreen extends StatefulWidget {
 }
 
 class _TopicContentScreenState extends State<TopicContentScreen> {
+
+  late UnityWidgetController unityWidgetController ;
   int pos = 0;
   bool play = true;
+
+
+  
+
+  
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
-    debugPrint(args.description);
+    debugPrint(args.id);
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.indigo,
-          title: Text(args.title),
-          centerTitle: true,
-        ),
+        appBar: (args.id != 'NImip38OyNN166ISaFhK' && args.id != 'MDJYvdWi0Xk67SD4YLTw'  && args.id != 'j2gYA2NNUQHHa24IcTHi') 
+          ? AppBar(
+            backgroundColor: Colors.indigo,
+            title: Text(args.title),
+            centerTitle: true,
+          ) : null ,
           body: FutureBuilder(
             future: FirebaseFirestore.instance
                 .collection('topics')
@@ -55,7 +66,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: _buildContent(context, data),
+                        child: _buildContent(context, data, args.id),
                       ),
                     ],
                   ),
@@ -64,10 +75,12 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
               return const CircularProgressIndicator();
             },
           ),
-          bottomNavigationBar: BottomAppBar(
+          bottomNavigationBar: 
+          
+           (args.id != 'NImip38OyNN166ISaFhK' && args.id != 'MDJYvdWi0Xk67SD4YLTw'  && args.id != 'j2gYA2NNUQHHa24IcTHi') ? BottomAppBar(
             color: Colors.transparent,
             elevation: 0,
-            child: Padding(
+            child: (args.id != 'NImip38OyNN166ISaFhK' && args.id != 'MDJYvdWi0Xk67SD4YLTw'  && args.id != 'j2gYA2NNUQHHa24IcTHi') ? Padding(
               padding: const EdgeInsets.all(13.0),
               child: FutureBuilder(
                 future: FirebaseFirestore.instance
@@ -81,6 +94,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                     var p = (snapshot.data!) as QuerySnapshot;
                     print(snapshot.data);
                     if (p.docs.isNotEmpty) {
+                      
                       return TextButton(
                           style: TextButton.styleFrom(
                             side: BorderSide(
@@ -106,6 +120,9 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                             });
                             Navigator.pop(context);
                           });
+
+
+
                     } else {
                        return TextButton(style: TextButton.styleFrom(
                         side: BorderSide(
@@ -114,7 +131,8 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                             ),
                         backgroundColor: Colors.indigo,fixedSize: const Size(30, 30),),
                           child: const Text('FINALIZAR LECCIÓN',style: TextStyle(fontSize: 19,fontWeight: FontWeight.bold,color: Colors.white)),
-                          onPressed: () {
+                          onPressed: () 
+                          {
                             var lessonRef = FirebaseFirestore.instance.collection('lessons').doc(args.description);
                             
                             debugPrint(args.description);
@@ -206,7 +224,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                             }
 
 
-                            if (args.id == 'KH99JvRZ9MOAo8DnnfLH') {
+                            if (args.id == 'NImip38OyNN166ISaFhK') {  //!KH99JvRZ9MOAo8DnnfLH - burbuja
                               var challengesLessonDone = FirebaseFirestore.instance.collection('challenges').get();
                               var usuarioActual = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid ?? 'null');
 
@@ -224,7 +242,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                             }
 
                             
-                             if (args.id == 'wCYEbpCDc4uQR0qPSbkU') {
+                             if (args.id == 'MDJYvdWi0Xk67SD4YLTw') { //! wCYEbpCDc4uQR0qPSbkU - selección
                               var challengesLessonDone = FirebaseFirestore.instance.collection('challenges').get();
                               var usuarioActual = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid ?? 'null');
 
@@ -242,7 +260,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                             }
 
 
-                            if (args.id == 'IJ9qxUlPzlLcvqSF47ul') {
+                            if (args.id == 'j2gYA2NNUQHHa24IcTHi') { //! inserción  IJ9qxUlPzlLcvqSF47ul 
                               var challengesLessonDone = FirebaseFirestore.instance.collection('challenges').get();
                               var usuarioActual = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid ?? 'null');
 
@@ -293,21 +311,23 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                                 });
                               }
                             });
-
                             Navigator.pop(context);
-                          });
+                          }
+                          
+                          );
                     }
                   } else {
                     return const Center(child: Text("Cargando..."));
                   }
                 },
               ),
-            ),
-          )),
+            ): null,
+          ): null,
+          ),
     );
   }
 
-  Widget _buildContent(BuildContext context, Map<String, dynamic> data) {
+  Widget _buildContent(BuildContext context, Map<String, dynamic> data, arg) {
     switch (data['type']) {
       case 'text':
         return SingleChildScrollView(
@@ -372,7 +392,155 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
         );
 
       case 'video':
-        return Container();
+        return SingleChildScrollView(
+          child: Stack(
+            children: [
+               SizedBox(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height,
+
+                child: UnityWidget(
+                          
+                          unloadOnDispose: true,
+                          
+                          onUnityCreated:onUnityCreated,
+                          fullscreen: false, 
+                      ),
+              ) ,
+              Positioned(
+                top: 5,
+                left: 5,
+                child: IconButton(onPressed: (){
+                    ////* agrega topicos de User
+                    //          FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({
+                    //            'topics': FieldValue.arrayUnion([FirebaseFirestore.instance.collection('topics').doc(arg)])
+                    //          });
+                    //          FirebaseFirestore.instance.collection('/topics/').doc(arg).update({
+                    //            'completedBy': FieldValue.arrayUnion([FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid ?? 'null')
+                    //            ])
+                    //          });
+
+                    var lessonRef = FirebaseFirestore.instance.collection('lessons').doc(arg);
+                            
+                            debugPrint(arg);
+                            // update progress
+                            FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).
+                            update({
+                                    'topics': FieldValue.arrayUnion([
+                                      FirebaseFirestore.instance
+                                          .collection('topics')
+                                          .doc(arg)])
+                                  });
+
+                            FirebaseFirestore.instance.collection('/topics/').doc(arg).
+                              update({
+                                        'completedBy': FieldValue.arrayUnion([FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid ?? 'null')])
+                                    });
+
+                            //!--------------------------- assign challenge - lessonDone
+
+                           
+
+
+                            if (arg == 'NImip38OyNN166ISaFhK') {  //!KH99JvRZ9MOAo8DnnfLH - burbuja
+                              var challengesLessonDone = FirebaseFirestore.instance.collection('challenges').get();
+                              var usuarioActual = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid ?? 'null');
+
+                                challengesLessonDone.then((value) {
+                                if (value.docs.isNotEmpty) {
+
+                                  var challenge = value.docs[5];
+                                  FirebaseFirestore.instance.collection('challenges').doc(challenge.id).
+                                    update({
+                                              'lessonDone':FieldValue.arrayUnion([usuarioActual])
+                                          });
+                                }
+                              });  
+                              
+                            }
+
+                          
+                             if (arg == 'MDJYvdWi0Xk67SD4YLTw') { //! wCYEbpCDc4uQR0qPSbkU - selección
+                              var challengesLessonDone = FirebaseFirestore.instance.collection('challenges').get();
+                              var usuarioActual = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid ?? 'null');
+
+                                challengesLessonDone.then((value) {
+                                if (value.docs.isNotEmpty) {
+
+                                  var challenge = value.docs[6];
+                                  FirebaseFirestore.instance.collection('challenges').doc(challenge.id).
+                                    update({
+                                              'lessonDone':FieldValue.arrayUnion([usuarioActual])
+                                          });
+                                }
+                              });  
+                              
+                            }
+
+
+                            if (arg == 'j2gYA2NNUQHHa24IcTHi') { //! inserción  IJ9qxUlPzlLcvqSF47ul 
+                              var challengesLessonDone = FirebaseFirestore.instance.collection('challenges').get();
+                              var usuarioActual = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid ?? 'null');
+
+                                challengesLessonDone.then((value) {
+                                if (value.docs.isNotEmpty) {
+
+                                  var challenge = value.docs[1];
+                                  FirebaseFirestore.instance.collection('challenges').doc(challenge.id).
+                                    update({
+                                              'lessonDone':FieldValue.arrayUnion([usuarioActual])
+                                          });
+                                }
+                              });  
+                              
+                            }
+
+
+                            
+                          //!---------------------------------------------
+
+                            // assign challenge
+                            var challenges = FirebaseFirestore.instance.collection('challenges').where('lesson', isEqualTo: lessonRef).get();
+
+                            challenges.then((value) {
+                              if (value.docs.isNotEmpty) {
+
+                                var challenge = value.docs[0];
+                                var challengeRef = FirebaseFirestore.instance.collection('challenges').doc(challenge.id);
+
+                                FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).
+                                  update({
+                                            'challenges':FieldValue.arrayUnion([challengeRef])
+                                        });
+                              }
+                            });
+
+                            // assign medal
+                          var medals = FirebaseFirestore.instance.collection('medals').where('lesson', isEqualTo: lessonRef).get();
+                            medals.then((value) {
+                              if (value.docs.isNotEmpty) {
+                                var medal = value.docs[0];
+                                var medalRef = FirebaseFirestore.instance.collection('medals').doc(medal.id);
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                                    .update({
+                                  'medals': FieldValue.arrayUnion([medalRef])
+                                });
+                              }
+                            });
+
+                            Navigator.pop(context);                  
+
+
+
+
+                  }
+                , icon: CircleAvatar(child: Icon(Icons.done), backgroundColor: Colors.indigo,)),
+              )
+            ],
+          ),
+        );
 
 
 
@@ -380,6 +548,12 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
         return const Text('data');
     }
   }
+
+  void onUnityCreated(controller) {
+    unityWidgetController = controller;
+  }
+
+ 
 
 
   
@@ -813,6 +987,91 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
     );
   }
 
+  Widget _teoriaInsercion(BuildContext context) {
+
+    var sizeWidth = MediaQuery.of(context).size.width;
+    var sizeHeight = MediaQuery.of(context).size.height;
+
+    return Column(
+      children: [
+        
+        SizedBox(height: 20,),
+        Container( 
+          width: sizeWidth * 0.9,
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(4,5),
+                blurRadius: 1.7,
+              )
+            ],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.85
+            ),
+            gradient: LinearGradient(
+              colors: const [
+                Colors.indigo,
+                Color(0xff1c1c1c)
+              ],
+              stops: const [0.3, 0.9],
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Ordenamiento por Inserción', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 15, top: 15),
+                  child: Text('Este algoritmo consiste en recorrer todo la lista comenzando desde el segundo elemento hasta el final. Para cada elemento, se trata de colocarlo en el lugar correcto entre todos los elementos anteriores a él o sea entre los elementos a su izquierda en la lista. Dada una posición actual p, el algoritmo se basa en que los elementos A[0], A[1], ..., A[p-1] ya están ordenados.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                ),   
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: ()=>dialogInsercionCodigo(context, sizeWidth, sizeHeight), 
+                      style: ElevatedButton.styleFrom(
+                        
+                        side: BorderSide(
+                          color: Colors.white,
+                          width: 0.65
+                        ),
+                        primary: Colors.transparent
+                      ),
+                      child: Text('CÓDIGO', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 12, fontWeight: FontWeight.w600)),
+                    
+                    ),
+                    ElevatedButton( 
+                  onPressed: ()=>dialogInsercionEjecucion(context, sizeWidth, sizeHeight), 
+                  style: ElevatedButton.styleFrom(
+                    
+                    side: BorderSide(
+                      color: Colors.white,
+                      width: 0.65
+                    ),
+                    primary: Colors.transparent
+                  ),
+                  child: Text('DEMOSTRACIÓN', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 12, fontWeight: FontWeight.w600)),
+                
+                ),
+                  ],
+                ),
+
+                
+                
+                       
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 30,),
+      ],
+    );
+  }
     
 
   Widget _teoriaSeleccion(BuildContext context) {
@@ -855,7 +1114,7 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
                     child: Text('Ordenamiento por Selección', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 15, top: 15),
-                  child: Text('SEste algoritmo consiste en repetir los siguientes pasos: Se busca el elemento más pequeño del array y se coloca en la primera posición. Entre los restantes, se busca el elemento más pequeño y se coloca en la segunda posición. Entre los restantes se busca el elemento más pequeño y se coloca en la tercera posición. Este proceso se repite hasta colocar el último elemento.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                  child: Text('Este algoritmo consiste en repetir los siguientes pasos: Se busca el elemento más pequeño del array y se coloca en la primera posición. Entre los restantes, se busca el elemento más pequeño y se coloca en la segunda posición. Entre los restantes se busca el elemento más pequeño y se coloca en la tercera posición. Este proceso se repite hasta colocar el último elemento.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
                 ),   
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -984,205 +1243,6 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
     );
   }
 
-  Widget _teoriaInsercion(BuildContext context) {
-
-    var sizeWidth = MediaQuery.of(context).size.width;
-    var sizeHeight = MediaQuery.of(context).size.height;
-
-    return Column(
-      children: [
-        
-        SizedBox(height: 20,),
-        Container( 
-          width: sizeWidth * 0.9,
-          decoration: BoxDecoration(
-            boxShadow: const [
-              BoxShadow(
-                offset: Offset(4,5),
-                blurRadius: 1.7,
-              )
-            ],
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(
-              color: Colors.black,
-              width: 1.85
-            ),
-            gradient: LinearGradient(
-              colors: const [
-                Colors.indigo,
-                Color(0xff1c1c1c)
-              ],
-              stops: const [0.3, 0.9],
-            )
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 10, bottom: 10),
-            child: Column(
-              children: [
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Ordenamiento por Inserción', style: TextStyle(color: Color(0xff1c1c1c),letterSpacing: 1.2, fontSize: 18, fontWeight: FontWeight.bold),)),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 15, top: 15),
-                  child: Text('Este algoritmo consiste en recorrer todo la lista comenzando desde el segundo elemento hasta el final. Para cada elemento, se trata de colocarlo en el lugar correcto entre todos los elementos anteriores a él o sea entre los elementos a su izquierda en la lista. Dada una posición actual p, el algoritmo se basa en que los elementos A[0], A[1], ..., A[p-1] ya están ordenados.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
-                ),   
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ElevatedButton(
-                      onPressed: ()=>dialogInsercionCodigo(context, sizeWidth, sizeHeight), 
-                      style: ElevatedButton.styleFrom(
-                        
-                        side: BorderSide(
-                          color: Colors.white,
-                          width: 0.65
-                        ),
-                        primary: Colors.transparent
-                      ),
-                      child: Text('CÓDIGO', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 12, fontWeight: FontWeight.w600)),
-                    
-                    ),
-                    ElevatedButton( 
-                  onPressed: ()=>dialogInsercionEjecucion(context, sizeWidth, sizeHeight), 
-                  style: ElevatedButton.styleFrom(
-                    
-                    side: BorderSide(
-                      color: Colors.white,
-                      width: 0.65
-                    ),
-                    primary: Colors.transparent
-                  ),
-                  child: Text('DEMOSTRACIÓN', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 12, fontWeight: FontWeight.w600)),
-                
-                ),
-                  ],
-                ),
-
-                
-                
-                       
-              ],
-            ),
-          ),
-        ),
-        SizedBox(height: 30,),
-      ],
-    );
-  }
-
-  dialogInsercionCodigo(BuildContext context, var sizeWidth, var sizeHeight){
-  showDialog(context: context, builder: (context) {
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16)
-      ),
-      insetPadding: EdgeInsets.symmetric(horizontal: 5),
-      contentPadding: EdgeInsets.all(3),
-      content: ClipRRect(
-        borderRadius: BorderRadius.circular(14),
-        child: Container(
-          width: sizeWidth * 0.99,
-          height: sizeHeight * 0.65,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: const [
-                  Colors.indigo,
-                  Color(0xff1c1c1c)
-                ],
-                stops: const [0.3, 0.9],
-              )
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Container(
-                  padding: EdgeInsets.only(top:15),
-                  width: sizeWidth * 0.85,
-                  height: sizeHeight * 0.6,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: CachedNetworkImage(
-                      imageUrl: 'https://firebasestorage.googleapis.com/v0/b/tdpapp-8d28b.appspot.com/o/ordenamientoinsercion.png?alt=media&token=f56d38eb-589d-41e3-b502-4fb1bd2496d6', fit: BoxFit.fitHeight,
-                      placeholder: (context, url) => Center(child: Text('Cargando')),
-                      ),
-                  ),
-                              ),
-                ),
-                Container(
-                      padding: EdgeInsets.symmetric(horizontal: 30).copyWith(top: 20, bottom: 25),
-                      child: Text('Se presenta la implementación en código del algoritmo de ordenamiento por inserción', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
-                    ),
-          
-                    
-                
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  },);
-}
-
-  dialogInsercionEjecucion(BuildContext context, var sizeWidth, var sizeHeight){
-  showDialog(context: context, builder: (context) {
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16)
-      ),
-      insetPadding: EdgeInsets.symmetric(horizontal: 5),
-      contentPadding: EdgeInsets.all(3),
-      content: ClipRRect(
-        borderRadius: BorderRadius.circular(14),
-        child: Container(
-          width: sizeWidth * 0.99,
-          height: sizeHeight * 0.6,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: const [
-                  Colors.indigo,
-                  Color(0xff1c1c1c)
-                ],
-                stops: const [0.3, 0.9],
-              )
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Container(
-                  padding: EdgeInsets.only(top: 15),
-                  width: sizeWidth * 0.85,
-                  height: sizeHeight * 0.45,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: CachedNetworkImage(
-                      imageUrl: 'https://firebasestorage.googleapis.com/v0/b/tdpapp-8d28b.appspot.com/o/ejecucioninserc.png?alt=media&token=6b8aa1a2-5e11-4b66-b044-3ba660db9c75', 
-                      placeholder: (context, url) => Center(child: Text('Cargando')),
-                      ),
-                  ),
-                              ),
-                ),
-                Container(
-                      padding: EdgeInsets.symmetric(horizontal: 30).copyWith(top: 20, bottom: 25),
-                      child: Text('Se presenta la demostración y ejecución del algoritmo de ordenamiento por inserción con este ejemplo en la imagen.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
-                    ),
-                SizedBox(height: 15,)
-                
-          
-                    
-                
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  },);
-}
 
   Widget _widgetAO1Tipos(BuildContext context) {
 
@@ -1524,12 +1584,73 @@ class _TopicContentScreenState extends State<TopicContentScreen> {
         
         SizedBox(height: 30,),
 
-       
+        
+
+                
+
       ],
     );
   }
 
 
+
+dialogInsercionEjecucion(BuildContext context, var sizeWidth, var sizeHeight){
+  showDialog(context: context, builder: (context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16)
+      ),
+      insetPadding: EdgeInsets.symmetric(horizontal: 5),
+      contentPadding: EdgeInsets.all(3),
+      content: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          width: sizeWidth * 0.99,
+          height: sizeHeight * 0.6,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: const [
+                  Colors.indigo,
+                  Color(0xff1c1c1c)
+                ],
+                stops: const [0.3, 0.9],
+              )
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                  padding: EdgeInsets.only(top: 15),
+                  width: sizeWidth * 0.85,
+                  height: sizeHeight * 0.45,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                      imageUrl: 'https://firebasestorage.googleapis.com/v0/b/tdpapp-8d28b.appspot.com/o/ejecucioninserc.png?alt=media&token=6b8aa1a2-5e11-4b66-b044-3ba660db9c75', 
+                      placeholder: (context, url) => Center(child: Text('Cargando')),
+                      ),
+                  ),
+                              ),
+                ),
+                Container(
+                      padding: EdgeInsets.symmetric(horizontal: 30).copyWith(top: 20, bottom: 25),
+                      child: Text('Se presenta la demostración y ejecución del algoritmo de ordenamiento por inserción con este ejemplo en la imagen.', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                    ),
+                SizedBox(height: 15,)
+                
+          
+                    
+                
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  },);
+}
 
 dialogSeleccionEjecucion(BuildContext context, var sizeWidth, var sizeHeight){
   showDialog(context: context, builder: (context) {
@@ -1646,6 +1767,65 @@ dialogBurbujaEjecucion(BuildContext context, var sizeWidth, var sizeHeight){
     );
   },);
 }
+
+
+
+dialogInsercionCodigo(BuildContext context, var sizeWidth, var sizeHeight){
+  showDialog(context: context, builder: (context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16)
+      ),
+      insetPadding: EdgeInsets.symmetric(horizontal: 5),
+      contentPadding: EdgeInsets.all(3),
+      content: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          width: sizeWidth * 0.99,
+          height: sizeHeight * 0.65,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: const [
+                  Colors.indigo,
+                  Color(0xff1c1c1c)
+                ],
+                stops: const [0.3, 0.9],
+              )
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                  padding: EdgeInsets.only(top:15),
+                  width: sizeWidth * 0.85,
+                  height: sizeHeight * 0.6,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                      imageUrl: 'https://firebasestorage.googleapis.com/v0/b/tdpapp-8d28b.appspot.com/o/ordenamientoinsercion.png?alt=media&token=f56d38eb-589d-41e3-b502-4fb1bd2496d6', fit: BoxFit.fitHeight,
+                      placeholder: (context, url) => Center(child: Text('Cargando')),
+                      ),
+                  ),
+                              ),
+                ),
+                Container(
+                      padding: EdgeInsets.symmetric(horizontal: 30).copyWith(top: 20, bottom: 25),
+                      child: Text('Se presenta la implementación en código del algoritmo de ordenamiento por inserción', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,wordSpacing: 0.45, letterSpacing: 0.95, fontSize: 14, fontWeight: FontWeight.w600),),
+                    ),
+          
+                    
+                
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  },);
+}
+
 
 dialogSeleccionCodigo(BuildContext context, var sizeWidth, var sizeHeight){
   showDialog(context: context, builder: (context) {
@@ -2203,7 +2383,6 @@ dialogBurbujaCodigo(BuildContext context, var sizeWidth, var sizeHeight){
         SizedBox(height: 20,),
         Container( //! Condicionales
           width: sizeWidth * 0.9,
-          height: sizeHeight * 0.31,
           decoration: BoxDecoration(
             boxShadow: const [
               BoxShadow(
@@ -2723,6 +2902,7 @@ dialogFOR(BuildContext context, var sizeWidth, var sizeHeight){
     );
   },);
 }
+
 
 Widget _forContentSintaxis(sizeWidth, sizeHeight, title, contentText) {
   return Container(
