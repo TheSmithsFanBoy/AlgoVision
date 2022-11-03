@@ -8,7 +8,7 @@ if (localPropertiesFile.exists()) {
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+    throw  GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
@@ -28,8 +28,18 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+
 android {
-    compileSdkVersion flutter.compileSdkVersion
+ 
+    ndkVersion "21.3.6528147"
+    compileSdkVersion 32
+    buildToolsVersion '30.0.0' //!
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -46,20 +56,42 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.tdpapp"
-        minSdkVersion 19
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        applicationId "com.tomsalchomex.algovision"
+        minSdkVersion 24
+        targetSdkVersion 31 
+        versionCode 1
+        versionName "1.0.0"
 		multiDexEnabled true
+        lintOptions {
+            disable 'InvalidPackage'
+            disable "Instantiatable"
+            checkReleaseBuilds false
+            abortOnError false
+        }
     }
 
+    signingConfigs {
+        release {
+            keyAlias 'sd'
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+    
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
+        debug {
+             signingConfig signingConfigs.debug
+         }
+         profile {
+             signingConfig signingConfigs.debug
+         }
+         innerTest {
+             matchingFallbacks = ['debug', 'release']
+         }
     }
 }
 
@@ -67,6 +99,22 @@ flutter {
     source '../..'
 }
 
+
+
+
+
+
 dependencies {
+    implementation project(':unityLibrary')
+
+    implementation project(':unityLibrary')
+
+    implementation project(':unityLibrary')
+
+    implementation project(':unityLibrary')
+
+    implementation project(':unityLibrary')
+
+    implementation project(':unityLibrary')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

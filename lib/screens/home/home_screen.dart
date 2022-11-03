@@ -8,36 +8,32 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // get current user
-    return Scaffold(
-      drawer: const NavigationDrawer(),
-      appBar: AppBar(
-        title: const Text("Inicio"),
-        backgroundColor: Colors.indigo,
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.account_circle_rounded),
-            onPressed: () {
-              Navigator.pushNamed(context, '/account');
+    return SafeArea(
+      top: true,
+      child: Scaffold(
+        drawer:  NavigationDrawer(),
+        appBar: AppBar(
+          title: const Text("Inicio"),
+          backgroundColor: Colors.indigo,
+          centerTitle: true,
+         
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(
+                  Icons.sort_outlined,
+                  color: Colors.white, // Change Custom Drawer Icon Color
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
             },
           ),
-        ],
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(
-                Icons.sort_outlined,
-                color: Colors.white, // Change Custom Drawer Icon Color
-              ),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-            );
-          },
         ),
+        body: const HomeBody(),
       ),
-      body: const HomeBody(),
     );
   }
 }

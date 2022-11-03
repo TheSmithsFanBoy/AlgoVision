@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +26,7 @@ class ForgotPasswordScreen extends StatelessWidget {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            cursorColor: Colors.white,
             controller: emailController,
             validator: (value) {
               if (value!.isEmpty) {
@@ -57,13 +60,17 @@ class ForgotPasswordScreen extends StatelessWidget {
   }
 
   Widget _buildPasswordTF() {
-    return const Text(
-      "Si olvidaste tu contraseña, ingresa tu correo electrónico y te enviaremos un enlace para restablecerla.",
-      style: TextStyle(
-        color: Colors.white,
-        fontFamily: 'OpenSans',
-        fontSize: 15.0,
-        fontWeight: FontWeight.w400,
+    return const Align(
+      alignment: Alignment.center,
+      child:  Text(
+        "Si olvidaste tu contraseña, ingresa tu correo electrónico y te enviaremos un enlace para restablecerla.",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.white,
+          fontFamily: 'OpenSans',
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+        ),
       ),
     );
   }
@@ -113,24 +120,26 @@ class ForgotPasswordScreen extends StatelessWidget {
                 },
               );
             });
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text(
-                    'Por favor ingresa todos los datos',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  backgroundColor: Colors.grey),
-            );
-          }
+          } 
+          //else {
+          //  ScaffoldMessenger.of(context).showSnackBar(
+          //    const SnackBar(
+          //      duration: Duration(seconds: 1),
+          //        content: Text(
+          //          'Por favor ingresa todos los datos',
+          //          style: TextStyle(
+          //            color: Colors.white,
+          //            fontSize: 16.0,
+          //          ),
+          //        ),
+          //        backgroundColor: Colors.grey),
+          //  );
+          //}
         },
         child: const Text(
           'RECUPERAR',
           style: TextStyle(
-            color: Colors.purple,
+            color: Colors.black,
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
@@ -158,8 +167,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.blue,
-                      Colors.purple,
+                      Colors.indigo,
+                Color(0xff1c1c1c)
                     ],
                   ),
                 ),

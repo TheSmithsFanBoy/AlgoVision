@@ -17,30 +17,30 @@ class LessonQuizScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body:
-          /*FutureBuilder<String>(
-                  future: surveyId,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData &&
-                        snapshot.connectionState == ConnectionState.done) {
-                      // ignore: avoid_print
-                      print(snapshot.data!);
-                      return IconButton(
-                        icon: const Icon(Icons.description),
-                        color: Colors.white,
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/surveys',
-                              arguments: ScreenArguments(
-                                id: snapshot.data!,
-                                title: '',
-                                description: '',
-                                parentId: '',
-                              ));
-                        },
-                      );
-                    }
-                    return const CircularProgressIndicator();
-                  },
-                ),*/
+          //FutureBuilder<String>(
+          //        future: surveyId,
+          //        builder: (context, snapshot) {
+          //          if (snapshot.hasData &&
+          //              snapshot.connectionState == ConnectionState.done) {
+          //            // ignore: avoid_print
+          //            print(snapshot.data!);
+          //            return IconButton(
+          //              icon: const Icon(Icons.description),
+          //              color: Colors.white,
+          //              onPressed: () {
+          //                Navigator.pushNamed(context, '/surveys',
+          //                    arguments: ScreenArguments(
+          //                      id: snapshot.data!,
+          //                      title: '',
+          //                      description: '',
+          //                      parentId: '',
+          //                    ));
+          //              },
+          //            );
+          //          }
+          //          return const CircularProgressIndicator();
+          //        },
+          //      ),
           StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('/lessons/' + args.id + '/quiz')
@@ -69,7 +69,8 @@ class LessonQuizScreen extends StatelessWidget {
             const SizedBox(height: 16),
             SurveyQuestion(
               validOption: doc['correctAnswer'],
-              options: doc['options'],
+              options: doc['options'].cast<String>(),
+        optionsInvalidText: doc['optionInvalidText'].cast<String>(),
               callback: () => {
                 FirebaseFirestore.instance
                     .collection('/lessons/')

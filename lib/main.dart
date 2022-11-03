@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +7,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tdpapp/firebase_options.dart';
+import 'package:tdpapp/provider/topic_video_provider.dart';
+import 'package:tdpapp/provider/user_provider.dart';
 import 'package:tdpapp/screens/account/account_screen.dart';
 import 'package:tdpapp/screens/algorithm-details/algorithm_details_screen.dart';
 import 'package:tdpapp/screens/algorithm/algorithm_screen.dart';
@@ -23,8 +27,8 @@ import 'package:tdpapp/screens/surveys/surveys_screen.dart';
 import 'package:tdpapp/screens/topic-content/topic_content_screen.dart';
 import 'package:tdpapp/screens/topic-quiz/topiz_quiz_screen.dart';
 import 'package:tdpapp/screens/topics/topics_screen.dart';
-import 'package:tdpapp/screens/welcome/welcome_screen.dart';
 import 'package:tdpapp/services/auth_service.dart';
+import 'package:tdpapp/widgets/video_prueba.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,6 +68,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider(
+            lazy: false,
+            create: (_) => UserProvider(),
+          ),
+          ChangeNotifierProvider(
+            lazy: false,
+            create: (_) => TopicVideoProvider(),
+          ),
           Provider<AuthService>(
             create: (_) => AuthService(FirebaseAuth.instance),
           ),
@@ -85,12 +97,16 @@ class _MyAppState extends State<MyApp> {
               FirebaseAuth.instance.currentUser == null ? '/login' : '/home',
           navigatorKey: _navigatorKey,
           routes: {
-            '/': (context) => const WelcomeScreen(),
+            '/login': (context) => LoginScreen(), //Pantalla de inicio Login
             '/register': (context) => RegisterScreen(),
-            '/sign-in': (context) => const SignInScreen(),
-            '/login': (context) => LoginScreen(),
-            '/forgot-password': (context) => ForgotPasswordScreen(),
             '/home': (context) => const HomeScreen(),
+            
+
+            '/video-test' : (_)=> const VideoPlayerFlutterTest(),
+           
+            '/sign-in': (context) => const SignInScreen(),
+            '/forgot-password': (context) => ForgotPasswordScreen(),
+            
             '/fundamentals': (context) => const FundamentalsScreen(),
             '/algorithm': (context) => const AlgorithmScreen(),
             '/challenges': (context) => const ChallengesScreen(),

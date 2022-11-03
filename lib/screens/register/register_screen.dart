@@ -1,17 +1,160 @@
+// ignore_for_file: avoid_print, duplicate_ignore, prefer_const_constructors, deprecated_member_use
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:tdpapp/services/auth_service.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart';
 
 import '../../constants/theme_constants.dart';
 
-class RegisterScreen extends StatelessWidget {
-  RegisterScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
+
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
 
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  File? _photo;
+  String imgUrl = "";
+  final ImagePicker _picker = ImagePicker();
+  bool _isDisabled = true;
+
+  void _enableButton(){
+    setState(() {
+      _isDisabled=false;
+    });
+  }
+  Future imgFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+        _enableButton();
+      } else {
+        // ignore: avoid_print
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future imgFromCamera() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+        _enableButton();
+      } else {
+        // ignore: avoid_print
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future uploadFile() async {
+    if (_photo == null) return;
+    final fileName = basename(_photo!.path);
+    const destination = 'Perfil';
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child(fileName);
+      await ref.putFile(_photo!);
+      imgUrl = await ref.getDownloadURL();
+      print("imagen");
+      // ignore: avoid_print
+      print(imgUrl);
+    } catch (e) {
+      print('error occured');
+    }
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            // ignore: avoid_unnecessary_containers
+            child: Container(
+              child:  Wrap(
+                children: [
+                   ListTile(
+                      leading:  const Icon(Icons.photo_library),
+                      title:  const Text('Gallery'),
+                      onTap: () {
+                        imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                   ListTile(
+                    leading:  const Icon(Icons.photo_camera),
+                    title:  const Text('Camera'),
+                    onTap: () {
+                      imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Widget _buildImagePikerTF(context) {
+    return Column(
+      children: <Widget>[
+        Center(
+          child: GestureDetector(
+            onTap: () {
+              _showPicker(context);
+            },
+            child: CircleAvatar(
+              radius: 45,
+              child: _photo != null
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(55),
+                      child: Image.file(
+                        _photo!,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.fill,
+                      ),
+                    )
+                  : Container(
+                      decoration: BoxDecoration(
+                          color: Color(0xff212121).withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(50)),
+                      width: 100,
+                      height: 100,
+                      child: const Icon(
+                        Icons.add_photo_alternate,
+                        color: Colors.white,
+                      ),
+                    ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
 
   Widget _buildFullNameTF() {
     return Column(
@@ -27,18 +170,20 @@ class RegisterScreen extends StatelessWidget {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            cursorColor: Colors.white,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp('[a-zA-Z a space]')),
+            ],
             controller: fullNameController,
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Por favor ingrese su nombre';
-              } else if (value.length < 3) {
-                return 'Ingrese un nombre válido';
-              } else if (value.length > 30) {
-                return 'Máximo 30 caracteres';
-              }
+                return 'Por favor ingrese sus nombre y apellidos';
+              } else if (value.length < 3 || value.length > 30) {
+                return 'Los nombres y apellidos deben tener entre 3 a 30 caracteres';
+              } 
               return null;
             },
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.text,
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -73,6 +218,7 @@ class RegisterScreen extends StatelessWidget {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            cursorColor: Colors.white,
             controller: emailController,
             validator: (value) {
               if (value!.isEmpty) {
@@ -81,8 +227,9 @@ class RegisterScreen extends StatelessWidget {
                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                   .hasMatch(value)) {
                 return 'Ingrese un correo electrónico válido';
-              } else if (value.length > 30) {
-                return 'Máximo 30 caracteres';
+                
+              } else if (value.length < 5 || value.length > 30) {
+                return 'El correo debe tener entre 5 a 30 caracteres';
               }
               return null;
             },
@@ -121,16 +268,24 @@ class RegisterScreen extends StatelessWidget {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            cursorColor: Colors.white,
             controller: passwordController,
             validator: (value) {
+              
+                RegExp regex =
+                  RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
               if (value!.isEmpty) {
                 return 'Por favor ingrese su contraseña';
-              } else if (value.length < 8) {
-                return 'Ingrese una contraseña válida';
-              } else if (value.length > 16) {
-                return 'Máximo 16 caracteres';
+              }  else if (value.length < 8 || value.length > 16) {
+                return 'La contraseña debe tener entre 8 a 16 caracteres';
+              } else  {
+                if (!regex.hasMatch(value)) {
+                  return 'Ingrese una contraseña válida';
+                } else {
+                  return null;
+                }
               }
-              return null;
+              
             },
             obscureText: true,
             style: const TextStyle(
@@ -167,6 +322,7 @@ class RegisterScreen extends StatelessWidget {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            cursorColor: Colors.white,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Por favor ingrese su contraseña';
@@ -210,16 +366,16 @@ class RegisterScreen extends StatelessWidget {
           primary: Colors.white,
         ),
         // ignore: avoid_print
-        onPressed: () {
+        onPressed: _isDisabled ? null : () {
           if (_formKey.currentState != null &&
               _formKey.currentState!.validate()) {
             context
                 .read<AuthService>()
                 .signUp(
-                  email: emailController.text,
-                  password: passwordController.text,
-                  fullName: fullNameController.text,
-                )
+                    email: emailController.text,
+                    password: passwordController.text,
+                    fullName: fullNameController.text,
+                    profileImg: imgUrl)
                 .then((value) => ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(
@@ -236,7 +392,7 @@ class RegisterScreen extends StatelessWidget {
         child: const Text(
           'CREAR CUENTA',
           style: TextStyle(
-            color: Colors.purple,
+            color: Colors.black,
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
@@ -292,8 +448,8 @@ class RegisterScreen extends StatelessWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.blue,
-                      Colors.purple,
+                      Colors.indigo,
+                Color(0xff1c1c1c)
                     ],
                   ),
                 ),
@@ -302,13 +458,15 @@ class RegisterScreen extends StatelessWidget {
                 height: double.infinity,
                 child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40.0,
-                      vertical: 120.0,
-                    ),
+                    padding: const EdgeInsets.only(
+                    right: 40.0,
+                    left: 40.0,
+                    top: 40.0,
+                    bottom: 40.0
+                  ),
                     child: Form(
                       key: _formKey,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      //autovalidateMode: AutovalidateMode.onUserInteraction,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -321,7 +479,11 @@ class RegisterScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 30.0),
+                          const SizedBox(height: 15.0),
+                          _buildImagePikerTF(context),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
                           _buildFullNameTF(),
                           const SizedBox(
                             height: 20.0,

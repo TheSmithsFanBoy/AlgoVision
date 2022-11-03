@@ -7,6 +7,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1086281241029:android:57720bd3224e3630c77bac",
+        "android_client_info": {
+          "package_name": "com.choquetomasto.algovision"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086281241029-5lp0kto64etn2nr7mo7p45v0i8j1u454.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABARFErR1uBUP0zoYPFIbF_Z_3c12GQZA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086281241029-5lp0kto64etn2nr7mo7p45v0i8j1u454.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1086281241029-59rkvc280j8na1gb1q6kon46rjjpqok7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tdpapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1086281241029:android:42166db2515ee710c77bac",
         "android_client_info": {
           "package_name": "com.example.tdpapp"
@@ -29,6 +65,49 @@
             {
               "client_id": "1086281241029-5lp0kto64etn2nr7mo7p45v0i8j1u454.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1086281241029-59rkvc280j8na1gb1q6kon46rjjpqok7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tdpapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086281241029:android:b66b8b46d1150b2dc77bac",
+        "android_client_info": {
+          "package_name": "com.tomsalchomex.algovision"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086281241029-5lp0kto64etn2nr7mo7p45v0i8j1u454.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABARFErR1uBUP0zoYPFIbF_Z_3c12GQZA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086281241029-5lp0kto64etn2nr7mo7p45v0i8j1u454.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1086281241029-59rkvc280j8na1gb1q6kon46rjjpqok7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tdpapp"
+              }
             }
           ]
         }
