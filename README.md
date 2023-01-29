@@ -1,16 +1,4 @@
-# tdpapp
+# AlgoVision
+AlgoVision - Aplicación móvil enfocada a la enseñanza de algoritmos de ordenamiento en alumnos de 1er y 2do ciclo de Ingeniería de Software.
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Aplicación móvil desarrollada para el curso de Taller de Proyecto 1 y 2. En colaboración con Andres Choque y Marco Manrique.
